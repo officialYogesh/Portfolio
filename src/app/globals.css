@@ -269,8 +269,8 @@ small {
 
 /* Better contrast for muted text */
 .text-muted {
-  opacity: 0.8;
-  font-weight: 400;
+  color: rgb(var(--muted));
+  opacity: 0.9; /* Increased from lower opacity for better visibility */
 }
 
 /* Theme transition animations */
@@ -380,11 +380,6 @@ button:focus-visible {
   color: var(--accent);
   font-weight: 500;
 }
-.text-muted {
-  color: var(--muted);
-  font-weight: 500; /* Increased weight for better visibility */
-  opacity: 1; /* Remove opacity that was reducing contrast */
-}
 .text-info {
   color: var(--info);
   font-weight: 500;
@@ -418,21 +413,18 @@ button:focus-visible {
 
 /* Card-specific improvements */
 .card-text {
-  color: var(--foreground);
-  font-weight: 400;
-  line-height: 1.6;
+  color: rgb(var(--foreground));
+  opacity: 0.95; /* Slightly increased for better visibility */
 }
 
 .card-text-muted {
-  color: var(--muted);
-  font-weight: 500;
-  line-height: 1.5;
+  color: rgb(var(--muted));
+  opacity: 0.95; /* Increased for better visibility */
 }
 
 .card-title {
-  color: var(--foreground);
+  color: rgb(var(--foreground));
   font-weight: 600;
-  line-height: 1.3;
 }
 
 /* Reduced motion support */

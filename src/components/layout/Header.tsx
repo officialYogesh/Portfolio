@@ -227,10 +227,12 @@ const Header: React.FC = () => {
 
             {/* Right side: Theme Selector & Mobile Menu Button */}
             <div className="flex items-center space-x-2">
-              {/* Theme Selector - visible on all screen sizes */}
-              <ThemeSelector />
+              {/* Theme Selector - visible on desktop/tablet, hidden on mobile */}
+              <div className="hidden md:block">
+                <ThemeSelector />
+              </div>
 
-              {/* Mobile menu button - visible only on mobile phones (below 768px) */}
+              {/* Mobile menu button - visible ONLY on mobile phones (below 768px) */}
               <motion.button
                 onClick={toggleMenu}
                 className={cn(
@@ -252,7 +254,7 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation Menu - positioned below header, only on mobile */}
+        {/* Mobile Navigation Menu - positioned below header, ONLY on mobile */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
@@ -268,6 +270,19 @@ const Header: React.FC = () => {
                 role="navigation"
                 aria-label="Mobile navigation"
               >
+                {/* Theme Selector Section - ONLY in mobile menu */}
+                <motion.div
+                  variants={mobileMenuItemVariants}
+                  className="mb-6 pb-4 border-b border-border"
+                >
+                  <div className="px-4 py-2">
+                    <div className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
+                      Theme
+                    </div>
+                    <ThemeSelector />
+                  </div>
+                </motion.div>
+
                 {/* Navigation Items */}
                 <div className="space-y-1">
                   {navigationItems.map((item, index) => (
@@ -311,7 +326,7 @@ const Header: React.FC = () => {
         </AnimatePresence>
       </motion.header>
 
-      {/* Mobile Menu Backdrop - only on mobile */}
+      {/* Mobile Menu Backdrop - ONLY on mobile */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div

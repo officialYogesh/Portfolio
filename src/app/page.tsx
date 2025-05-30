@@ -150,21 +150,91 @@ export default function Home() {
 
         {/* Typography Test */}
         <section className="py-12">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">
-            Typography Scale Test
+          <h2 className="text-title text-center mb-8 text-foreground">
+            Typography System Showcase
           </h2>
-          <div className="space-y-4 max-w-4xl mx-auto">
-            <h1 className="text-6xl font-bold text-primary">Heading 1</h1>
-            <h2 className="text-4xl font-bold text-secondary">Heading 2</h2>
-            <h3 className="text-2xl font-semibold text-accent">Heading 3</h3>
-            <p className="text-lg text-foreground">
-              This is a paragraph demonstrating our typography system. The text
-              should be readable and properly styled according to our theme
-              system.
-            </p>
-            <code className="bg-muted text-accent px-2 py-1 rounded font-mono text-sm">
-              const greeting = &quot;Hello, World!&quot;;
-            </code>
+          <div className="space-y-6 max-w-4xl mx-auto">
+            <div className="space-y-4">
+              <h1 className="text-hero text-primary">Hero Text (Inter)</h1>
+              <h2 className="text-title text-secondary">Title Text (Inter)</h2>
+              <h3 className="text-subtitle text-accent">
+                Subtitle Text (Inter)
+              </h3>
+              <p className="text-body-large text-foreground">
+                This is large body text using the system font stack. It
+                demonstrates excellent readability and proper line spacing for
+                enhanced user experience.
+              </p>
+              <p className="text-body text-foreground">
+                This is regular body text showcasing our typography system. The
+                text should be perfectly readable with optimal spacing and line
+                heights across all themes and devices.
+              </p>
+              <p className="text-caption">
+                This is caption text with muted color for less important
+                information.
+              </p>
+              <code className="text-code bg-muted text-accent px-3 py-2 rounded-md block">
+                {"// JetBrains Mono for code elements\n"}
+                {'const portfolio = "Modern Typography System";\n'}
+                {"console.log(`${portfolio} with Inter & JetBrains Mono`);"}
+              </code>
+            </div>
+
+            {/* Font Family Examples */}
+            <div className="border-t border-border pt-6 space-y-4">
+              <h3 className="font-heading text-2xl font-semibold text-foreground">
+                Font Family Examples
+              </h3>
+              <div className="grid gap-4">
+                <div className="p-4 bg-card rounded-lg">
+                  <h4 className="font-heading text-lg font-medium text-primary mb-2">
+                    Inter (Headings)
+                  </h4>
+                  <p className="font-heading text-base">
+                    The quick brown fox jumps over the lazy dog. 1234567890
+                  </p>
+                </div>
+                <div className="p-4 bg-card rounded-lg">
+                  <h4 className="font-sans text-lg font-medium text-secondary mb-2">
+                    System Font (Body)
+                  </h4>
+                  <p className="font-sans text-base">
+                    The quick brown fox jumps over the lazy dog. 1234567890
+                  </p>
+                </div>
+                <div className="p-4 bg-card rounded-lg">
+                  <h4 className="font-mono text-lg font-medium text-accent mb-2">
+                    JetBrains Mono (Code)
+                  </h4>
+                  <p className="font-mono text-base">
+                    The quick brown fox jumps over the lazy dog. 1234567890
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Responsive Typography */}
+            <div className="border-t border-border pt-6 space-y-4">
+              <h3 className="font-heading text-2xl font-semibold text-foreground">
+                Responsive Typography
+              </h3>
+              <div className="space-y-2">
+                <h1 className="text-responsive-6xl font-bold text-primary">
+                  Responsive H1
+                </h1>
+                <h2 className="text-responsive-4xl font-semibold text-secondary">
+                  Responsive H2
+                </h2>
+                <h3 className="text-responsive-3xl font-medium text-accent">
+                  Responsive H3
+                </h3>
+                <p className="text-responsive-lg text-foreground">
+                  This paragraph uses responsive typography that scales smoothly
+                  across devices.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 

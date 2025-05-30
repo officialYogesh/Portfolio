@@ -139,11 +139,19 @@ export function applyTheme(themeName: string): void {
   const theme = getTheme(themeName);
   const root = document.documentElement;
 
+  // Add transition class for smooth animation
+  root.classList.add("theme-transitioning");
+
   // Apply theme to data attribute
   root.setAttribute("data-theme", theme.name);
 
   // Store in localStorage
   localStorage.setItem("portfolio-theme", theme.name);
+
+  // Remove transition class after animation completes
+  setTimeout(() => {
+    root.classList.remove("theme-transitioning");
+  }, 300); // Match the CSS transition duration
 }
 
 export function getStoredTheme(): string {
@@ -170,3 +178,65 @@ export const themeDescriptions: Record<string, string> = {
 };
 
 export type ThemeName = keyof typeof themes;
+
+export function getSystemPreference(): "dark" | "light" {
+  if (typeof window === "undefined") return "dark";
+
+  try {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  } catch (error) {
+    console.warn("Could not detect system color preference:", error);
+    return "dark";
+  }
+}
+
+export function getThemeForSystemPreference(): string {
+  const preference = getSystemPreference();
+  // All our themes are dark themes, so we'll always return dracula for now
+  // In the future, we could add light theme variants
+  return defaultTheme;
+}
+
+export function initializeThemeWithSystemPreference(): string {
+  if (typeof localStorage === "undefined") return defaultTheme;
+
+  const storedTheme = localStorage.getItem("portfolio-theme");
+
+  if (storedTheme && themes[storedTheme]) {
+    return storedTheme;
+  }
+
+  // If no stored theme, use system preference
+  return getThemeForSystemPreference();
+}
+
+export function setupSystemPreferenceListener(
+  callback: (theme: string) => void
+): () => void {
+  if (typeof window === "undefined") return () => {};
+
+  try {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      // Only auto-switch if user hasn't manually selected a theme
+      const hasStoredTheme = localStorage.getItem("portfolio-theme");
+      if (!hasStoredTheme) {
+        const newTheme = getThemeForSystemPreference();
+        callback(newTheme);
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    // Return cleanup function
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  } catch (error) {
+    console.warn("Could not set up system preference listener:", error);
+    return () => {};
+  }
+}

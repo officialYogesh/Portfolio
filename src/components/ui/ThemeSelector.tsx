@@ -1,32 +1,31 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import {
-  themes,
-  applyTheme,
-  getStoredTheme,
-  themeDescriptions,
-} from "../../../config/themes";
+import { useTheme } from "../../contexts/ThemeContext";
+import { themeDescriptions } from "../../../config/themes";
 
 export const ThemeSelector: React.FC = () => {
-  const [currentTheme, setCurrentTheme] = useState<string>("dracula");
+  const { currentTheme, setTheme, themes, isLoading } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    // Initialize theme on component mount
-    const storedTheme = getStoredTheme();
-    setCurrentTheme(storedTheme);
-    applyTheme(storedTheme);
-  }, []);
-
   const handleThemeChange = (themeId: string) => {
-    setCurrentTheme(themeId);
-    applyTheme(themeId);
+    if (themeId in themes) {
+      setTheme(themeId as keyof typeof themes);
+    }
     setIsOpen(false);
   };
 
   const currentThemeData = themes[currentTheme];
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center space-x-2 px-3 py-2 text-sm">
+        <div className="w-4 h-4 rounded-full bg-muted animate-pulse" />
+        <span className="hidden sm:inline text-muted">Loading...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
@@ -49,7 +48,7 @@ export const ThemeSelector: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-lg shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-lg shadow-lg z-50 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200">
           <div className="p-2">
             <div className="text-xs font-semibold text-muted uppercase tracking-wide px-2 py-1 mb-2">
               Choose Theme
@@ -58,14 +57,14 @@ export const ThemeSelector: React.FC = () => {
               <button
                 key={themeId}
                 onClick={() => handleThemeChange(themeId)}
-                className={`w-full flex items-center space-x-3 px-3 py-2 text-sm rounded-md transition-colors duration-200 ${
+                className={`w-full flex items-center space-x-3 px-3 py-2 text-sm rounded-md transition-all duration-200 ${
                   currentTheme === themeId
-                    ? "bg-primary/20 text-primary"
-                    : "text-foreground hover:bg-muted/30"
+                    ? "bg-primary/20 text-primary scale-[1.02]"
+                    : "text-foreground hover:bg-muted/30 hover:scale-[1.01]"
                 }`}
               >
                 <div
-                  className="w-4 h-4 rounded-full border border-border"
+                  className="w-4 h-4 rounded-full border border-border transition-transform duration-200"
                   style={{ backgroundColor: theme.primary }}
                 />
                 <div className="flex-1 text-left">
@@ -75,7 +74,7 @@ export const ThemeSelector: React.FC = () => {
                   </div>
                 </div>
                 {currentTheme === themeId && (
-                  <div className="w-2 h-2 bg-primary rounded-full" />
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
                 )}
               </button>
             ))}

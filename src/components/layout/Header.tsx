@@ -232,24 +232,25 @@ const Header: React.FC = () => {
                 <ThemeSelector />
               </div>
 
-              {/* Mobile menu button - visible ONLY on mobile phones (below 768px) */}
-              <motion.button
-                onClick={toggleMenu}
-                className={cn(
-                  "md:hidden flex items-center justify-center w-12 h-12 rounded-lg transition-all duration-200",
-                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                  // Dark background with white hamburger lines
-                  "bg-card border-2 border-border shadow-lg",
-                  "hover:bg-muted/20 hover:shadow-xl active:scale-95",
-                  isMenuOpen && "bg-muted/20 shadow-xl scale-95"
-                )}
-                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={isMenuOpen}
-                aria-controls="mobile-navigation"
-                whileTap={{ scale: 0.9 }}
-              >
-                <HamburgerIcon isOpen={isMenuOpen} />
-              </motion.button>
+              {/* Wrapper for Mobile menu button - visible ONLY on mobile phones (below 768px) */}
+              <div className="md:hidden">
+                <motion.button
+                  onClick={toggleMenu}
+                  className={cn(
+                    "flex items-center justify-center w-12 h-12 rounded-lg transition-all duration-200",
+                    // Dark background with white hamburger lines
+                    "bg-card border-2 border-border shadow-lg",
+                    "hover:bg-muted/20 hover:shadow-xl active:scale-95",
+                    isMenuOpen && "bg-muted/20 shadow-xl scale-95"
+                  )}
+                  aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                  aria-expanded={isMenuOpen}
+                  aria-controls="mobile-navigation"
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <HamburgerIcon isOpen={isMenuOpen} />
+                </motion.button>
+              </div>
             </div>
           </div>
         </div>

@@ -22,7 +22,7 @@ export const ThemeSelector: React.FC = () => {
     return (
       <div className="flex items-center space-x-2 px-3 py-2 text-sm">
         <div className="w-4 h-4 rounded-full bg-muted animate-pulse" />
-        <span className="hidden sm:inline text-muted">Loading...</span>
+        <span className="text-muted">Loading...</span>
       </div>
     );
   }
@@ -31,17 +31,23 @@ export const ThemeSelector: React.FC = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-muted hover:text-foreground bg-card border border-border rounded-lg hover:bg-muted/20 transition-colors duration-200"
+        className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-foreground hover:text-primary bg-card border border-border rounded-lg hover:bg-muted/20 transition-all duration-200 min-w-[140px]"
         aria-label="Select theme"
+        aria-expanded={isOpen}
       >
-        <div
-          className="w-4 h-4 rounded-full border border-border"
-          style={{ backgroundColor: currentThemeData?.primary || "#bd93f9" }}
-        />
-        <span className="hidden sm:inline">Theme</span>
+        <span className="text-muted text-xs font-medium">Theme:</span>
+        <div className="flex items-center space-x-2 flex-1">
+          <div
+            className="w-3 h-3 rounded-full border border-border flex-shrink-0"
+            style={{ backgroundColor: currentThemeData?.primary || "#bd93f9" }}
+          />
+          <span className="text-foreground font-medium truncate">
+            {currentThemeData?.displayName || "Dracula"}
+          </span>
+        </div>
         <ChevronDown
-          size={16}
-          className={`transition-transform duration-200 ${
+          size={14}
+          className={`transition-transform duration-200 text-muted flex-shrink-0 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -64,7 +70,7 @@ export const ThemeSelector: React.FC = () => {
                 }`}
               >
                 <div
-                  className="w-4 h-4 rounded-full border border-border transition-transform duration-200"
+                  className="w-4 h-4 rounded-full border border-border transition-transform duration-200 flex-shrink-0"
                   style={{ backgroundColor: theme.primary }}
                 />
                 <div className="flex-1 text-left">
@@ -74,7 +80,7 @@ export const ThemeSelector: React.FC = () => {
                   </div>
                 </div>
                 {currentTheme === themeId && (
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse flex-shrink-0" />
                 )}
               </button>
             ))}

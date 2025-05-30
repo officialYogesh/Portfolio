@@ -3,7 +3,6 @@
 /* Import custom styles */
 @import "../styles/typography.css";
 @import "../styles/grid.css";
-@import "../styles/breakpoints.css";
 @import "../styles/spacing.css";
 @import "../styles/accessibility.css";
 
@@ -534,4 +533,126 @@ input,
 select,
 textarea {
   transition: all 0.2s ease-in-out;
+}
+
+/* Mobile optimizations - Phone only (below tablet) */
+@media (max-width: 767px) {
+  /* Ensure proper touch targets for mobile phones */
+  button,
+  [role="button"],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better mobile text sizing */
+  h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  /* Improve mobile container padding */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Mobile navigation improvements */
+  nav[aria-label="Mobile navigation"] {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  nav[aria-label="Mobile navigation"] a {
+    color: var(--foreground);
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  nav[aria-label="Mobile navigation"] a:hover {
+    background-color: var(--primary);
+    color: var(--background);
+  }
+
+  /* Developer logo responsive sizing */
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablet optimizations - iPad and similar devices */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Ensure proper touch targets for tablets */
+  button,
+  [role="button"],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Tablet-specific navigation improvements */
+  nav[aria-label="Main navigation"] {
+    gap: 0.5rem;
+  }
+
+  nav[aria-label="Main navigation"] a {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* Developer logo sizing for tablets */
+  .text-2xl {
+    font-size: 1.75rem;
+  }
+}
+
+/* Desktop optimizations */
+@media (min-width: 1024px) {
+  /* Developer logo full size on desktop */
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+}
+
+/* Ensure mobile menu doesn't interfere with scrolling */
+.mobile-menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Enhanced focus states for better accessibility */
+@media (hover: hover) {
+  button:hover,
+  [role="button"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* High contrast mode improvements */
+@media (prefers-contrast: high) {
+  button,
+  [role="button"] {
+    border: 2px solid currentColor;
+  }
+
+  /* Ensure hamburger lines are visible in high contrast */
+  .hamburger-line {
+    background-color: var(--foreground) !important;
+  }
+}
+
+/* Print optimizations */
+@media print {
+  .mobile-menu-button,
+  .theme-selector {
+    display: none !important;
+  }
 }

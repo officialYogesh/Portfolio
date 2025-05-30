@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeSelector } from "../ui/ThemeSelector";
 import { SkipLink } from "../ui/SkipLink";
@@ -19,14 +18,15 @@ const Header: React.FC = () => {
     { href: "/", label: "Home", ariaLabel: "Go to home page" },
     { href: "/about", label: "About", ariaLabel: "Learn more about me" },
     { href: "/projects", label: "Projects", ariaLabel: "View my projects" },
-    { href: "/resume", label: "Resume", ariaLabel: "Download my resume" },
-    { href: "/contact", label: "Contact", ariaLabel: "Get in touch with me" },
+    { href: "/resume", label: "Resume", ariaLabel: "View my resume" },
+    { href: "/contact", label: "Contact", ariaLabel: "Get in touch" },
   ];
 
-  // Handle scroll effect
+  // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const offset = window.scrollY;
+      setIsScrolled(offset > 10);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -38,16 +38,24 @@ const Header: React.FC = () => {
     setIsMenuOpen(false);
   }, [pathname]);
 
-  // Prevent body scroll when mobile menu is open
+  // Close menu on escape key
   useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    };
+
     if (isMenuOpen) {
+      document.addEventListener("keydown", handleEscape);
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "";
     };
   }, [isMenuOpen]);
 
@@ -66,34 +74,34 @@ const Header: React.FC = () => {
   const headerVariants = {
     initial: { y: -100 },
     animate: { y: 0 },
-    transition: { duration: 0.3, ease: "easeOut" },
+    transition: { duration: 0.5, ease: "easeOut" },
   };
 
   const logoVariants = {
-    initial: { scale: 0.8, opacity: 0 },
-    animate: { scale: 1, opacity: 1 },
-    hover: { scale: 1.05 },
-    transition: { duration: 0.3 },
+    initial: { opacity: 0, scale: 0.8 },
+    animate: { opacity: 1, scale: 1 },
+    transition: { delay: 0.2, duration: 0.5 },
   };
 
   const mobileMenuVariants = {
     closed: {
       opacity: 0,
       height: 0,
+      y: -20,
       transition: {
         duration: 0.3,
         ease: "easeInOut",
-        when: "afterChildren",
       },
     },
     open: {
       opacity: 1,
       height: "auto",
+      y: 0,
       transition: {
         duration: 0.3,
         ease: "easeInOut",
-        when: "beforeChildren",
-        staggerChildren: 0.1,
+        staggerChildren: 0.05,
+        delayChildren: 0.1,
       },
     },
   };
@@ -109,14 +117,35 @@ const Header: React.FC = () => {
     },
   };
 
-  // Generate initials for logo
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((word) => word.charAt(0))
-      .join("")
-      .toUpperCase();
-  };
+  // Custom Hamburger Icon Component
+  const HamburgerIcon = ({ isOpen }: { isOpen: boolean }) => (
+    <div className="w-6 h-5 flex flex-col justify-between items-center">
+      <motion.div
+        className="w-full h-0.5 bg-white origin-center"
+        animate={
+          isOpen
+            ? { rotate: 45, y: 9, transition: { duration: 0.3 } }
+            : { rotate: 0, y: 0, transition: { duration: 0.3 } }
+        }
+      />
+      <motion.div
+        className="w-full h-0.5 bg-white"
+        animate={
+          isOpen
+            ? { opacity: 0, transition: { duration: 0.2 } }
+            : { opacity: 1, transition: { duration: 0.2, delay: 0.1 } }
+        }
+      />
+      <motion.div
+        className="w-full h-0.5 bg-white origin-center"
+        animate={
+          isOpen
+            ? { rotate: -45, y: -9, transition: { duration: 0.3 } }
+            : { rotate: 0, y: 0, transition: { duration: 0.3 } }
+        }
+      />
+    </div>
+  );
 
   return (
     <>
@@ -133,36 +162,25 @@ const Header: React.FC = () => {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
+            {/* Logo - Developer Style */}
             <motion.div {...logoVariants}>
               <Link
                 href="/"
-                className="flex items-center space-x-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg no-underline"
+                className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg no-underline"
                 aria-label={`${personalInfo.name} - ${personalInfo.title}`}
               >
-                <motion.div
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-background font-bold text-sm shadow-lg group-hover:shadow-xl transition-shadow duration-300"
-                  whileHover={{ rotate: 5, scale: 1.1 }}
+                <motion.span
+                  className="text-2xl font-mono font-bold text-primary group-hover:text-accent transition-colors duration-300 no-underline"
+                  initial={{ opacity: 0.8 }}
+                  whileHover={{ opacity: 1, scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {getInitials(personalInfo.name)}
-                </motion.div>
-                <div className="hidden sm:block">
-                  <motion.span
-                    className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 no-underline"
-                    initial={{ opacity: 0.8 }}
-                    whileHover={{ opacity: 1 }}
-                  >
-                    {personalInfo.name}
-                  </motion.span>
-                  <div className="text-xs text-muted font-medium">
-                    {personalInfo.title}
-                  </div>
-                </div>
+                  &lt;Yogesh /&gt;
+                </motion.span>
               </Link>
             </motion.div>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Hidden on mobile, visible on tablet and desktop */}
             <nav
               className="hidden md:flex items-center space-x-1"
               role="navigation"
@@ -207,60 +225,51 @@ const Header: React.FC = () => {
               ))}
             </nav>
 
-            {/* Theme Selector & Mobile Menu Button */}
+            {/* Right side: Theme Selector & Mobile Menu Button */}
             <div className="flex items-center space-x-2">
+              {/* Theme Selector - visible on all screen sizes */}
               <ThemeSelector />
 
-              {/* Mobile menu button */}
+              {/* Mobile menu button - visible only on mobile phones (below 768px) */}
               <motion.button
                 onClick={toggleMenu}
-                className="md:hidden p-2 rounded-lg text-muted hover:text-foreground hover:bg-muted/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className={cn(
+                  "md:hidden flex items-center justify-center w-12 h-12 rounded-lg transition-all duration-200",
+                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  // Dark background with white hamburger lines
+                  "bg-card border-2 border-border shadow-lg",
+                  "hover:bg-muted/20 hover:shadow-xl active:scale-95",
+                  isMenuOpen && "bg-muted/20 shadow-xl scale-95"
+                )}
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMenuOpen}
                 aria-controls="mobile-navigation"
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
               >
-                <AnimatePresence mode="wait" initial={false}>
-                  {isMenuOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ opacity: 0, rotate: -90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: 90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <X size={24} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ opacity: 0, rotate: 90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: -90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Menu size={24} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <HamburgerIcon isOpen={isMenuOpen} />
               </motion.button>
             </div>
           </div>
+        </div>
 
-          {/* Mobile Navigation */}
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.nav
+        {/* Mobile Navigation Menu - positioned below header, only on mobile */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              className="md:hidden border-t border-border bg-card shadow-xl"
+              variants={mobileMenuVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+            >
+              <nav
                 id="mobile-navigation"
-                className="md:hidden overflow-hidden border-t border-border"
+                className="container mx-auto px-4 py-6"
                 role="navigation"
                 aria-label="Mobile navigation"
-                variants={mobileMenuVariants}
-                initial="closed"
-                animate="open"
-                exit="closed"
               >
-                <div className="py-4 space-y-1">
+                {/* Navigation Items */}
+                <div className="space-y-1">
                   {navigationItems.map((item, index) => (
                     <motion.div
                       key={item.href}
@@ -271,19 +280,19 @@ const Header: React.FC = () => {
                         href={item.href}
                         onClick={() => setIsMenuOpen(false)}
                         className={cn(
-                          "flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-200 no-underline",
+                          "flex items-center px-4 py-4 rounded-lg font-medium transition-all duration-200 no-underline",
                           "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                          "hover:bg-muted/20 hover:text-foreground hover:translate-x-1",
+                          "hover:bg-primary/10 hover:text-primary hover:translate-x-1",
                           isActiveRoute(item.href)
-                            ? "text-primary bg-primary/10 border-l-4 border-primary"
-                            : "text-muted"
+                            ? "text-primary bg-primary/10 border-l-4 border-primary font-semibold"
+                            : "text-foreground"
                         )}
                         aria-label={item.ariaLabel}
                         aria-current={
                           isActiveRoute(item.href) ? "page" : undefined
                         }
                       >
-                        {item.label}
+                        <span className="text-lg">{item.label}</span>
                         {isActiveRoute(item.href) && (
                           <motion.div
                             className="ml-auto w-2 h-2 bg-primary rounded-full"
@@ -296,11 +305,24 @@ const Header: React.FC = () => {
                     </motion.div>
                   ))}
                 </div>
-              </motion.nav>
-            )}
-          </AnimatePresence>
-        </div>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.header>
+
+      {/* Mobile Menu Backdrop - only on mobile */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            className="fixed inset-0 bg-background/50 backdrop-blur-sm md:hidden z-40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };

@@ -142,6 +142,34 @@
 }
 
 /* Responsive Typography Helpers */
+.text-responsive-lg {
+  font-size: var(--font-size-lg);
+}
+
+.text-responsive-xl {
+  font-size: var(--font-size-xl);
+}
+
+.text-responsive-2xl {
+  font-size: var(--font-size-2xl);
+}
+
+.text-responsive-3xl {
+  font-size: var(--font-size-3xl);
+}
+
+.text-responsive-4xl {
+  font-size: var(--font-size-4xl);
+}
+
+.text-responsive-5xl {
+  font-size: var(--font-size-5xl);
+}
+
+.text-responsive-6xl {
+  font-size: var(--font-size-6xl);
+}
+
 @media (max-width: 640px) {
   .text-responsive-lg {
     font-size: var(--font-size-base);

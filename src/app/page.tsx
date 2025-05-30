@@ -58,7 +58,7 @@ export default function Home() {
           <p className="text-xl md:text-2xl mb-8 text-secondary">
             Full Stack Developer
           </p>
-          <p className="text-lg max-w-2xl mx-auto mb-8 text-foreground text-center leading-relaxed">
+          <p className="text-lg max-w-2xl mx-auto mb-8 text-foreground text-center leading-relaxed px-4">
             Passionate developer with 5+ years of experience building scalable
             web applications. Specialized in React, Node.js, and modern
             JavaScript technologies.

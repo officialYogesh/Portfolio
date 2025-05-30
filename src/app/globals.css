@@ -1,26 +1,469 @@
 @import "tailwindcss";
 
+/* Root variables for theme switching */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default theme: Dracula */
+  --theme-name: "dracula";
+
+  /* Dracula Theme Colors */
+  --background: #282a36;
+  --foreground: #f8f8f2;
+  --primary: #bd93f9;
+  --secondary: #ff79c6;
+  --accent: #50fa7b;
+  --muted: #6272a4;
+  --border: #6272a4;
+  --card: #44475a;
+  --destructive: #ff5555;
+  --warning: #f1fa8c;
+  --info: #8be9fd;
+
+  /* Typography */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Spacing and sizing */
+  --radius: 0.5rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* One Dark Theme */
+[data-theme="one-dark"] {
+  --theme-name: "one-dark";
+  --background: #1e1e1e;
+  --foreground: #e6e6e6;
+  --primary: #61dafb;
+  --secondary: #f78c6c;
+  --accent: #98c379;
+  --muted: #4a4a4a;
+  --border: #4e4e4e;
+  --card: #2d2d2d;
+  --destructive: #e06c75;
+  --warning: #e5c07b;
+  --info: #61dafb;
+}
+
+/* Nord Theme */
+[data-theme="nord"] {
+  --theme-name: "nord";
+  --background: #2e3440;
+  --foreground: #eceff4;
+  --primary: #88c0d0;
+  --secondary: #5e81ac;
+  --accent: #a3be8c;
+  --muted: #6a7489;
+  --border: #434c5e;
+  --card: #3b4252;
+  --destructive: #bf616a;
+  --warning: #ebcb8b;
+  --info: #81a1c1;
+}
+
+/* Gruvbox Theme */
+[data-theme="gruvbox"] {
+  --theme-name: "gruvbox";
+  --background: #282828;
+  --foreground: #fbf1c7;
+  --primary: #fabd2f;
+  --secondary: #fb4934;
+  --accent: #b8bb26;
+  --muted: #665c54;
+  --border: #504945;
+  --card: #3c3836;
+  --destructive: #fb4934;
+  --warning: #fabd2f;
+  --info: #83a598;
+}
+
+/* Solarized Dark Theme */
+[data-theme="solarized-dark"] {
+  --theme-name: "solarized-dark";
+  --background: #002b36;
+  --foreground: #fdf6e3;
+  --primary: #268bd2;
+  --secondary: #d33682;
+  --accent: #859900;
+  --muted: #657b83;
+  --border: #586e75;
+  --card: #073642;
+  --destructive: #dc322f;
+  --warning: #b58900;
+  --info: #2aa198;
+}
+
+/* Horizon Theme */
+[data-theme="horizon"] {
+  --theme-name: "horizon";
+  --background: #1c1e26;
+  --foreground: #e5e5e5;
+  --primary: #e95678;
+  --secondary: #fab795;
+  --accent: #27d796;
+  --muted: #3e4057;
+  --border: #464660;
+  --card: #232530;
+  --destructive: #f43e5c;
+  --warning: #fac29a;
+  --info: #26bbd9;
+}
+
+/* Palenight Theme */
+[data-theme="palenight"] {
+  --theme-name: "palenight";
+  --background: #292d3e;
+  --foreground: #bfc7d5;
+  --primary: #c792ea;
+  --secondary: #f78c6c;
+  --accent: #c3e88d;
+  --muted: #5c6370;
+  --border: #676e95;
+  --card: #343a55;
+  --destructive: #f07178;
+  --warning: #ffcb6b;
+  --info: #89ddff;
+}
+
+/* System preference detection */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    /* If no theme is set and user prefers light, default to a light variant */
+    /* For now, we'll keep dark themes as they are more popular for developer portfolios */
+  }
 }
 
 @theme inline {
+  /* Base color definitions using CSS custom properties */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+
+  /* Typography */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Border radius */
+  --radius: var(--radius);
+
+  /* Shadows */
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Improve text rendering */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6; /* Improved line height for better readability */
+  font-weight: 400;
+  font-size: 16px; /* Base font size */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Enhanced typography hierarchy */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 3vw, 1.875rem);
+  font-weight: 600;
+}
+
+p {
+  line-height: 1.7;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Improved readability for code elements */
+code,
+pre {
+  font-family: var(--font-mono), "JetBrains Mono", "Fira Code", Consolas,
+    "Liberation Mono", Menlo, Monaco, "Courier New", monospace;
+  font-size: 0.875em;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+}
+
+/* Better button readability */
+button {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+}
+
+/* Enhanced contrast for links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--secondary);
+  text-decoration: underline;
+}
+
+/* Improved small text readability */
+small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* Better contrast for muted text */
+.text-muted {
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+/* Theme transition animations */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Focus states for accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Enhanced focus for interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(var(--primary), 0.1);
+}
+
+/* Improved keyboard navigation */
+button:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 4px rgba(var(--primary), 0.1);
+}
+
+/* Selection colors */
+::selection {
+  background: var(--primary);
+  color: var(--background);
+}
+
+::-moz-selection {
+  background: var(--primary);
+  color: var(--background);
+}
+
+/* Scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Enhanced utility classes for better contrast */
+.bg-background {
+  background-color: var(--background);
+}
+.bg-foreground {
+  background-color: var(--foreground);
+}
+.bg-primary {
+  background-color: var(--primary);
+}
+.bg-secondary {
+  background-color: var(--secondary);
+}
+.bg-accent {
+  background-color: var(--accent);
+}
+.bg-muted {
+  background-color: var(--muted);
+}
+.bg-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+}
+
+.text-background {
+  color: var(--background);
+}
+.text-foreground {
+  color: var(--foreground);
+  font-weight: 400;
+}
+.text-primary {
+  color: var(--primary);
+  font-weight: 500;
+}
+.text-secondary {
+  color: var(--secondary);
+  font-weight: 500;
+}
+.text-accent {
+  color: var(--accent);
+  font-weight: 500;
+}
+.text-muted {
+  color: var(--muted);
+  font-weight: 500; /* Increased weight for better visibility */
+  opacity: 1; /* Remove opacity that was reducing contrast */
+}
+.text-info {
+  color: var(--info);
+  font-weight: 500;
+}
+.text-warning {
+  color: var(--warning);
+  font-weight: 500;
+}
+
+.border-background {
+  border-color: var(--background);
+}
+.border-foreground {
+  border-color: var(--foreground);
+}
+.border-primary {
+  border-color: var(--primary);
+}
+.border-secondary {
+  border-color: var(--secondary);
+}
+.border-accent {
+  border-color: var(--accent);
+}
+.border-muted {
+  border-color: var(--muted);
+}
+.border-border {
+  border-color: var(--border);
+}
+
+/* Card-specific improvements */
+.card-text {
+  color: var(--foreground);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.card-text-muted {
+  color: var(--muted);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.card-title {
+  color: var(--foreground);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border: var(--foreground);
+  }
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Better text spacing for readability */
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.space-y-8 > * + * {
+  margin-top: 2rem;
 }

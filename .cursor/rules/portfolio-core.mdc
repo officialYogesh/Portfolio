@@ -15,11 +15,39 @@ You are an expert in TypeScript, Node.js, Next.js 15.x App Router, React, Tailwi
 - **NO ASSUMPTIONS**: Never assume user intent, file locations, or implementation details. When in doubt, ask specific questions
 - **EXPLICIT CONFIRMATION**: For any significant changes or new features, explicitly confirm the approach before implementing
 
-### 2. PowerShell Execution Rules
-- **WAIT FOR COMPLETION**: Always wait for PowerShell 7 command execution to complete before proceeding
-- **NO SUCCESS ASSUMPTIONS**: Do not assume command success or failure until explicitly confirmed by output
-- **VERIFY RESULTS**: Check command output and verify expected results before moving to next steps
-- **ERROR HANDLING**: If a command fails, diagnose the issue before suggesting alternatives
+### 2. PowerShell Execution Rules - CRITICAL ⚠️ ALWAYS ENFORCE
+
+**🚨 ABSOLUTE RULE: NEVER PROCEED WITHOUT COMMAND COMPLETION CONFIRMATION 🚨**
+
+- **MANDATORY WAIT**: ALWAYS wait for PowerShell 7 command execution to complete fully before proceeding to next steps
+- **NEVER ASSUME SUCCESS**: Do not assume command success or failure until explicitly confirmed by complete output
+- **VERIFY ALL RESULTS**: Always check command output thoroughly and verify expected results before moving to next steps
+- **NO EARLY TERMINATION**: Never proceed with next actions while a command is still running or incomplete
+- **ERROR DIAGNOSIS**: If a command fails, diagnose the complete error output before suggesting alternatives
+- **OUTPUT VALIDATION**: Confirm that commands produce expected files, installations, or changes before marking tasks complete
+- **COMMAND COMPLETION**: Wait for "Command completed" message and any additional output before considering the command finished
+- **SHELL STATE AWARENESS**: Always check the current working directory and shell state before running subsequent commands
+- **EMPTY OUTPUT WARNING**: If command output appears empty, explicitly ask user to confirm command completion
+- **SILENCE IS NOT SUCCESS**: Empty terminal output does not mean success - wait for explicit confirmation
+
+### Command Verification Protocol - MANDATORY STEPS
+
+Before proceeding after any terminal command:
+1. **Wait for Complete Output**: Ensure all command output is displayed completely
+2. **Check Exit Status**: Verify command completed successfully with proper status
+3. **Validate Expected Results**: Confirm files were created, packages installed, etc.
+4. **Document Issues**: If errors occur, capture and analyze full error messages
+5. **Never Skip Verification**: Always verify before moving to next task
+6. **Ask for Confirmation**: If unsure about command completion, explicitly ask user
+7. **Re-run Commands**: If output is unclear, suggest re-running with verbose flags
+
+### PowerShell-Specific Rules
+
+- **Terminal Profile**: User is using PowerShell 7 at "C:\Program Files\PowerShell\7\pwsh.exe"
+- **Working Directory**: Always confirm current directory before running commands
+- **Command Timeouts**: If command appears to hang, wait at least 30 seconds before suggesting alternatives
+- **Verbose Output**: For critical commands, suggest using verbose flags (-Verbose, --verbose, etc.)
+- **Error Handling**: Capture and analyze PowerShell error messages completely
 
 ## Technology Stack Compliance
 

@@ -1,0 +1,62 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Terminal Command Execution - CRITICAL RULES
+
+## 🚨 NEVER PROCEED WITHOUT COMMAND COMPLETION 🚨
+
+These rules MUST be followed for every terminal command execution:
+
+### Before Running Any Command
+
+1. **Verify Current Directory**: Always check current working directory
+2. **Confirm Shell**: Ensure using PowerShell 7 as specified in user settings
+3. **Plan Command**: Understand what the command should accomplish
+
+### During Command Execution
+
+1. **WAIT FOR COMPLETION**: Never proceed until command fully completes
+2. **Monitor Output**: Watch for any output, errors, or status messages
+3. **No Assumptions**: Do not assume success based on silence
+4. **Timeout Awareness**: Allow sufficient time for command completion
+
+### After Command Execution
+
+1. **Verify Success**: Check that command actually completed successfully
+2. **Validate Results**: Confirm expected files/changes were made
+3. **Check Exit Status**: Ensure command didn't fail silently
+4. **Document Issues**: Capture any errors or unexpected behavior
+
+### When Output is Empty or Unclear
+
+1. **Ask for Confirmation**: Explicitly ask user if command completed
+2. **Suggest Re-run**: Offer to re-run with verbose flags
+3. **Verify Manually**: Suggest checking results manually
+4. **Never Assume**: Empty output ≠ successful execution
+
+### PowerShell 7 Specific
+
+- **Path**: C:\Program Files\PowerShell\7\pwsh.exe
+- **Working Directory**: C:\Users\Stark\Projects\Portfolio  
+- **Error Handling**: PowerShell errors may be silent
+- **Verbose Flags**: Use -Verbose when available
+
+### Command Categories Requiring Extra Caution
+
+- **Package Installation**: pnpm install, npm install
+- **Build Commands**: pnpm build, npm run build
+- **File Operations**: copying, moving, deleting files
+- **Git Operations**: git add, commit, push
+- **Development Server**: pnpm dev, npm start
+
+## VIOLATION WARNING
+
+If you proceed without proper command completion verification, you are violating these critical rules and may cause:
+- Incomplete installations
+- Failed builds
+- Data loss
+- Broken development environment
+
+**ALWAYS WAIT. ALWAYS VERIFY. NEVER ASSUME.**

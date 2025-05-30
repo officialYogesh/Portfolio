@@ -5,58 +5,69 @@ alwaysApply: false
 ---
 # Terminal Command Execution - CRITICAL RULES
 
-## 🚨 NEVER PROCEED WITHOUT COMMAND COMPLETION 🚨
+## 🚨 WAIT FOR COMMAND COMPLETION 🚨
 
-These rules MUST be followed for every terminal command execution:
+**ABSOLUTE REQUIREMENT**: I MUST wait for command execution to complete fully and verify results before proceeding.
 
-### Before Running Any Command
+### Critical Execution Protocol
 
-1. **Verify Current Directory**: Always check current working directory
-2. **Confirm Shell**: Ensure using PowerShell 7 as specified in user settings
-3. **Plan Command**: Understand what the command should accomplish
+1. **EXECUTE COMMAND**: Run the terminal command
+2. **WAIT FOR COMPLETION**: Wait for "Command completed" message or full output
+3. **VERIFY RESULTS**: Check that expected outcomes occurred (files created, packages installed, etc.)
+4. **PROCEED ONLY AFTER VERIFICATION**: Continue with next actions only after confirming success
 
-### During Command Execution
+### PowerShell 7 Specific Requirements
 
-1. **WAIT FOR COMPLETION**: Never proceed until command fully completes
-2. **Monitor Output**: Watch for any output, errors, or status messages
-3. **No Assumptions**: Do not assume success based on silence
-4. **Timeout Awareness**: Allow sufficient time for command completion
+- **User Shell**: PowerShell 7 at "C:\Program Files\PowerShell\7\pwsh.exe"
+- **Working Directory**: C:\Users\Stark\Projects\Portfolio
+- **Timeout Handling**: Allow sufficient time for command completion
+- **Silent Failures**: Check for actual results, not just absence of errors
 
-### After Command Execution
+### Commands Requiring Extra Verification
 
-1. **Verify Success**: Check that command actually completed successfully
-2. **Validate Results**: Confirm expected files/changes were made
-3. **Check Exit Status**: Ensure command didn't fail silently
-4. **Document Issues**: Capture any errors or unexpected behavior
+- **Package Management**: `pnpm install`, `pnpm add` - Verify packages appear in package.json
+- **Build Operations**: `pnpm build`, `npm run build` - Verify build output and success
+- **Development Server**: `pnpm dev`, `npm start` - Verify server starts successfully
+- **Git Operations**: `git add`, `git commit`, `git push` - Verify changes are applied
+- **File Operations**: File creation, copying, deletion - Verify files exist/modified
 
-### When Output is Empty or Unclear
+### Verification Methods
 
-1. **Ask for Confirmation**: Explicitly ask user if command completed
-2. **Suggest Re-run**: Offer to re-run with verbose flags
-3. **Verify Manually**: Suggest checking results manually
-4. **Never Assume**: Empty output ≠ successful execution
+- **Package Installation**: Check package.json dependencies section
+- **File Creation**: Use file_search or read_file to verify
+- **Build Success**: Look for successful build output messages
+- **Server Start**: Check for "ready" or "listening" messages
 
-### PowerShell 7 Specific
+### User Settings.json Recommendations
 
-- **Path**: C:\Program Files\PowerShell\7\pwsh.exe
-- **Working Directory**: C:\Users\Stark\Projects\Portfolio  
-- **Error Handling**: PowerShell errors may be silent
-- **Verbose Flags**: Use -Verbose when available
+```json
+{
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.fastScrollSensitivity": 5,
+  "terminal.integrated.mouseWheelScrollSensitivity": 1,
+  "terminal.integrated.smoothScrolling": true,
+  "terminal.integrated.confirmOnExit": "hasChildProcesses",
+  "terminal.integrated.showExitAlert": true,
+  "terminal.integrated.enableBell": true
+}
+```
 
-### Command Categories Requiring Extra Caution
+### Automated Wait Protocol
 
-- **Package Installation**: pnpm install, npm install
-- **Build Commands**: pnpm build, npm run build
-- **File Operations**: copying, moving, deleting files
-- **Git Operations**: git add, commit, push
-- **Development Server**: pnpm dev, npm start
+For each command:
+1. **Execute**: Run the command
+2. **Monitor**: Wait for "Command completed" or full output
+3. **Verify**: Check expected results (files, packages, etc.)
+4. **Continue**: Proceed only after verification is complete
 
-## VIOLATION WARNING
+**NO USER CONFIRMATION REQUIRED - AUTOMATED VERIFICATION**
 
-If you proceed without proper command completion verification, you are violating these critical rules and may cause:
-- Incomplete installations
-- Failed builds
-- Data loss
+## VIOLATION CONSEQUENCES
+
+Proceeding without proper verification causes:
+- Incomplete installations leading to build failures
+- Missing dependencies causing runtime errors  
 - Broken development environment
+- Loss of development time and progress
 
-**ALWAYS WAIT. ALWAYS VERIFY. NEVER ASSUME.**
+**I MUST ALWAYS WAIT FOR EXPLICIT USER CONFIRMATION**

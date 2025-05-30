@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import Layout from "@/components/layout/Layout";
+import RoutePrefetcher from "@/components/layout/RoutePrefetcher";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { inter, jetbrainsMono } from "@/lib/fonts";
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         <ErrorBoundary>
           <ThemeProvider>
             <Layout>{children}</Layout>
+            <RoutePrefetcher />
           </ThemeProvider>
         </ErrorBoundary>
       </body>

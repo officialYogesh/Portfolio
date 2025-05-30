@@ -5,3 +5,4 @@
 
 export { default as AnimatedContainer } from "./AnimatedContainer";
 export { default as StaggerContainer, StaggerItem } from "./StaggerContainer";
+export { PageTransition } from "./PageTransition";

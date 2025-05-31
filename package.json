@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "validate:config": "tsx config/validation.ts",
+    "build": "npm run validate:config && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -15,7 +16,8 @@
     "build:analyze": "cross-env ANALYZE=true next build",
     "clean": "rm -rf .next && rm -rf out",
     "preview": "npm run build && npm run start",
-    "postinstall": "npm run type-check"
+    "postinstall": "npm run type-check",
+    "prebuild": "npm run validate:config"
   },
   "dependencies": {
     "framer-motion": "^12.15.0",
@@ -38,6 +40,7 @@
     "eslint-config-next": "15.3.3",
     "npm-run-all": "^4.1.5",
     "tailwindcss": "^4",
+    "tsx": "^4.19.4",
     "typescript": "^5"
   }
 }

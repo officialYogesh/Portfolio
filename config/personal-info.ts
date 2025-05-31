@@ -22,9 +22,9 @@ export interface SocialLink {
 export const personalInfo: PersonalInfo = {
   name: "Yogesh Patil",
   title: "Full Stack Developer",
-  email: "yogesh.patil@example.com",
-  location: "Mumbai, India",
-  experience: "5+ years",
+  email: "officialyogeshp@gmail.com",
+  location: "New York, USA",
+  experience: "4+ years",
   availability: "Open to opportunities",
   tagline: "Passionate developer building scalable web applications",
   bio: `Passionate full-stack developer with 5+ years of experience building scalable 
@@ -34,23 +34,18 @@ export const personalInfo: PersonalInfo = {
   socialLinks: [
     {
       platform: "GitHub",
-      url: "https://github.com/yogeshpatil",
-      username: "@yogeshpatil",
+      url: "https://github.com/officialYogesh",
+      username: "@officialYogesh",
     },
     {
       platform: "LinkedIn",
-      url: "https://linkedin.com/in/yogeshpatil",
+      url: "https://www.linkedin.com/in/yogeshpatil28/",
       username: "Yogesh Patil",
     },
     {
-      platform: "Twitter",
-      url: "https://twitter.com/yogeshpatil",
-      username: "@yogeshpatil",
-    },
-    {
       platform: "Email",
-      url: "mailto:yogesh.patil@example.com",
-      username: "yogesh.patil@example.com",
+      url: "mailto:officialyogeshp@gmail.com",
+      username: "officialyogeshp@gmail.com",
     },
   ],
 };

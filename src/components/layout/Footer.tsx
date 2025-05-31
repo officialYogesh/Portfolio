@@ -182,7 +182,6 @@ const Footer: React.FC = () => {
                   <AiFillHeart
                     className="w-4 h-4"
                     style={{ color: "#ef4444" }}
-                    aria-hidden="true"
                   />
                 </motion.span>
                 in {personalInfo.location}

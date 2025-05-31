@@ -71,12 +71,11 @@ export { SkipLink } from "./SkipLink";
 export { ThemeSelector } from "./ThemeSelector";
 
 // Bubble UI Components
-export { BubbleUI, TechStackBubble, SkillsCategoryBubble } from "./BubbleUI";
+export { BubbleUI, TechStackBubble } from "./BubbleUI";
 
 // Type exports
 export type {
   BubbleData,
   BubbleUIProps,
   TechStackBubbleProps,
-  SkillsCategoryBubbleProps,
 } from "./BubbleUI";

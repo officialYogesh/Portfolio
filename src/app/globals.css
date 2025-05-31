@@ -536,6 +536,7 @@ textarea {
 }
 
 /* Mobile optimizations - Phone only (below tablet) */
+/* Corresponds to Tailwind's `sm` and below, effectively up to `md` (768px) */
 @media (max-width: 767px) {
   /* Ensure proper touch targets for mobile phones */
   button,
@@ -586,33 +587,8 @@ textarea {
   }
 }
 
-/* Tablet optimizations - iPad and similar devices */
-@media (min-width: 768px) and (max-width: 1023px) {
-  /* Ensure proper touch targets for tablets */
-  button,
-  [role="button"],
-  a {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* Tablet-specific navigation improvements */
-  nav[aria-label="Main navigation"] {
-    gap: 0.5rem;
-  }
-
-  nav[aria-label="Main navigation"] a {
-    padding: 0.5rem 1rem;
-    font-size: 0.95rem;
-  }
-
-  /* Developer logo sizing for tablets */
-  .text-2xl {
-    font-size: 1.75rem;
-  }
-}
-
 /* Desktop optimizations */
+/* Corresponds to Tailwind's `lg` (1024px) and above */
 @media (min-width: 1024px) {
   /* Developer logo full size on desktop */
   .text-2xl {

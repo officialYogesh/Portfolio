@@ -1,188 +1,137 @@
 "use client";
 
-import React from "react";
-import {
-  BubbleUI,
-  TechStackBubble,
-  SkillsCategoryBubble,
-} from "../../components/ui/BubbleUI";
-import {
-  skills,
-  getSkillsByCategory,
-  getAllCategories,
-} from "../../../config/skills";
-import type { SkillCategory } from "../../../config/skills";
-import { Container } from "../../components/layout/Container";
+import { Container } from "@/components/layout";
+import { TechStackBubble } from "@/components/ui/BubbleUI";
+import { skills } from "../../../config/skills";
 
 export default function DemoPage() {
-  // Create skills grouped by category
-  const skillsByCategory = getAllCategories().reduce((acc, category) => {
-    acc[category] = getSkillsByCategory(category);
-    return acc;
-  }, {} as Record<SkillCategory, typeof skills>);
-
   return (
-    <Container className="py-8 space-y-12">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">Bubble UI Demo</h1>
-        <p className="text-muted max-w-2xl mx-auto">
-          Interactive bubble visualization system for showcasing technical
-          skills and expertise.
+    <Container className="py-8">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-foreground mb-4">
+          🎯 Bubble UI Demo
+        </h1>
+        <p className="text-xl text-muted max-w-3xl mx-auto">
+          Experience the simplified, modern bubble UI showcasing technology
+          skills with clean animations and beautiful design.
         </p>
       </div>
 
-      {/* Basic Bubble UI */}
-      <section className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-foreground mb-2">
-            Basic Bubble UI
+      {/* Main Demo */}
+      <section className="py-8">
+        <div className="bg-card border border-border rounded-xl p-6 mb-8">
+          <h2 className="text-2xl font-semibold text-foreground mb-4 text-center">
+            🚀 Complete Tech Stack
           </h2>
-          <p className="text-muted">
-            Physics-based bubbles with mouse interaction
-          </p>
-        </div>
-        <div className="flex justify-center">
-          <BubbleUI
-            skills={skills.slice(0, 10)}
-            width={600}
-            height={400}
-            className="border border-border rounded-lg bg-card/50"
-            enablePhysics={true}
-            enableMouse={true}
-            enableCollisions={true}
-            showTooltips={true}
+          <TechStackBubble
+            technologies={skills}
+            title="Full Stack Development"
+            description="Complete technology expertise visualization"
+            compact={false}
+            showIcons={true}
+            className="max-w-4xl mx-auto"
           />
         </div>
       </section>
 
-      {/* Tech Stack Bubble */}
-      <section className="space-y-6">
-        <TechStackBubble
-          technologies={skills.filter((skill) =>
-            ["frontend", "backend", "database"].includes(skill.category)
-          )}
-          title="Core Technologies"
-          description="Essential skills for full-stack development"
-          compact={false}
-        />
-      </section>
-
-      {/* Skills Category Bubble */}
-      <section className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-foreground mb-2">
-            Category-Based Visualization
-          </h2>
-          <p className="text-muted">Filter skills by technology category</p>
-        </div>
-        <SkillsCategoryBubble
-          skillsByCategory={skillsByCategory}
-          onCategorySelect={(category) => {
-            console.log(`Selected category: ${category}`);
-          }}
-        />
-      </section>
-
-      {/* Compact Version */}
-      <section className="space-y-6">
-        <TechStackBubble
-          technologies={skills.filter((skill) => skill.category === "frontend")}
-          title="Frontend Technologies"
-          description="User interface and experience technologies"
-          compact={true}
-        />
-      </section>
-
-      {/* Feature Showcase */}
-      <section className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-foreground mb-2">
-            Feature Showcase
-          </h2>
-          <p className="text-muted">Different configurations and features</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Without Physics */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-foreground text-center">
-              Static Layout
+      {/* Category Demos */}
+      <section className="py-8">
+        <h2 className="text-3xl font-bold text-center mb-8 text-foreground">
+          Category-Specific Demos
+        </h2>
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-foreground">
+              🎨 Frontend Technologies
             </h3>
-            <BubbleUI
-              skills={skills.slice(0, 8)}
-              width={400}
-              height={300}
-              className="border border-border rounded-lg bg-card/50 mx-auto"
-              enablePhysics={false}
-              enableMouse={false}
-              enableCollisions={false}
-              showTooltips={true}
+            <TechStackBubble
+              technologies={skills.filter(
+                (skill) => skill.category === "frontend"
+              )}
+              title="Frontend Stack"
+              description="UI/UX Development"
+              compact={true}
+              showIcons={true}
             />
           </div>
 
-          {/* With Physics but no Mouse */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-foreground text-center">
-              Physics Only
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-foreground">
+              ⚙️ Backend Technologies
             </h3>
-            <BubbleUI
-              skills={skills.slice(0, 8)}
-              width={400}
-              height={300}
-              className="border border-border rounded-lg bg-card/50 mx-auto"
-              enablePhysics={true}
-              enableMouse={false}
-              enableCollisions={true}
-              showTooltips={true}
+            <TechStackBubble
+              technologies={skills.filter(
+                (skill) => skill.category === "backend"
+              )}
+              title="Backend Stack"
+              description="Server-side Development"
+              compact={true}
+              showIcons={true}
+            />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-foreground">
+              🗄️ Database Technologies
+            </h3>
+            <TechStackBubble
+              technologies={skills.filter(
+                (skill) => skill.category === "database"
+              )}
+              title="Database Stack"
+              description="Data Management"
+              compact={true}
+              showIcons={true}
+            />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-foreground">
+              🛠️ Tools & DevOps
+            </h3>
+            <TechStackBubble
+              technologies={skills.filter(
+                (skill) => skill.category === "tools"
+              )}
+              title="Tools Stack"
+              description="Development Tools"
+              compact={true}
+              showIcons={true}
             />
           </div>
         </div>
       </section>
 
-      {/* Technical Details */}
-      <section className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-foreground mb-2">
-            Implementation Details
-          </h2>
-        </div>
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <h3 className="font-semibold text-foreground mb-2">
-                Physics Features
-              </h3>
-              <ul className="text-sm text-muted space-y-1">
-                <li>• Collision detection</li>
-                <li>• Boundary constraints</li>
-                <li>• Velocity damping</li>
-                <li>• Mouse influence</li>
-                <li>• Friction simulation</li>
-              </ul>
+      {/* Features */}
+      <section className="py-8">
+        <div className="bg-success/10 border border-success/20 rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-foreground mb-4">
+            ✨ Bubble UI Features
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <span>🎨</span> <strong>Tech Icons:</strong> Visual technology
+              representations
             </div>
-            <div>
-              <h3 className="font-semibold text-foreground mb-2">
-                Visual Features
-              </h3>
-              <ul className="text-sm text-muted space-y-1">
-                <li>• Responsive sizing</li>
-                <li>• Category colors</li>
-                <li>• Hover effects</li>
-                <li>• Smooth animations</li>
-                <li>• Interactive tooltips</li>
-              </ul>
+            <div className="flex items-center gap-2">
+              <span>📊</span> <strong>Proficiency Sizing:</strong> Bubble size
+              reflects skill level
             </div>
-            <div>
-              <h3 className="font-semibold text-foreground mb-2">
-                Accessibility
-              </h3>
-              <ul className="text-sm text-muted space-y-1">
-                <li>• Reduced motion support</li>
-                <li>• Keyboard navigation</li>
-                <li>• Screen reader friendly</li>
-                <li>• Fallback layouts</li>
-                <li>• WCAG compliant</li>
-              </ul>
+            <div className="flex items-center gap-2">
+              <span>🎭</span> <strong>Category Colors:</strong> Color-coded by
+              technology type
+            </div>
+            <div className="flex items-center gap-2">
+              <span>✨</span> <strong>Smooth Animations:</strong> Spring-based
+              entrance animations
+            </div>
+            <div className="flex items-center gap-2">
+              <span>📱</span> <strong>Responsive:</strong> Adapts to all screen
+              sizes
+            </div>
+            <div className="flex items-center gap-2">
+              <span>♿</span> <strong>Accessible:</strong> Screen reader
+              friendly
             </div>
           </div>
         </div>

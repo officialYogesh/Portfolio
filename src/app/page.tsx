@@ -1,8 +1,20 @@
 "use client";
 
 import { Container } from "@/components/layout";
+import { BubbleUI, TechStackBubble } from "@/components/ui/BubbleUI";
+import { skills } from "../../config/skills";
+import { useState } from "react";
 
 export default function Home() {
+  const [interactionLog, setInteractionLog] = useState<string[]>([]);
+
+  const logInteraction = (message: string) => {
+    setInteractionLog((prev) => [
+      ...prev.slice(-4),
+      `${new Date().toLocaleTimeString()}: ${message}`,
+    ]);
+  };
+
   return (
     <Container className="py-8">
       {/* Hero Section */}
@@ -30,6 +42,183 @@ export default function Home() {
           <button className="bg-accent text-background px-6 py-3 rounded-lg hover:opacity-80 transition-opacity">
             Accent Button
           </button>
+        </div>
+      </section>
+
+      {/* Enhanced Bubble UI Demo Section */}
+      <section className="py-16 bg-card/30 rounded-xl mb-16">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-foreground mb-4">
+            🚀 Enhanced Interactive Bubble UI Demo
+          </h2>
+          <p className="text-muted max-w-3xl mx-auto mb-6">
+            Experience the advanced features of Task 4.2: Enhanced hover
+            effects, click interactions, drag and drop functionality, technology
+            connections, and smooth animations with 60fps performance.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto text-sm">
+            <div className="bg-muted/50 p-3 rounded-lg">
+              <div className="font-semibold text-foreground">✨ Hover</div>
+              <div className="text-muted">Enhanced tooltips</div>
+            </div>
+            <div className="bg-muted/50 p-3 rounded-lg">
+              <div className="font-semibold text-foreground">🎯 Click</div>
+              <div className="text-muted">Detailed info modal</div>
+            </div>
+            <div className="bg-muted/50 p-3 rounded-lg">
+              <div className="font-semibold text-foreground">🖱️ Drag</div>
+              <div className="text-muted">Move bubbles around</div>
+            </div>
+            <div className="bg-muted/50 p-3 rounded-lg">
+              <div className="font-semibold text-foreground">🔗 Connect</div>
+              <div className="text-muted">Technology relations</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Interactive Bubble Visualization */}
+        <div className="bg-card border border-border rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-foreground mb-4 text-center">
+            Interactive Tech Stack with Connections & Drag Support
+          </h3>
+          <div className="flex justify-center">
+            <BubbleUI
+              skills={skills.slice(0, 12)}
+              width={700}
+              height={450}
+              className="border border-border rounded-lg bg-background/50"
+              enablePhysics={true}
+              enableMouse={true}
+              enableCollisions={true}
+              enableDrag={true}
+              enableConnections={true}
+              showDetailedTooltips={true}
+              performanceMode="high"
+              onBubbleHover={(bubble) => {
+                if (bubble) {
+                  logInteraction(
+                    `Hovered: ${bubble.name} (${bubble.category})`
+                  );
+                }
+              }}
+              onBubbleClick={(bubble) => {
+                logInteraction(
+                  `Clicked: ${bubble.name} - Opening details modal`
+                );
+              }}
+              onBubbleDoubleClick={(bubble) => {
+                logInteraction(
+                  `Double-clicked: ${bubble.name} - Centered bubble`
+                );
+              }}
+              onBubbleDrag={(bubble, position) => {
+                logInteraction(
+                  `Dragged: ${bubble.name} to (${Math.round(
+                    position.x
+                  )}, ${Math.round(position.y)})`
+                );
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Interaction Log */}
+        <div className="bg-muted/30 border border-border rounded-lg p-4">
+          <h4 className="font-semibold text-foreground mb-2">
+            📝 Real-time Interaction Log
+          </h4>
+          <div className="space-y-1 max-h-32 overflow-y-auto font-mono text-sm">
+            {interactionLog.length === 0 ? (
+              <div className="text-muted italic">
+                Interact with the bubbles above to see logs here...
+              </div>
+            ) : (
+              interactionLog.map((log, index) => (
+                <div
+                  key={index}
+                  className="text-foreground bg-card/50 px-2 py-1 rounded"
+                >
+                  {log}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Feature Showcase Grid */}
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
+          {/* Compact Version with Different Settings */}
+          <div className="bg-card border border-border rounded-lg p-4">
+            <h4 className="font-semibold text-foreground mb-3">
+              Compact Mode - Frontend Focus
+            </h4>
+            <TechStackBubble
+              technologies={skills
+                .filter((skill) => skill.category === "frontend")
+                .slice(0, 6)}
+              title=""
+              description=""
+              compact={true}
+              enableDrag={false}
+              enableConnections={false}
+              performanceMode="medium"
+            />
+          </div>
+
+          {/* Static Layout for Comparison */}
+          <div className="bg-card border border-border rounded-lg p-4">
+            <h4 className="font-semibold text-foreground mb-3">
+              Static Layout - Accessibility Mode
+            </h4>
+            <BubbleUI
+              skills={skills
+                .filter((skill) => skill.category === "backend")
+                .slice(0, 6)}
+              width={350}
+              height={250}
+              className="border border-border/50 rounded-lg bg-muted/20"
+              enablePhysics={false}
+              enableMouse={false}
+              enableCollisions={false}
+              enableDrag={false}
+              enableConnections={false}
+              showDetailedTooltips={true}
+              performanceMode="low"
+            />
+          </div>
+        </div>
+
+        {/* Instructions */}
+        <div className="mt-6 p-4 bg-info/10 border border-info/20 rounded-lg">
+          <h4 className="font-semibold text-foreground mb-2">
+            💡 Try These Interactions:
+          </h4>
+          <div className="grid md:grid-cols-2 gap-4 text-sm text-muted">
+            <div className="space-y-1">
+              <div>
+                • <strong>Hover</strong> over bubbles to see enhanced tooltips
+                with related technologies
+              </div>
+              <div>
+                • <strong>Click</strong> bubbles to open detailed information
+                modals
+              </div>
+              <div>
+                • <strong>Double-click</strong> to center a bubble and highlight
+                connections
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div>
+                • <strong>Drag</strong> bubbles around to see physics and
+                connection effects
+              </div>
+              <div>
+                • Notice how related technologies connect with animated lines
+              </div>
+              <div>• Performance metrics shown in top-right corner</div>
+            </div>
+          </div>
         </div>
       </section>
 

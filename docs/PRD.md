@@ -356,7 +356,7 @@ Development of a modern, responsive portfolio website for Yogesh Patil, a fullst
 - **Title**: Full Stack Developer
 - **Experience**: 5+ years
 - **Location**: Mumbai, India
-- **Email**: yogesh.patil@example.com
+- **Email**: officialyogeshp@gmail.com
 - **Availability**: Open to opportunities
 
 **Professional Summary**:

@@ -94,10 +94,10 @@ export default function Home() {
               All theme colors working harmoniously together.
             </p>
             <div className="text-info font-medium">
-              ✉️ yogesh.patil@example.com
+              ✉️ officialyogeshp@gmail.com
             </div>
             <div className="text-warning mt-2 font-medium">
-              📍 Mumbai, India
+              📍 New York, USA
             </div>
           </div>
         </div>

@@ -120,7 +120,7 @@ const prepareContentForReading = (content: typeof aboutPageContent) => {
 const AboutPage: React.FC = () => {
   // Hooks
   const scrollProgress = useScrollProgress();
-  const { getThemeAnimations } = useThemeAwareAnimations();
+  const { theme, getThemeAnimations } = useThemeAwareAnimations();
   const { scrollToSection } = useSmoothScroll();
 
   const [hasMounted, setHasMounted] = useState(false);
@@ -193,10 +193,17 @@ const AboutPage: React.FC = () => {
   );
 
   // Animation variants - memoized for performance
-  const parallaxTextVariants = useMemo(
-    () => getThemeAnimations(),
-    [getThemeAnimations]
-  );
+  const parallaxTextVariants = useMemo(() => {
+    if (hasMounted && theme) {
+      return getThemeAnimations();
+    }
+    return {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -20 },
+      transition: { type: "spring", stiffness: 200, damping: 20, mass: 0.9 },
+    };
+  }, [getThemeAnimations, hasMounted, theme]);
 
   const heroImageVariants = useMemo(
     () => ({
@@ -287,60 +294,39 @@ Generated on: ${new Date().toLocaleDateString()}`;
               <Container size="xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
                   {/* Content Column */}
-                  <AnimatedContainer className="text-left order-2 md:order-2 xl:order-1">
+                  <AnimatedContainer
+                    className="text-left order-2 md:order-2 xl:order-1"
+                    delay={0.2}
+                  >
                     <motion.h1
                       className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6"
-                      initial={
-                        hasMounted ? parallaxTextVariants.initial : false
-                      }
-                      animate={
-                        hasMounted
-                          ? parallaxTextVariants.animate
-                          : { opacity: 1, y: 0 }
-                      }
-                      transition={
-                        hasMounted
-                          ? parallaxTextVariants.transition
-                          : { duration: 0 }
-                      }
+                      initial={parallaxTextVariants.initial}
+                      animate={parallaxTextVariants.animate}
+                      transition={parallaxTextVariants.transition}
                     >
                       {hero.greeting}
                     </motion.h1>
 
                     <motion.p
                       className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl"
-                      initial={
-                        hasMounted ? parallaxTextVariants.initial : false
-                      }
-                      animate={
-                        hasMounted
-                          ? parallaxTextVariants.animate
-                          : { opacity: 1, y: 0 }
-                      }
-                      transition={
-                        hasMounted
-                          ? parallaxTextVariants.transition
-                          : { duration: 0 }
-                      }
+                      initial={parallaxTextVariants.initial}
+                      animate={parallaxTextVariants.animate}
+                      transition={{
+                        ...parallaxTextVariants.transition,
+                        delay: 0.1,
+                      }}
                     >
                       {hero.introduction}
                     </motion.p>
 
                     <motion.p
                       className="text-base md:text-lg text-foreground/70 mb-8 max-w-xl"
-                      initial={
-                        hasMounted ? parallaxTextVariants.initial : false
-                      }
-                      animate={
-                        hasMounted
-                          ? parallaxTextVariants.animate
-                          : { opacity: 1, y: 0 }
-                      }
-                      transition={
-                        hasMounted
-                          ? parallaxTextVariants.transition
-                          : { duration: 0 }
-                      }
+                      initial={parallaxTextVariants.initial}
+                      animate={parallaxTextVariants.animate}
+                      transition={{
+                        ...parallaxTextVariants.transition,
+                        delay: 0.2,
+                      }}
                     >
                       {hero.personalTouch}
                     </motion.p>

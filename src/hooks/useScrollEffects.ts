@@ -143,7 +143,7 @@ export const useThemeAwareAnimations = () => {
   const [theme, setTheme] = useState<string>("");
 
   useEffect(() => {
-    // Get current theme from DOM
+    // Get current theme from DOM with memoization
     const getTheme = () => {
       const themeAttribute =
         document.documentElement.getAttribute("data-theme");
@@ -152,14 +152,21 @@ export const useThemeAwareAnimations = () => {
 
     setTheme(getTheme());
 
-    // Watch for theme changes
+    // Debounced theme change handler to prevent excessive updates
+    let timeoutId: NodeJS.Timeout;
+
+    // Watch for theme changes with optimized observer
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
           mutation.type === "attributes" &&
           mutation.attributeName === "data-theme"
         ) {
-          setTheme(getTheme());
+          // Debounce theme updates to prevent animation jank
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            setTheme(getTheme());
+          }, 50);
         }
       });
     });
@@ -169,10 +176,13 @@ export const useThemeAwareAnimations = () => {
       attributeFilter: ["data-theme"],
     });
 
-    return () => observer.disconnect();
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
   }, []);
 
-  // Return theme-specific animation variants
+  // Memoized theme-specific animation variants to prevent recalculation
   const getThemeAnimations = useCallback(() => {
     const baseAnimations = {
       initial: { opacity: 0, y: 20 },
@@ -180,27 +190,46 @@ export const useThemeAwareAnimations = () => {
       exit: { opacity: 0, y: -20 },
     };
 
-    // Customize animations based on theme
+    // Optimize transition configurations for smoother performance
     switch (theme) {
       case "nord":
         return {
           ...baseAnimations,
-          transition: { type: "spring", stiffness: 100, damping: 15 },
+          transition: {
+            type: "spring",
+            stiffness: 120,
+            damping: 15,
+            mass: 0.8,
+          },
         };
       case "gruvbox":
         return {
           ...baseAnimations,
-          transition: { type: "tween", duration: 0.4, ease: "easeOut" },
+          transition: {
+            type: "tween",
+            duration: 0.3,
+            ease: "easeOut",
+          },
         };
       case "solarized-dark":
         return {
           ...baseAnimations,
-          transition: { type: "spring", stiffness: 120, damping: 12 },
+          transition: {
+            type: "spring",
+            stiffness: 140,
+            damping: 12,
+            mass: 0.7,
+          },
         };
       default:
         return {
           ...baseAnimations,
-          transition: { type: "spring", stiffness: 260, damping: 20 },
+          transition: {
+            type: "spring",
+            stiffness: 200,
+            damping: 20,
+            mass: 0.9,
+          },
         };
     }
   }, [theme]);

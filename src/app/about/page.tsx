@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Download, Mail, Linkedin, Github, BookOpen } from "lucide-react";
@@ -118,13 +118,15 @@ const prepareContentForReading = (content: typeof aboutPageContent) => {
 };
 
 const AboutPage: React.FC = () => {
-  // State
-  const [isClient, setIsClient] = useState(false);
-
   // Hooks
   const scrollProgress = useScrollProgress();
   const { getThemeAnimations } = useThemeAwareAnimations();
   const { scrollToSection } = useSmoothScroll();
+
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   // Section tracking
   const sectionIds = [
@@ -141,14 +143,14 @@ const AboutPage: React.FC = () => {
 
   const { activeSection, completedSections } = useSectionTracking(sectionIds);
 
-  // Content and reading time
+  // Content and reading time - memoized for performance
   const fullContent = useMemo(
     () => prepareContentForReading(aboutPageContent),
     []
   );
   useReadingTime(fullContent);
 
-  // Navigation sections
+  // Navigation sections - memoized for performance
   const navigationSections = useMemo(
     () => [
       {
@@ -190,21 +192,23 @@ const AboutPage: React.FC = () => {
     [completedSections]
   );
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  // Animation variants - memoized for performance
+  const parallaxTextVariants = useMemo(
+    () => getThemeAnimations(),
+    [getThemeAnimations]
+  );
 
-  // Animation variants
-  const parallaxTextVariants = getThemeAnimations();
-
-  const heroImageVariants = {
-    initial: { scale: 1.1, opacity: 0 },
-    animate: {
-      scale: 1,
-      opacity: 1,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
+  const heroImageVariants = useMemo(
+    () => ({
+      initial: { scale: 1.1, opacity: 0 },
+      animate: {
+        scale: 1,
+        opacity: 1,
+        transition: { duration: 0.8, ease: "easeOut" },
+      },
+    }),
+    []
+  );
 
   // Handlers
   const handleDownloadResume = () => {
@@ -242,14 +246,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
     }
   };
 
-  if (!isClient) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
+  // Extract content data
   const {
     hero,
     storyArc,
@@ -293,21 +290,57 @@ Generated on: ${new Date().toLocaleDateString()}`;
                   <AnimatedContainer className="text-center lg:text-left order-2 lg:order-1">
                     <motion.h1
                       className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6"
-                      {...parallaxTextVariants}
+                      initial={
+                        hasMounted ? parallaxTextVariants.initial : false
+                      }
+                      animate={
+                        hasMounted
+                          ? parallaxTextVariants.animate
+                          : { opacity: 1, y: 0 }
+                      }
+                      transition={
+                        hasMounted
+                          ? parallaxTextVariants.transition
+                          : { duration: 0 }
+                      }
                     >
                       {hero.greeting}
                     </motion.h1>
 
                     <motion.p
                       className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl mx-auto lg:mx-0"
-                      {...parallaxTextVariants}
+                      initial={
+                        hasMounted ? parallaxTextVariants.initial : false
+                      }
+                      animate={
+                        hasMounted
+                          ? parallaxTextVariants.animate
+                          : { opacity: 1, y: 0 }
+                      }
+                      transition={
+                        hasMounted
+                          ? parallaxTextVariants.transition
+                          : { duration: 0 }
+                      }
                     >
                       {hero.introduction}
                     </motion.p>
 
                     <motion.p
                       className="text-base md:text-lg text-foreground/70 mb-8 max-w-xl mx-auto lg:mx-0"
-                      {...parallaxTextVariants}
+                      initial={
+                        hasMounted ? parallaxTextVariants.initial : false
+                      }
+                      animate={
+                        hasMounted
+                          ? parallaxTextVariants.animate
+                          : { opacity: 1, y: 0 }
+                      }
+                      transition={
+                        hasMounted
+                          ? parallaxTextVariants.transition
+                          : { duration: 0 }
+                      }
                     >
                       {hero.personalTouch}
                     </motion.p>

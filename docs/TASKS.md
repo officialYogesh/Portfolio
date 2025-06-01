@@ -14,17 +14,18 @@
 **🔧 Fixed Critical Framer Motion Deprecation Issue & Blank Page Glitch**:
 
 - **Problem**: Home page going blank when revisiting from other pages due to `motion() is deprecated. Use motion.create() instead.` error and subsequent type complexities in `AnimatedContainer.tsx`. Featured Projects section also appeared blank on page revisits.
-- **Root Cause**: Incorrectly using deprecated `motion(Component)` syntax and overly complex type handling for dynamic components in Framer Motion v12.15.0.
-- **Solution**: Refactored `AnimatedContainer.tsx` to always use `motion.div` as the primary animator and use the `as` prop for a nested, non-animated semantic element.
+- **Root Cause**: Incorrectly using deprecated `motion(Component)` syntax and overly complex type handling for dynamic components in Framer Motion v12.15.0. This affected both `AnimatedContainer` and `StaggerItem`.
+- **Solution**: Refactored `AnimatedContainer.tsx` and `StaggerItem` (in `StaggerContainer.tsx`) to always use `motion.div` as the primary animator and use the `as` prop for a nested, non-animated semantic element.
 - **Implementation**:
-  - `AnimatedContainer` now wraps children in `motion.div`.
+  - `AnimatedContainer` and `StaggerItem` now wrap children in `motion.div`.
   - The `as` prop specifies the tag of an inner component rendered inside `motion.div`.
   - This simplifies type inference and ensures motion context is consistently applied.
 - **Result**: Eliminated blank page/section issues, removed console deprecation warnings, and ensured stable animation behavior on navigation.
 
-**📱 Enhanced Home Page Layout**:
+**📱 Enhanced Home Page Layout & Project Card Cleanup**:
 
 - **Improved CTA Button Spacing**: Increased margin above "View Resume" and "Contact Me" buttons by adding `mt-8` to their wrapping `div` for better visual separation.
+- **Project Card Simplification**: Removed project metrics (e.g., "40% improvement") and status badges (e.g., "completed") from featured project cards on the home page for a cleaner look.
 - **Code Cleanup**: Removed unused `AccentButton` import to fix ESLint warnings
 - **Build Optimization**: Verified clean TypeScript compilation and successful production builds
 

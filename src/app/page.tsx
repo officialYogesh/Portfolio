@@ -182,18 +182,6 @@ export default function Home() {
                             {project.category.replace("-", " ").toUpperCase()}
                           </Badge>
                         </div>
-                        <div className="absolute bottom-4 left-4">
-                          <Badge
-                            variant={
-                              project.status === "completed"
-                                ? "default"
-                                : "secondary"
-                            }
-                            className="text-xs bg-background/80 backdrop-blur-sm"
-                          >
-                            {project.status.replace("-", " ")}
-                          </Badge>
-                        </div>
                       </div>
 
                       <CardHeader className="pb-4">
@@ -224,25 +212,6 @@ export default function Home() {
                               </Badge>
                             )}
                           </div>
-
-                          {/* Metrics */}
-                          {project.metrics && project.metrics.length > 0 && (
-                            <div className="grid grid-cols-2 gap-2 text-xs">
-                              {project.metrics.slice(0, 2).map((metric) => (
-                                <div
-                                  key={metric.label}
-                                  className="text-center p-2 bg-muted/30 rounded"
-                                >
-                                  <div className="font-semibold text-primary">
-                                    {metric.value}
-                                  </div>
-                                  <div className="text-muted">
-                                    {metric.label}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
 
                           {/* Project Links */}
                           <div className="flex gap-2 pt-2">

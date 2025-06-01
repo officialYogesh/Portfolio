@@ -79,20 +79,18 @@ interface StaggerItemProps {
 export const StaggerItem: React.FC<StaggerItemProps> = ({
   children,
   className = "",
-  as: Component = "div",
+  as: InnerComponent = "div",
 }) => {
   const { prefersReducedMotion } = useReducedMotion();
 
   if (prefersReducedMotion) {
-    return <Component className={className}>{children}</Component>;
+    return <InnerComponent className={className}>{children}</InnerComponent>;
   }
 
-  const MotionComponent = motion(Component);
-
   return (
-    <MotionComponent className={className} variants={staggerItemVariants}>
-      {children}
-    </MotionComponent>
+    <motion.div className={className} variants={staggerItemVariants}>
+      <InnerComponent>{children}</InnerComponent>
+    </motion.div>
   );
 };
 

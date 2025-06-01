@@ -183,7 +183,7 @@ const AboutPage: React.FC = () => {
       },
       {
         id: "connect",
-        title: "Let&apos;s Connect",
+        title: "Let's Connect",
         completed: completedSections.has("connect"),
       },
     ],
@@ -268,9 +268,9 @@ Generated on: ${new Date().toLocaleDateString()}`;
         {/* Reading Progress */}
         <ReadingProgress className="fixed top-16 left-0 right-0 z-40" />
 
-        <main className="relative lg:flex lg:gap-8">
-          {/* Side Navigation (Desktop) - Scrollable */}
-          <aside className="hidden lg:block lg:w-64 lg:flex-shrink-0">
+        <main className="relative xl:flex xl:gap-8">
+          {/* Side Navigation (Desktop Only) - Hidden on Mobile & iPad */}
+          <aside className="hidden xl:block xl:w-64 xl:flex-shrink-0">
             <div className="sticky top-1/2 -translate-y-1/2 bg-background/90 backdrop-blur-md border border-border/50 rounded-xl p-4 shadow-xl">
               <SectionNavigation
                 sections={navigationSections}
@@ -338,7 +338,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                     </div>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <div className="flex flex-col sm:flex-row lg:flex-row gap-4 justify-center lg:justify-start">
                       <button
                         onClick={handleDownloadResume}
                         className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"

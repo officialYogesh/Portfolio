@@ -10,218 +10,505 @@ import {
   Briefcase,
   Pencil,
   Coffee,
-  ChevronRight,
+  ArrowDown,
+  BookOpen,
 } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/layout";
 import { PrimaryButton, OutlineButton } from "@/components/ui/Button";
+import { AnimatedContainer } from "@/components/animations";
 import {
-  AnimatedContainer,
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/animations";
+  ReadingProgress,
+  StorySection,
+  JourneyTimeline,
+  PhilosophyCards,
+  NarrativeCTA,
+  SectionDivider,
+} from "@/components/ui/ScrollytellComponents";
 import { personalInfo } from "../../../config/personal-info";
+import { aboutPageContent } from "../../../config/about-content";
 
-// Animation variants
-const textReveal = {
-  hidden: { opacity: 0, y: 20 },
+// Animation variants for enhanced storytelling
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
-// Placeholder for resume download
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const heroImageVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 1,
+      ease: "easeOut",
+      delay: 0.3,
+    },
+  },
+};
+
+// Enhanced resume download with better UX
 const handleDownloadResume = () => {
-  const resumeContent = `Resume for ${personalInfo.name} - Content to be added.`;
+  // Create a more comprehensive resume content
+  const resumeContent = `
+${personalInfo.name}
+${personalInfo.title}
+${personalInfo.email} | ${personalInfo.location}
+
+PROFESSIONAL SUMMARY
+${aboutPageContent.hero.introduction}
+
+TECHNICAL EXPERTISE
+${aboutPageContent.workInfo.highlights.join("\n")}
+
+WORK PHILOSOPHY
+${aboutPageContent.workPhilosophy
+  .map((p) => `${p.principle}: ${p.description}`)
+  .join("\n\n")}
+
+PROFESSIONAL JOURNEY
+${aboutPageContent.personalJourney
+  .map(
+    (j) =>
+      `${j.title} (${j.period})\n${j.description}\nKey Achievement: ${
+        j.keyMoment || j.growth
+      }`
+  )
+  .join("\n\n")}
+
+APPROACH
+${aboutPageContent.workInfo.approach}
+  `.trim();
+
   const blob = new Blob([resumeContent], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${personalInfo.name.replace(/\s+/g, "_")}_Resume.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${personalInfo.name.replace(" ", "_")}_Resume.txt`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
 
-const StorySection = () => {
-  // This can be expanded in personalInfo.ts or as a dedicated config
-  const story = {
-    intro: `I'm ${
-      personalInfo.name
-    }, a ${personalInfo.title.toLowerCase()} based in ${
-      personalInfo.location
-    }.`,
-    journey: personalInfo.bio, // Using existing bio, can be more narrative
-    focus:
-      "My focus is on creating engaging, accessible & performant interfaces for humans. I enjoy solving complex problems and continuously learning new technologies to build better digital experiences.",
-  };
-
-  return (
-    <StaggerContainer className="space-y-6 text-lg text-muted leading-relaxed">
-      <StaggerItem>
-        <motion.p variants={textReveal}>{story.intro}</motion.p>
-      </StaggerItem>
-      <StaggerItem>
-        <motion.p variants={textReveal}>{story.journey}</motion.p>
-      </StaggerItem>
-      <StaggerItem>
-        <motion.p variants={textReveal}>{story.focus}</motion.p>
-      </StaggerItem>
-    </StaggerContainer>
-  );
+// Smooth scroll utility for enhanced navigation
+const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 };
 
-interface InfoBlockProps {
-  title: string;
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}
-
-const InfoBlock: React.FC<InfoBlockProps> = ({ title, icon, children }) => (
-  <AnimatedContainer variant="slide" direction="up" className="mb-12">
-    <div className="flex items-start gap-4">
-      <div className="flex-shrink-0 text-primary mt-1">{icon}</div>
-      <div className="flex-1">
-        <h2 className="text-2xl font-semibold text-foreground mb-3">{title}</h2>
-        <div className="text-muted space-y-4 leading-relaxed">{children}</div>
-      </div>
-    </div>
-  </AnimatedContainer>
-);
-
 export default function AboutPage() {
-  // Placeholder data, ideally from config
-  const workInfo = {
-    currentRole:
-      "Currently, I work as a Software Development Engineer at Impel AI, focusing on building intelligent and scalable applications.",
-    passion:
-      "I am passionate about leveraging technology to create innovative solutions that make a tangible impact.",
-  };
-
-  const projectsInfo = {
-    description:
-      "I enjoy working on a variety of projects, from complex web applications to experimental AI prototypes. My goal is always to build something meaningful and well-crafted. You can see some of my work on the projects page.",
-    link: "/projects",
-  };
-
-  const offlineInfo = {
-    interests:
-      "When I am not coding or writing about coding, I enjoy exploring new hiking trails, experimenting with photography, and diving into a good science fiction novel. I also have a growing collection of board games.",
-  };
-
-  const onlineLinks = personalInfo.socialLinks.filter(
-    (link) => link.platform !== "Email" && link.platform !== "Website"
-  );
+  const {
+    hero,
+    storyArc,
+    personalJourney,
+    workPhilosophy,
+    workInfo,
+    projectsInfo,
+    offlineInfo,
+    connectInfo,
+  } = aboutPageContent;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Container className="py-16 md:py-24">
-        <div className="max-w-4xl mx-auto">
-          {/* Hero Section */}
-          <AnimatedContainer variant="fade" className="mb-16 md:mb-24">
-            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-              <div className="w-40 h-40 md:w-48 md:h-48 relative flex-shrink-0">
-                {/* Placeholder for actual image */}
-                <Image
-                  src="/profile-placeholder.png" // You should replace this with an actual image path in /public
-                  alt={personalInfo.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
-                />
-                <div className="absolute inset-0 rounded-full border-2 border-primary/50"></div>
+    <>
+      {/* Reading Progress Indicator */}
+      <ReadingProgress />
+
+      <main className="min-h-screen">
+        {/* Hero Section with Narrative Introduction */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          {/* Background Elements */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(var(--primary),0.1),transparent_50%)]" />
+
+          <Container size="xl" className="relative z-10">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-screen py-20"
+            >
+              {/* Content */}
+              <div className="space-y-8 lg:order-1">
+                <motion.div variants={fadeInUp} className="space-y-4">
+                  <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight">
+                    <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                      {hero.greeting.split(" ")[0]}
+                    </span>
+                    <br />
+                    <span className="text-foreground">
+                      {hero.greeting.split(" ").slice(1).join(" ")}
+                    </span>
+                  </h1>
+
+                  <p className="text-xl md:text-2xl text-primary font-medium">
+                    {hero.tagline}
+                  </p>
+                </motion.div>
+
+                <motion.div variants={fadeInUp} className="space-y-6">
+                  <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">
+                    {hero.introduction}
+                  </p>
+
+                  <p className="text-base text-foreground/80 leading-relaxed">
+                    {hero.personalTouch}
+                  </p>
+                </motion.div>
+
+                {/* CTA Buttons */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex flex-col sm:flex-row gap-4"
+                >
+                  <PrimaryButton
+                    onClick={handleDownloadResume}
+                    icon={<Download size={18} />}
+                    size="lg"
+                    className="bg-primary hover:bg-primary/90"
+                  >
+                    Download Resume
+                  </PrimaryButton>
+
+                  <OutlineButton
+                    onClick={() => scrollToSection("story")}
+                    icon={<BookOpen size={18} />}
+                    size="lg"
+                    className="border-primary text-primary hover:bg-primary/10"
+                  >
+                    Read My Story
+                  </OutlineButton>
+                </motion.div>
+
+                {/* Scroll Indicator */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex items-center space-x-2 text-muted animate-bounce"
+                >
+                  <ArrowDown size={16} />
+                  <span className="text-sm">Scroll to explore</span>
+                </motion.div>
               </div>
-              <div className="text-center md:text-left">
-                <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-3">
-                  Hey there.
-                </h1>
-                <p className="text-xl text-primary font-medium">
-                  I&apos;m {personalInfo.name}.
+
+              {/* Enhanced Image Section */}
+              <motion.div
+                variants={heroImageVariants}
+                className="lg:order-2 flex justify-center"
+              >
+                <div className="relative">
+                  {/* Profile Image with Enhanced Styling */}
+                  <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-3xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 p-1">
+                    <div className="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                      <Image
+                        src="/api/placeholder/400/400" // Placeholder - replace with actual image
+                        alt={`${personalInfo.name} - ${personalInfo.title}`}
+                        width={400}
+                        height={400}
+                        className="w-full h-full object-cover rounded-3xl"
+                        priority
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                      />
+                    </div>
+                  </div>
+
+                  {/* Decorative Elements */}
+                  <div className="absolute -top-4 -right-4 w-8 h-8 bg-primary rounded-full opacity-60 animate-pulse" />
+                  <div
+                    className="absolute -bottom-4 -left-4 w-6 h-6 bg-accent rounded-full opacity-40 animate-pulse"
+                    style={{ animationDelay: "1s" }}
+                  />
+                  <div
+                    className="absolute top-1/2 -right-8 w-4 h-4 bg-secondary rounded-full opacity-50 animate-pulse"
+                    style={{ animationDelay: "0.5s" }}
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
+          </Container>
+        </section>
+
+        {/* Story Arc Section */}
+        <section id="story" className="py-20 bg-background/50">
+          <Container size="xl">
+            {/* Introduction */}
+            <StorySection
+              {...storyArc.introduction}
+              delay={0}
+              className="mb-20"
+            />
+
+            <SectionDivider />
+
+            {/* Journey Sections */}
+            <div className="space-y-20">
+              {storyArc.journey.map((section, index) => (
+                <StorySection key={section.id} {...section} delay={index + 1} />
+              ))}
+            </div>
+
+            <SectionDivider />
+
+            {/* Current State */}
+            <StorySection
+              {...storyArc.currentState}
+              delay={storyArc.journey.length + 1}
+              className="mb-20"
+            />
+
+            <SectionDivider />
+
+            {/* Future Aspirations */}
+            <StorySection
+              {...storyArc.futureAspirations}
+              delay={storyArc.journey.length + 2}
+            />
+          </Container>
+        </section>
+
+        {/* Journey Timeline Section */}
+        <section className="py-20 bg-card/30">
+          <Container size="xl">
+            <AnimatedContainer className="mb-16 text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                My Professional Journey
+              </h2>
+              <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
+                From curious beginner to experienced developer, here&apos;s how
+                my career has evolved through different phases of growth and
+                learning.
+              </p>
+            </AnimatedContainer>
+
+            <JourneyTimeline phases={personalJourney} />
+          </Container>
+        </section>
+
+        {/* Work Philosophy Section */}
+        <section className="py-20">
+          <Container size="xl">
+            <AnimatedContainer className="mb-16 text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                How I Work
+              </h2>
+              <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
+                These principles guide my approach to development and
+                collaboration, shaping how I build solutions and work with
+                teams.
+              </p>
+            </AnimatedContainer>
+
+            <PhilosophyCards philosophies={workPhilosophy} />
+          </Container>
+        </section>
+
+        {/* Work, Projects, and Life Sections */}
+        <section className="py-20 bg-card/20">
+          <Container size="xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Work */}
+              <AnimatedContainer delay={0.1}>
+                <NarrativeCTA
+                  title={workInfo.title}
+                  description={workInfo.description}
+                  href={workInfo.link || "/resume"}
+                  icon={<Briefcase className="w-5 h-5" />}
+                  variant="primary"
+                  className="h-full"
+                />
+                <div className="mt-6 space-y-4">
+                  <h4 className="font-semibold text-foreground">Key Areas:</h4>
+                  <ul className="space-y-2">
+                    {workInfo.highlights.slice(0, 3).map((highlight, index) => (
+                      <li
+                        key={index}
+                        className="text-sm text-foreground/80 flex items-center"
+                      >
+                        <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0" />
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-sm text-foreground/70 italic mt-4">
+                    {workInfo.approach}
+                  </p>
+                </div>
+              </AnimatedContainer>
+
+              {/* Projects */}
+              <AnimatedContainer delay={0.2}>
+                <NarrativeCTA
+                  title={projectsInfo.title}
+                  description={projectsInfo.description}
+                  href={projectsInfo.link}
+                  icon={<Pencil className="w-5 h-5" />}
+                  variant="secondary"
+                  className="h-full"
+                />
+                <div className="mt-6">
+                  <p className="text-sm text-foreground/70 italic">
+                    {projectsInfo.passion}
+                  </p>
+                </div>
+              </AnimatedContainer>
+
+              {/* Beyond Code */}
+              <AnimatedContainer delay={0.3}>
+                <NarrativeCTA
+                  title={offlineInfo.title}
+                  description={offlineInfo.description}
+                  href="#interests"
+                  icon={<Coffee className="w-5 h-5" />}
+                  variant="accent"
+                  className="h-full"
+                />
+                <div className="mt-6 space-y-3">
+                  {offlineInfo.interests.slice(0, 2).map((interest, index) => (
+                    <div key={index} className="text-sm">
+                      <span className="font-medium text-foreground">
+                        {interest.activity}:
+                      </span>
+                      <p className="text-foreground/70 text-xs mt-1">
+                        {interest.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </AnimatedContainer>
+            </div>
+          </Container>
+        </section>
+
+        {/* Detailed Interests Section */}
+        <section id="interests" className="py-20">
+          <Container size="xl">
+            <AnimatedContainer className="mb-16 text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                Beyond the Code
+              </h2>
+              <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
+                My interests outside of work often inform and inspire my
+                professional approach.
+              </p>
+            </AnimatedContainer>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {offlineInfo.interests.map((interest, index) => (
+                <AnimatedContainer key={index} delay={index * 0.1}>
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    transition={{ duration: 0.2 }}
+                    className="p-6 bg-card/50 rounded-xl border border-border/50 h-full"
+                  >
+                    <h3 className="text-xl font-semibold text-foreground mb-3">
+                      {interest.activity}
+                    </h3>
+                    <p className="text-foreground/80 mb-4">
+                      {interest.description}
+                    </p>
+                    {interest.connection && (
+                      <div className="pt-4 border-t border-border/30">
+                        <p className="text-sm text-foreground/60 italic">
+                          <strong>How it connects:</strong>{" "}
+                          {interest.connection}
+                        </p>
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatedContainer>
+              ))}
+            </div>
+          </Container>
+        </section>
+
+        {/* Connect Section */}
+        <section className="py-20 bg-gradient-to-br from-primary/5 to-accent/5">
+          <Container size="xl">
+            <AnimatedContainer className="text-center space-y-8">
+              <div className="space-y-6">
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+                  {connectInfo.title}
+                </h2>
+                <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
+                  {connectInfo.description}
+                </p>
+                <p className="text-base text-foreground/70 max-w-2xl mx-auto">
+                  {connectInfo.invitation}
                 </p>
               </div>
-            </div>
-          </AnimatedContainer>
 
-          {/* Story Section */}
-          <AnimatedContainer
-            variant="slide"
-            direction="up"
-            className="mb-16 md:mb-24"
-          >
-            <StorySection />
-          </AnimatedContainer>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href={`mailto:${personalInfo.email}`}>
+                  <PrimaryButton icon={<Mail size={18} />} size="lg">
+                    Send Email
+                  </PrimaryButton>
+                </a>
 
-          {/* Work Section */}
-          <InfoBlock title="Work" icon={<Briefcase size={24} />}>
-            <p>{workInfo.currentRole}</p>
-            <p>{workInfo.passion}</p>
-            {/* You can add a link to your LinkedIn or a more detailed work page if needed */}
-          </InfoBlock>
+                <a
+                  href={
+                    personalInfo.socialLinks.find(
+                      (link) => link.platform === "LinkedIn"
+                    )?.url
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <OutlineButton icon={<Linkedin size={18} />} size="lg">
+                    Connect on LinkedIn
+                  </OutlineButton>
+                </a>
 
-          {/* Projects Section */}
-          <InfoBlock title="Projects" icon={<Pencil size={24} />}>
-            <p>{projectsInfo.description}</p>
-            <a href={projectsInfo.link} className="inline-block mt-4">
-              <OutlineButton
-                icon={<ChevronRight size={18} />}
-                iconPosition="right"
-              >
-                View My Projects
-              </OutlineButton>
-            </a>
-          </InfoBlock>
+                <a
+                  href={
+                    personalInfo.socialLinks.find(
+                      (link) => link.platform === "GitHub"
+                    )?.url
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <OutlineButton icon={<Github size={18} />} size="lg">
+                    View GitHub
+                  </OutlineButton>
+                </a>
+              </div>
 
-          {/* Offline Section */}
-          <InfoBlock title="Offline" icon={<Coffee size={24} />}>
-            <p>{offlineInfo.interests}</p>
-          </InfoBlock>
-
-          {/* Online Section */}
-          <InfoBlock title="Online" icon={<Github size={24} />}>
-            <ul className="space-y-3">
-              {onlineLinks.map((link) => (
-                <li key={link.platform}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-primary hover:underline hover:text-accent transition-colors"
-                  >
-                    {link.platform === "GitHub" && <Github size={20} />}
-                    {link.platform === "LinkedIn" && <Linkedin size={20} />}
-                    {/* Add other icons as needed */}
-                    {link.platform}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </InfoBlock>
-
-          {/* CTA Buttons at the end */}
-          <AnimatedContainer
-            variant="fade"
-            className="mt-16 md:mt-24 text-center"
-          >
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <PrimaryButton
-                onClick={handleDownloadResume}
-                icon={<Download className="w-4 h-4" />}
-                className="min-w-[180px]"
-              >
-                Download Resume
-              </PrimaryButton>
-              <OutlineButton
-                icon={<Mail className="w-4 h-4" />}
-                onClick={() =>
-                  (window.location.href = `mailto:${personalInfo.email}`)
-                }
-                className="min-w-[180px]"
-              >
-                Get In Touch
-              </OutlineButton>
-            </div>
-          </AnimatedContainer>
-        </div>
-      </Container>
-    </div>
+              <div className="pt-8">
+                <h4 className="text-lg font-semibold text-foreground mb-4">
+                  Preferred Communication Channels
+                </h4>
+                <div className="flex flex-wrap justify-center gap-4">
+                  {connectInfo.preferredChannels.map((channel, index) => (
+                    <span
+                      key={index}
+                      className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                    >
+                      {channel}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </AnimatedContainer>
+          </Container>
+        </section>
+      </main>
+    </>
   );
 }

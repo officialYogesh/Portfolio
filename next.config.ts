@@ -30,10 +30,12 @@ const config: NextConfig = {
     loader: "default",
   },
 
+  // External packages configuration
+  serverExternalPackages: [],
+
   // Enable experimental features for better performance
   experimental: {
-    // Enable server components
-    serverComponentsExternalPackages: [],
+    // Remove deprecated serverComponentsExternalPackages
   },
 
   // Compression and optimization

@@ -3,22 +3,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import {
-  ArrowDown,
-  BookOpen,
-  Download,
-  Mail,
-  Linkedin,
-  Github,
-} from "lucide-react";
+import { Download, Mail, Linkedin, Github, BookOpen } from "lucide-react";
 
 // Components
 import { Container } from "@/components/layout/Container";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
-import {
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/animations/StaggerContainer";
 import {
   ReadingProgress,
   StorySection,
@@ -63,7 +52,6 @@ interface InterestItem {
 // Hooks
 import {
   useScrollProgress,
-  useParallax,
   useSectionTracking,
   useSmoothScroll,
   useThemeAwareAnimations,
@@ -130,12 +118,11 @@ const prepareContentForReading = (content: typeof aboutPageContent) => {
 };
 
 const AboutPage: React.FC = () => {
-  const [isMounted, setIsMounted] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  // State
+  const [isClient, setIsClient] = useState(false);
 
   // Hooks
   const scrollProgress = useScrollProgress();
-  const heroParallax = useParallax(-0.3);
   const { getThemeAnimations } = useThemeAwareAnimations();
   const { scrollToSection } = useSmoothScroll();
 
@@ -204,11 +191,11 @@ const AboutPage: React.FC = () => {
   );
 
   useEffect(() => {
-    setIsMounted(true);
+    setIsClient(true);
   }, []);
 
   // Animation variants
-  const themeAnimations = getThemeAnimations();
+  const parallaxTextVariants = getThemeAnimations();
 
   const heroImageVariants = {
     initial: { scale: 1.1, opacity: 0 },
@@ -255,7 +242,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
     }
   };
 
-  if (!isMounted) {
+  if (!isClient) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
@@ -281,411 +268,436 @@ Generated on: ${new Date().toLocaleDateString()}`;
         {/* Reading Progress */}
         <ReadingProgress className="fixed top-16 left-0 right-0 z-40" />
 
-        {/* Side Navigation (Desktop) */}
-        <div className="hidden lg:block fixed left-8 top-1/2 transform -translate-y-1/2 z-30 bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg p-4 shadow-lg">
-          <SectionNavigation
-            sections={navigationSections}
-            activeSection={activeSection}
-            onSectionClick={scrollToSection}
-          />
-        </div>
+        <main className="relative lg:flex lg:gap-8">
+          {/* Side Navigation (Desktop) - Scrollable */}
+          <aside className="hidden lg:block lg:w-64 lg:flex-shrink-0">
+            <div className="sticky top-1/2 -translate-y-1/2 bg-background/90 backdrop-blur-md border border-border/50 rounded-xl p-4 shadow-xl">
+              <SectionNavigation
+                sections={navigationSections}
+                activeSection={activeSection}
+                onSectionClick={scrollToSection}
+              />
+            </div>
+          </aside>
 
-        <main className="relative">
-          {/* Hero Section */}
-          <section
-            id="hero"
-            className="relative min-h-screen flex items-center overflow-hidden"
-          >
-            {/* Parallax Background */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5"
-              style={{ y: heroParallax }}
-            />
-
-            <Container size="xl" className="relative z-10">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                {/* Content */}
-                <motion.div
-                  variants={themeAnimations}
-                  initial="initial"
-                  animate="animate"
-                  className="lg:order-1 space-y-8"
-                >
-                  {/* Reading Time */}
-                  <ReadingTimeEstimator
-                    content={fullContent}
-                    className="flex items-center space-x-2"
-                  />
-
-                  <StaggerContainer>
-                    <StaggerItem>
-                      <h1 className="text-5xl md:text-7xl font-bold text-foreground leading-tight">
-                        {hero.greeting}
-                      </h1>
-                    </StaggerItem>
-
-                    <StaggerItem>
-                      <p className="text-xl md:text-2xl text-foreground/80 leading-relaxed">
-                        {hero.introduction}
-                      </p>
-                    </StaggerItem>
-
-                    <StaggerItem>
-                      <p className="text-lg text-accent font-medium">
-                        {hero.tagline}
-                      </p>
-                    </StaggerItem>
-
-                    <StaggerItem>
-                      <p className="text-base text-foreground/70 italic">
-                        {hero.personalTouch}
-                      </p>
-                    </StaggerItem>
-                  </StaggerContainer>
-
-                  <motion.div
-                    variants={themeAnimations}
-                    className="flex flex-col sm:flex-row gap-4"
-                  >
-                    <PrimaryButton
-                      onClick={handleDownloadResume}
-                      icon={<Download size={18} />}
-                      size="lg"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90"
+          {/* Main Content */}
+          <div className="flex-1 min-w-0">
+            {/* Hero Section */}
+            <section
+              id="hero"
+              className="min-h-screen flex items-center py-12 lg:py-20"
+            >
+              <Container size="xl">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                  {/* Content Column */}
+                  <AnimatedContainer className="text-center lg:text-left order-2 lg:order-1">
+                    <motion.h1
+                      className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6"
+                      {...parallaxTextVariants}
                     >
-                      Download Resume
-                    </PrimaryButton>
+                      {hero.greeting}
+                    </motion.h1>
 
-                    <OutlineButton
-                      onClick={() => scrollToSection("story-introduction")}
-                      icon={<BookOpen size={18} />}
-                      size="lg"
-                      className="border-primary text-primary hover:bg-primary/10"
+                    <motion.p
+                      className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl mx-auto lg:mx-0"
+                      {...parallaxTextVariants}
                     >
-                      Read My Story
-                    </OutlineButton>
-                  </motion.div>
+                      {hero.introduction}
+                    </motion.p>
 
-                  {/* Scroll Indicator */}
-                  <motion.div
-                    variants={themeAnimations}
-                    className="flex items-center space-x-2 text-muted animate-bounce"
-                  >
-                    <ArrowDown size={16} />
-                    <span className="text-sm">Scroll to explore</span>
-                  </motion.div>
-                </motion.div>
+                    <motion.p
+                      className="text-base md:text-lg text-foreground/70 mb-8 max-w-xl mx-auto lg:mx-0"
+                      {...parallaxTextVariants}
+                    >
+                      {hero.personalTouch}
+                    </motion.p>
 
-                {/* Enhanced Image Section */}
-                <motion.div
-                  variants={heroImageVariants}
-                  initial="initial"
-                  animate="animate"
-                  className="lg:order-2 flex justify-center"
-                >
-                  <div className="relative">
-                    {/* Profile Image with Enhanced Styling */}
-                    <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-3xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 p-1">
-                      <div className="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                        {!imageError ? (
-                          <Image
-                            src="/images/profile/profile.jpg"
-                            alt={`${personalInfo.name} - ${personalInfo.title}`}
-                            width={400}
-                            height={400}
-                            className="w-full h-full object-cover rounded-3xl"
-                            priority
-                            placeholder="blur"
-                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                            onError={() => setImageError(true)}
-                            sizes="(max-width: 768px) 320px, 400px"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20 rounded-3xl">
-                            <div className="text-center space-y-2">
-                              <div className="w-16 h-16 bg-primary/30 rounded-full flex items-center justify-center mx-auto">
-                                <span className="text-2xl font-bold text-primary">
-                                  {personalInfo.name.charAt(0)}
-                                </span>
-                              </div>
-                              <p className="text-sm text-muted">
-                                Profile Photo
-                              </p>
-                            </div>
-                          </div>
-                        )}
+                    {/* Mobile: Compact stats */}
+                    <div className="block lg:hidden mb-8">
+                      <div className="flex flex-wrap justify-center gap-4 text-sm">
+                        <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">
+                          📍 {personalInfo.location}
+                        </span>
+                        <span className="px-3 py-1 bg-accent/10 text-accent rounded-full">
+                          ⚡ {personalInfo.availability}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Decorative Elements */}
-                    <motion.div
-                      className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-xl"
-                      animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.6, 0.3],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                    <motion.div
-                      className="absolute -bottom-6 -left-6 w-32 h-32 bg-accent/20 rounded-full blur-xl"
-                      animate={{
-                        scale: [1.2, 1, 1.2],
-                        opacity: [0.4, 0.7, 0.4],
-                      }}
-                      transition={{
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 1,
-                      }}
-                    />
-                  </div>
-                </motion.div>
-              </div>
-            </Container>
-          </section>
+                    {/* Reading Time (Mobile: smaller) */}
+                    <div className="block lg:hidden mb-6">
+                      <ReadingTimeEstimator
+                        content={fullContent}
+                        className="text-sm justify-center"
+                      />
+                    </div>
 
-          {/* Story Arc Sections */}
-          <SectionDivider />
+                    {/* Desktop: Full reading time */}
+                    <div className="hidden lg:block mb-8">
+                      <ReadingTimeEstimator content={fullContent} />
+                    </div>
 
-          {/* Story Introduction */}
-          <section id="story-introduction" className="py-20">
-            <Container size="xl">
-              <StorySection
-                title={storyArc.introduction.title}
-                subtitle={storyArc.introduction.subtitle}
-                content={storyArc.introduction.content}
-                anecdote={storyArc.introduction.anecdote}
-                highlight={storyArc.introduction.highlight}
-                emotion={storyArc.introduction.emotion}
-                visualCue={storyArc.introduction.visualCue}
-              />
-            </Container>
-          </section>
-
-          <SectionDivider />
-
-          {/* Story Journey */}
-          <section
-            id="story-journey"
-            className="py-20 bg-gradient-to-br from-secondary/5 to-accent/5"
-          >
-            <Container size="xl">
-              <div className="space-y-16">
-                {storyArc.journey.map(
-                  (
-                    section: StoryItem & {
-                      id: string;
-                      title?: string;
-                      subtitle?: string;
-                      emotion?: string;
-                      visualCue?: string;
-                    },
-                    index: number
-                  ) => (
-                    <StorySection
-                      key={section.id}
-                      title={section.title || ""}
-                      subtitle={section.subtitle}
-                      content={section.content}
-                      anecdote={section.anecdote}
-                      highlight={section.highlight}
-                      emotion={
-                        section.emotion as
-                          | "curiosity"
-                          | "challenge"
-                          | "growth"
-                          | "achievement"
-                          | "reflection"
-                          | undefined
-                      }
-                      visualCue={section.visualCue}
-                      delay={index * 0.2}
-                    />
-                  )
-                )}
-              </div>
-            </Container>
-          </section>
-
-          {/* Professional Journey Timeline */}
-          <section id="professional-journey" className="py-20">
-            <Container size="xl">
-              <AnimatedContainer className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                  Professional Journey
-                </h2>
-                <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
-                  Key phases that shaped my professional development and
-                  expertise
-                </p>
-              </AnimatedContainer>
-
-              <JourneyTimeline phases={personalJourney} />
-            </Container>
-          </section>
-
-          <SectionDivider />
-
-          {/* Work Philosophy */}
-          <section
-            id="work-philosophy"
-            className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5"
-          >
-            <Container size="xl">
-              <AnimatedContainer className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                  Work Philosophy
-                </h2>
-                <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
-                  The principles that guide my approach to software development
-                  and collaboration
-                </p>
-              </AnimatedContainer>
-
-              <PhilosophyCards philosophies={workPhilosophy} />
-            </Container>
-          </section>
-
-          {/* Current State */}
-          <section id="story-current" className="py-20">
-            <Container size="xl">
-              <StorySection
-                title={storyArc.currentState.title}
-                subtitle={storyArc.currentState.subtitle}
-                content={storyArc.currentState.content}
-                anecdote={storyArc.currentState.anecdote}
-                highlight={storyArc.currentState.highlight}
-                emotion={storyArc.currentState.emotion}
-                visualCue={storyArc.currentState.visualCue}
-              />
-            </Container>
-          </section>
-
-          {/* Future Aspirations */}
-          <section
-            id="story-future"
-            className="py-20 bg-gradient-to-br from-accent/5 to-primary/5"
-          >
-            <Container size="xl">
-              <StorySection
-                title={storyArc.futureAspirations.title}
-                subtitle={storyArc.futureAspirations.subtitle}
-                content={storyArc.futureAspirations.content}
-                anecdote={storyArc.futureAspirations.anecdote}
-                highlight={storyArc.futureAspirations.highlight}
-                emotion={storyArc.futureAspirations.emotion}
-                visualCue={storyArc.futureAspirations.visualCue}
-              />
-            </Container>
-          </section>
-
-          <SectionDivider />
-
-          {/* Offline Interests */}
-          <section id="offline-info" className="py-20">
-            <Container size="xl">
-              <AnimatedContainer className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                  {offlineInfo.title}
-                </h2>
-                <p className="text-lg text-foreground/80 max-w-3xl mx-auto mb-8">
-                  {offlineInfo.description}
-                </p>
-              </AnimatedContainer>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {offlineInfo.interests.map(
-                  (interest: InterestItem, index: number) => (
-                    <AnimatedContainer key={index} delay={index * 0.1}>
-                      <motion.div
-                        whileHover={{ y: -5 }}
-                        transition={{ duration: 0.2 }}
-                        className="p-6 bg-card/50 rounded-xl border border-border/50 h-full"
+                    {/* CTA Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                      <button
+                        onClick={handleDownloadResume}
+                        className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
                       >
-                        <h3 className="text-xl font-semibold text-foreground mb-3">
-                          {interest.activity}
-                        </h3>
-                        <p className="text-foreground/80 mb-4">
-                          {interest.description}
-                        </p>
-                        {interest.connection && (
-                          <div className="pt-4 border-t border-border/30">
-                            <p className="text-sm text-foreground/60 italic">
-                              <strong>How it connects:</strong>{" "}
-                              {interest.connection}
-                            </p>
-                          </div>
-                        )}
-                      </motion.div>
-                    </AnimatedContainer>
-                  )
-                )}
-              </div>
-            </Container>
-          </section>
+                        <Download size={18} className="inline mr-2" />
+                        Download Resume
+                      </button>
 
-          {/* Connect Section */}
-          <section
-            id="connect"
-            className="py-20 bg-gradient-to-br from-primary/5 to-accent/5"
-          >
-            <Container size="xl">
-              <AnimatedContainer className="text-center space-y-8">
-                <div className="space-y-6">
-                  <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-                    {connectInfo.title}
+                      {/* Mobile: Read Story button */}
+                      <button
+                        onClick={() => scrollToSection("story-introduction")}
+                        className="block sm:hidden px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
+                      >
+                        <BookOpen size={18} className="inline mr-2" />
+                        Read My Story
+                      </button>
+
+                      {/* Desktop/iPad: Read My Story button */}
+                      <button
+                        onClick={() => scrollToSection("story-introduction")}
+                        className="hidden sm:block px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
+                      >
+                        <BookOpen size={18} className="inline mr-2" />
+                        Read My Story
+                      </button>
+                    </div>
+                  </AnimatedContainer>
+
+                  {/* Profile Image Column */}
+                  <motion.div
+                    className="relative order-1 lg:order-2 flex justify-center lg:justify-end"
+                    {...heroImageVariants}
+                  >
+                    <div className="relative">
+                      {/* Mobile: Smaller image */}
+                      <div className="block lg:hidden">
+                        <Image
+                          src="/images/profile/profile.jpg"
+                          alt="Yogesh Patil - Software Developer"
+                          width={200}
+                          height={200}
+                          className="rounded-full object-cover shadow-2xl"
+                          priority
+                          placeholder="blur"
+                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGBobHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyEkJzgTTLPz0kNB7hc4PB0rXBK7+fWa2yqKSs6v//Z"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                          }}
+                          style={{
+                            filter:
+                              "drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3))",
+                          }}
+                        />
+                      </div>
+
+                      {/* Desktop: Larger image */}
+                      <div className="hidden lg:block">
+                        <Image
+                          src="/images/profile/profile.jpg"
+                          alt="Yogesh Patil - Software Developer"
+                          width={400}
+                          height={400}
+                          className="rounded-full object-cover shadow-2xl"
+                          priority
+                          placeholder="blur"
+                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGBobHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyEkJzgTTLPz0kNB7hc4PB0rXBK7+fWa2yqKSs6v//Z"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                          }}
+                          style={{
+                            filter:
+                              "drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3))",
+                          }}
+                        />
+                      </div>
+
+                      {/* Image not found fallback */}
+                      <div
+                        className="absolute inset-0 flex items-center justify-center bg-primary/10 rounded-full text-primary text-4xl lg:text-6xl font-bold"
+                        style={{ display: "none" }}
+                        id="profile-fallback"
+                      >
+                        YP
+                      </div>
+
+                      {/* Animated decorative elements */}
+                      <motion.div
+                        className="absolute -top-6 -right-6 w-24 h-24 bg-primary/20 rounded-full blur-xl"
+                        animate={{
+                          scale: [1, 1.2, 1],
+                          opacity: [0.3, 0.6, 0.3],
+                        }}
+                        transition={{
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
+                      <motion.div
+                        className="absolute -bottom-6 -left-6 w-32 h-32 bg-accent/20 rounded-full blur-xl"
+                        animate={{
+                          scale: [1.2, 1, 1.2],
+                          opacity: [0.4, 0.7, 0.4],
+                        }}
+                        transition={{
+                          duration: 5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: 1,
+                        }}
+                      />
+                    </div>
+                  </motion.div>
+                </div>
+              </Container>
+            </section>
+
+            {/* Story Arc Sections */}
+            <SectionDivider />
+
+            {/* Story Introduction */}
+            <section id="story-introduction" className="py-20">
+              <Container size="xl">
+                <StorySection
+                  title={storyArc.introduction.title}
+                  subtitle={storyArc.introduction.subtitle}
+                  content={storyArc.introduction.content}
+                  anecdote={storyArc.introduction.anecdote}
+                  highlight={storyArc.introduction.highlight}
+                  emotion={storyArc.introduction.emotion}
+                  visualCue={storyArc.introduction.visualCue}
+                />
+              </Container>
+            </section>
+
+            <SectionDivider />
+
+            {/* Story Journey */}
+            <section
+              id="story-journey"
+              className="py-20 bg-gradient-to-br from-secondary/5 to-accent/5"
+            >
+              <Container size="xl">
+                <div className="space-y-16">
+                  {storyArc.journey.map(
+                    (
+                      section: StoryItem & {
+                        id: string;
+                        title?: string;
+                        subtitle?: string;
+                        emotion?: string;
+                        visualCue?: string;
+                      },
+                      index: number
+                    ) => (
+                      <StorySection
+                        key={section.id}
+                        title={section.title || ""}
+                        subtitle={section.subtitle}
+                        content={section.content}
+                        anecdote={section.anecdote}
+                        highlight={section.highlight}
+                        emotion={
+                          section.emotion as
+                            | "curiosity"
+                            | "challenge"
+                            | "growth"
+                            | "achievement"
+                            | "reflection"
+                            | undefined
+                        }
+                        visualCue={section.visualCue}
+                        delay={index * 0.2}
+                      />
+                    )
+                  )}
+                </div>
+              </Container>
+            </section>
+
+            {/* Professional Journey Timeline */}
+            <section id="professional-journey" className="py-20">
+              <Container size="xl">
+                <AnimatedContainer className="text-center mb-16">
+                  <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                    Professional Journey
                   </h2>
                   <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
-                    {connectInfo.description}
+                    Key phases that shaped my professional development and
+                    expertise
                   </p>
-                  <p className="text-base text-foreground/70 max-w-2xl mx-auto">
-                    {connectInfo.invitation}
+                </AnimatedContainer>
+
+                <JourneyTimeline phases={personalJourney} />
+              </Container>
+            </section>
+
+            <SectionDivider />
+
+            {/* Work Philosophy */}
+            <section
+              id="work-philosophy"
+              className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5"
+            >
+              <Container size="xl">
+                <AnimatedContainer className="text-center mb-16">
+                  <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                    Work Philosophy
+                  </h2>
+                  <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
+                    The principles that guide my approach to software
+                    development and collaboration
                   </p>
+                </AnimatedContainer>
+
+                <PhilosophyCards philosophies={workPhilosophy} />
+              </Container>
+            </section>
+
+            {/* Current State */}
+            <section id="story-current" className="py-20">
+              <Container size="xl">
+                <StorySection
+                  title={storyArc.currentState.title}
+                  subtitle={storyArc.currentState.subtitle}
+                  content={storyArc.currentState.content}
+                  anecdote={storyArc.currentState.anecdote}
+                  highlight={storyArc.currentState.highlight}
+                  emotion={storyArc.currentState.emotion}
+                  visualCue={storyArc.currentState.visualCue}
+                />
+              </Container>
+            </section>
+
+            {/* Future Aspirations */}
+            <section
+              id="story-future"
+              className="py-20 bg-gradient-to-br from-accent/5 to-primary/5"
+            >
+              <Container size="xl">
+                <StorySection
+                  title={storyArc.futureAspirations.title}
+                  subtitle={storyArc.futureAspirations.subtitle}
+                  content={storyArc.futureAspirations.content}
+                  anecdote={storyArc.futureAspirations.anecdote}
+                  highlight={storyArc.futureAspirations.highlight}
+                  emotion={storyArc.futureAspirations.emotion}
+                  visualCue={storyArc.futureAspirations.visualCue}
+                />
+              </Container>
+            </section>
+
+            <SectionDivider />
+
+            {/* Offline Interests */}
+            <section id="offline-info" className="py-20">
+              <Container size="xl">
+                <AnimatedContainer className="text-center mb-16">
+                  <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                    {offlineInfo.title}
+                  </h2>
+                  <p className="text-lg text-foreground/80 max-w-3xl mx-auto mb-8">
+                    {offlineInfo.description}
+                  </p>
+                </AnimatedContainer>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {offlineInfo.interests.map(
+                    (interest: InterestItem, index: number) => (
+                      <AnimatedContainer key={index} delay={index * 0.1}>
+                        <motion.div
+                          whileHover={{ y: -5 }}
+                          transition={{ duration: 0.2 }}
+                          className="p-6 bg-card/50 rounded-xl border border-border/50 h-full"
+                        >
+                          <h3 className="text-xl font-semibold text-foreground mb-3">
+                            {interest.activity}
+                          </h3>
+                          <p className="text-foreground/80 mb-4">
+                            {interest.description}
+                          </p>
+                          {interest.connection && (
+                            <div className="pt-4 border-t border-border/30">
+                              <p className="text-sm text-foreground/60 italic">
+                                <strong>How it connects:</strong>{" "}
+                                {interest.connection}
+                              </p>
+                            </div>
+                          )}
+                        </motion.div>
+                      </AnimatedContainer>
+                    )
+                  )}
                 </div>
+              </Container>
+            </section>
 
-                <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-10">
-                  <a href={`mailto:${personalInfo.email}`}>
-                    <PrimaryButton icon={<Mail size={18} />} size="lg">
-                      Send Email
-                    </PrimaryButton>
-                  </a>
+            {/* Connect Section */}
+            <section
+              id="connect"
+              className="py-20 bg-gradient-to-br from-primary/5 to-accent/5"
+            >
+              <Container size="xl">
+                <AnimatedContainer className="text-center space-y-8">
+                  <div className="space-y-6">
+                    <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+                      {connectInfo.title}
+                    </h2>
+                    <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
+                      {connectInfo.description}
+                    </p>
+                    <p className="text-base text-foreground/70 max-w-2xl mx-auto">
+                      {connectInfo.invitation}
+                    </p>
+                  </div>
 
-                  <a
-                    href={
-                      personalInfo.socialLinks.find(
-                        (link) => link.platform === "LinkedIn"
-                      )?.url
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <OutlineButton icon={<Linkedin size={18} />} size="lg">
-                      Connect on LinkedIn
-                    </OutlineButton>
-                  </a>
+                  <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-10">
+                    <a href={`mailto:${personalInfo.email}`}>
+                      <PrimaryButton icon={<Mail size={18} />} size="lg">
+                        Send Email
+                      </PrimaryButton>
+                    </a>
 
-                  <a
-                    href={
-                      personalInfo.socialLinks.find(
-                        (link) => link.platform === "GitHub"
-                      )?.url
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <OutlineButton icon={<Github size={18} />} size="lg">
-                      View GitHub
-                    </OutlineButton>
-                  </a>
-                </div>
-              </AnimatedContainer>
-            </Container>
-          </section>
+                    <a
+                      href={
+                        personalInfo.socialLinks.find(
+                          (link: { platform: string; url: string }) =>
+                            link.platform === "LinkedIn"
+                        )?.url
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <OutlineButton icon={<Linkedin size={18} />} size="lg">
+                        Connect on LinkedIn
+                      </OutlineButton>
+                    </a>
+
+                    <a
+                      href={
+                        personalInfo.socialLinks.find(
+                          (link: { platform: string; url: string }) =>
+                            link.platform === "GitHub"
+                        )?.url
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <OutlineButton icon={<Github size={18} />} size="lg">
+                        View GitHub
+                      </OutlineButton>
+                    </a>
+                  </div>
+                </AnimatedContainer>
+              </Container>
+            </section>
+          </div>
         </main>
       </div>
     </ErrorBoundary>

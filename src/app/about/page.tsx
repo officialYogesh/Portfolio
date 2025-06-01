@@ -24,7 +24,6 @@ import {
   StorySection,
   JourneyTimeline,
   PhilosophyCards,
-  NarrativeCTA,
   SectionDivider,
 } from "@/components/ui/ScrollytellComponents";
 import {
@@ -149,8 +148,6 @@ const AboutPage: React.FC = () => {
     "story-future",
     "professional-journey",
     "work-philosophy",
-    "work-info",
-    "projects-info",
     "offline-info",
     "connect",
   ];
@@ -191,6 +188,11 @@ const AboutPage: React.FC = () => {
         id: "work-philosophy",
         title: "Work Philosophy",
         completed: completedSections.has("work-philosophy"),
+      },
+      {
+        id: "offline-info",
+        title: "Offline Interests",
+        completed: completedSections.has("offline-info"),
       },
       {
         id: "connect",
@@ -266,8 +268,6 @@ Generated on: ${new Date().toLocaleDateString()}`;
     storyArc,
     personalJourney,
     workPhilosophy,
-    workInfo,
-    projectsInfo,
     offlineInfo,
     connectInfo,
   } = aboutPageContent;
@@ -282,7 +282,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
         <ReadingProgress className="fixed top-16 left-0 right-0 z-40" />
 
         {/* Side Navigation (Desktop) */}
-        <div className="hidden lg:block fixed left-8 top-1/2 transform -translate-y-1/2 z-30">
+        <div className="hidden lg:block fixed left-8 top-1/2 transform -translate-y-1/2 z-30 bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg p-4 shadow-lg">
           <SectionNavigation
             sections={navigationSections}
             activeSection={activeSection}
@@ -586,33 +586,6 @@ Generated on: ${new Date().toLocaleDateString()}`;
 
           <SectionDivider />
 
-          {/* Work Info Section */}
-          <section id="work-info" className="py-20">
-            <Container size="xl">
-              <NarrativeCTA
-                title={workInfo.title}
-                description={workInfo.description}
-                href={workInfo.link || "#"}
-                variant="primary"
-              />
-            </Container>
-          </section>
-
-          {/* Projects Info Section */}
-          <section
-            id="projects-info"
-            className="py-20 bg-gradient-to-br from-secondary/5 to-accent/5"
-          >
-            <Container size="xl">
-              <NarrativeCTA
-                title={projectsInfo.title}
-                description={projectsInfo.description}
-                href={projectsInfo.link}
-                variant="secondary"
-              />
-            </Container>
-          </section>
-
           {/* Offline Interests */}
           <section id="offline-info" className="py-20">
             <Container size="xl">
@@ -675,7 +648,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                   </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-10">
                   <a href={`mailto:${personalInfo.email}`}>
                     <PrimaryButton icon={<Mail size={18} />} size="lg">
                       Send Email
@@ -709,24 +682,6 @@ Generated on: ${new Date().toLocaleDateString()}`;
                       View GitHub
                     </OutlineButton>
                   </a>
-                </div>
-
-                <div className="pt-8">
-                  <h4 className="text-lg font-semibold text-foreground mb-4">
-                    Preferred Communication Channels
-                  </h4>
-                  <div className="flex flex-wrap justify-center gap-4">
-                    {connectInfo.preferredChannels.map(
-                      (channel: string, index: number) => (
-                        <span
-                          key={index}
-                          className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium"
-                        >
-                          {channel}
-                        </span>
-                      )
-                    )}
-                  </div>
                 </div>
               </AnimatedContainer>
             </Container>

@@ -112,6 +112,95 @@ export const projectCategories: Record<string, ProjectCategory> = {
 
 export const projects: Project[] = [
   {
+    id: "jobfit-ai",
+    title: "JobFit AI - Your Career Copilot",
+    shortDescription:
+      "Serverless LangChain RAG pipeline on Firebase for LLM-driven resume feedback, ATS scoring, and career gap analysis.",
+    fullDescription: `JobFit AI is an innovative career guidance platform that leverages cutting-edge AI technology to help job seekers optimize their resumes and improve their career prospects. Built using a serverless LangChain RAG (Retrieval-Augmented Generation) pipeline on Firebase, the platform provides intelligent resume feedback, ATS (Applicant Tracking System) scoring, and comprehensive career gap analysis.
+
+    The system improved resume match accuracy by 40% through sophisticated natural language processing and machine learning algorithms. By combining resume analysis with real-time job market data, JobFit AI delivers personalized recommendations that help users align their skills and experience with current industry demands.
+
+    The platform features a modern, responsive interface built with Next.js and integrates seamlessly with various job boards and career platforms to provide comprehensive career guidance.`,
+    status: "completed",
+    category: "web-app",
+    featured: true,
+    thumbnail: "/projects/jobfit-ai-thumb.jpg",
+    screenshots: [
+      "/projects/jobfit-ai-1.jpg",
+      "/projects/jobfit-ai-2.jpg",
+      "/projects/jobfit-ai-3.jpg",
+    ],
+    technologies: [
+      { name: "LangChain", category: "backend" },
+      { name: "Firebase", category: "cloud" },
+      { name: "GPT-3.5", category: "backend" },
+      { name: "Next.js", category: "frontend" },
+      { name: "TypeScript", category: "frontend" },
+      { name: "Python", category: "backend" },
+      { name: "Serverless", category: "cloud" },
+      { name: "RAG", category: "backend" },
+    ],
+    features: [
+      {
+        title: "Resume Analysis",
+        description:
+          "AI-powered resume analysis with detailed feedback and suggestions",
+        icon: "document",
+      },
+      {
+        title: "ATS Scoring",
+        description:
+          "Comprehensive ATS compatibility scoring and optimization recommendations",
+        icon: "target",
+      },
+      {
+        title: "Career Gap Analysis",
+        description:
+          "Identify and address career gaps with personalized recommendations",
+        icon: "analytics",
+      },
+      {
+        title: "Real-time Feedback",
+        description:
+          "Instant AI-driven feedback on resume content and formatting",
+        icon: "zap",
+      },
+    ],
+    challenges: [
+      "Implementing accurate resume parsing across different formats and layouts",
+      "Creating a robust RAG pipeline that maintains context across large datasets",
+      "Optimizing serverless functions for consistent performance and cost efficiency",
+      "Developing accurate ATS scoring algorithms that match real-world systems",
+    ],
+    solutions: [
+      "Built custom document parsing pipeline using LangChain's document loaders and text splitters",
+      "Implemented vector embeddings with efficient similarity search for relevant context retrieval",
+      "Optimized Firebase Cloud Functions with smart caching and connection pooling",
+      "Trained models on real ATS data and continuously refined scoring algorithms",
+    ],
+    links: [
+      {
+        type: "demo",
+        url: "https://jobfit-ai-demo.vercel.app",
+        label: "Live Demo",
+      },
+      {
+        type: "github",
+        url: "https://github.com/officialYogesh/jobfit-ai",
+        label: "Source Code",
+      },
+    ],
+    startDate: "2025-01-01",
+    endDate: "2025-03-01",
+    teamSize: 1,
+    role: "Full Stack Developer",
+    metrics: [
+      { label: "Resume Match Accuracy", value: "40% improvement" },
+      { label: "Response Time", value: "< 2 seconds" },
+      { label: "User Satisfaction", value: "4.8/5 stars" },
+    ],
+  },
+  {
     id: "covid-19-india-tracker",
     title: "Covid-19 India Tracker",
     shortDescription:

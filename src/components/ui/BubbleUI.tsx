@@ -51,6 +51,7 @@ const getCategoryThemeColor = (category: SkillCategory): string => {
     cloud: "220, 50%, 70%", // Lighter, desaturated Blue
     testing: "270, 60%, 70%", // Soft Lavender
     mobile: "200, 75%, 50%", // Stronger Cyan-Blue
+    ai: "300, 65%, 60%", // AI/LLM - Purple-Pink
   };
   return categoryColors[category] || "240, 50%, 65%"; // Default to a muted purple
 };

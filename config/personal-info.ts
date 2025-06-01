@@ -21,16 +21,13 @@ export interface SocialLink {
 
 export const personalInfo: PersonalInfo = {
   name: "Yogesh Patil",
-  title: "Full Stack Developer",
+  title: "Software Development Engineer",
   email: "officialyogeshp@gmail.com",
   location: "New York, USA",
   experience: "4+ years",
   availability: "Open to opportunities",
-  tagline: "Passionate developer building scalable web applications",
-  bio: `Passionate full-stack developer with 5+ years of experience building scalable 
-        web applications. Specialized in React, Node.js, and modern JavaScript technologies. 
-        Frequently praised as detail-oriented by peers, I can be relied upon to help your 
-        company achieve its goals by providing sustainable and scalable solutions.`,
+  tagline: "Building scalable applications with AI/LLM integration",
+  bio: `Passionate Software Development Engineer with 4+ years of experience building scalable web applications and GenAI solutions. Currently working at Impel AI, specializing in LangChain-powered GenAI pipelines, microservices architecture, and cloud infrastructure. Proven track record of improving system performance by 66%+, automating 70% of workflows, and enabling significant revenue growth through innovative technical solutions.`,
   socialLinks: [
     {
       platform: "GitHub",
@@ -41,6 +38,11 @@ export const personalInfo: PersonalInfo = {
       platform: "LinkedIn",
       url: "https://www.linkedin.com/in/yogeshpatil28/",
       username: "Yogesh Patil",
+    },
+    {
+      platform: "Website",
+      url: "https://iamyogesh.com",
+      username: "iamyogesh.com",
     },
     {
       platform: "Email",

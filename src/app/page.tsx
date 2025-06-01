@@ -1,223 +1,381 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Download, Mail, ExternalLink, Github } from "lucide-react";
 import { Container } from "@/components/layout";
-import { skills } from "../../config/skills";
-import { TechStackBubble } from "@/components/ui/BubbleUI";
+import { Button, PrimaryButton, OutlineButton } from "@/components/ui/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import {
+  AnimatedContainer,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations";
+import { personalInfo } from "../../config/personal-info";
+import { getFeaturedProjects } from "../../config/projects";
+
+// Typing animation hook
+const useTypingAnimation = (texts: string[], speed = 150, delay = 2000) => {
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (isTyping) {
+      const fullText = texts[currentTextIndex];
+      if (currentText.length < fullText.length) {
+        timeout = setTimeout(() => {
+          setCurrentText(fullText.slice(0, currentText.length + 1));
+        }, speed);
+      } else {
+        setTimeout(() => setIsTyping(false), delay);
+      }
+    } else {
+      if (currentText.length > 0) {
+        timeout = setTimeout(() => {
+          setCurrentText(currentText.slice(0, -1));
+        }, speed / 2);
+      } else {
+        setCurrentTextIndex((prev) => (prev + 1) % texts.length);
+        setIsTyping(true);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [currentText, currentTextIndex, isTyping, texts, speed, delay]);
+
+  return currentText;
+};
 
 export default function Home() {
+  const featuredProjects = getFeaturedProjects().slice(0, 6);
+
+  // Typing animation for the tagline
+  const taglines = [
+    "I build scalable web applications.",
+    "I develop GenAI solutions.",
+    "I create innovative software.",
+    "I architect cloud systems.",
+  ];
+  const currentTagline = useTypingAnimation(taglines, 80, 3000);
+
   return (
-    <Container className="py-8">
-      {/* Hero Section */}
-      <section className="text-center py-20">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 text-primary">
-          Yogesh Patil
-        </h1>
-        <p className="text-xl md:text-2xl mb-8 text-secondary">
-          Full Stack Developer
-        </p>
-        <p className="text-lg max-w-2xl mx-auto mb-8 text-foreground text-center leading-relaxed px-6 sm:px-8">
-          Passionate developer with 5+ years of experience building scalable web
-          applications. Specialized in React, Node.js, and modern JavaScript
-          technologies.
-        </p>
+    <>
+      {/* Minimal Background */}
+      <div className="fixed inset-0 -z-10 bg-background">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-background to-accent/3" />
+      </div>
 
-        {/* Theme Test Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <button className="bg-primary text-background px-6 py-3 rounded-lg hover:opacity-80 transition-opacity">
-            Primary Button
-          </button>
-          <button className="bg-secondary text-background px-6 py-3 rounded-lg hover:opacity-80 transition-opacity">
-            Secondary Button
-          </button>
-          <button className="bg-accent text-background px-6 py-3 rounded-lg hover:opacity-80 transition-opacity">
-            Accent Button
-          </button>
-        </div>
-      </section>
+      <Container className="relative">
+        {/* Hero Section - Simplified */}
+        <section className="py-20 md:py-32">
+          <div className="max-w-4xl">
+            <AnimatedContainer variant="fade" delay={0.2}>
+              <div className="mb-8">
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-primary text-sm md:text-base font-medium tracking-wider uppercase mb-4"
+                >
+                  Hello, my name is {personalInfo.name.split(" ")[0]}
+                </motion.p>
 
-      {/* Tech Stack Visualization */}
-      <section className="py-16 bg-card/30 rounded-xl mb-16">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
-            🎯 Tech Stack Visualization
-          </h2>
-          <p className="text-muted max-w-4xl mx-auto mb-6">
-            Modern bubble visualization showcasing my technology skills with
-            clean animations and beautiful design.
-          </p>
-        </div>
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight"
+                >
+                  {currentTagline}
+                  <motion.span
+                    animate={{ opacity: [1, 0] }}
+                    transition={{
+                      duration: 0.8,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                    }}
+                    className="text-accent"
+                  >
+                    |
+                  </motion.span>
+                </motion.h1>
+              </div>
+            </AnimatedContainer>
 
-        {/* Main Tech Stack Demo */}
-        <div className="bg-card border border-border rounded-xl p-6 mb-6">
-          <TechStackBubble
-            technologies={skills}
-            title="Complete Tech Stack"
-            description="My technology expertise with modern visualization"
-            compact={false}
-            className="w-full"
-            showIcons={true}
-          />
-        </div>
+            <AnimatedContainer variant="slide" direction="up" delay={0.6}>
+              <div className="max-w-2xl mb-12">
+                <p className="text-lg md:text-xl text-muted leading-relaxed mb-12">
+                  I&apos;m a{" "}
+                  <span className="text-primary font-semibold">
+                    Software Development Engineer
+                  </span>{" "}
+                  with{" "}
+                  <span className="text-accent font-semibold">4+ years</span> of
+                  experience. I specialize in building modern web applications
+                  and AI-powered solutions using{" "}
+                  <span className="text-secondary font-semibold">
+                    React, Python, and AWS
+                  </span>
+                  .
+                </p>
 
-        {/* Simplified Demos */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Frontend Technologies */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-foreground">
-              🎨 Frontend Technologies
-            </h3>
-            <TechStackBubble
-              technologies={skills
-                .filter((skill) => skill.category === "frontend")
-                .slice(0, 8)}
-              title="Frontend Stack"
-              description="UI/UX focused technologies"
-              compact={true}
-              showIcons={true}
-            />
+                <div className="flex flex-wrap gap-4 mt-8">
+                  <PrimaryButton
+                    size="lg"
+                    onClick={() => window.open("/resume.pdf", "_blank")}
+                    icon={<Download className="h-5 w-5" />}
+                  >
+                    View Resume
+                  </PrimaryButton>
+
+                  <OutlineButton
+                    size="lg"
+                    onClick={() =>
+                      (window.location.href = `mailto:${personalInfo.email}`)
+                    }
+                    icon={<Mail className="h-5 w-5" />}
+                  >
+                    Contact Me
+                  </OutlineButton>
+                </div>
+              </div>
+            </AnimatedContainer>
           </div>
+        </section>
 
-          {/* Backend Technologies */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-foreground">
-              ⚙️ Backend Technologies
-            </h3>
-            <TechStackBubble
-              technologies={skills
-                .filter((skill) => skill.category === "backend")
-                .slice(0, 8)}
-              title="Backend Stack"
-              description="Server-side technologies"
-              compact={true}
-              showIcons={true}
-            />
-          </div>
-        </div>
-
-        {/* Feature Highlights */}
-        <div className="mt-8 p-4 bg-success/10 border border-success/20 rounded-lg">
-          <h4 className="font-semibold text-foreground mb-3">
-            ✨ Bubble UI Features
-          </h4>
-          <div className="grid md:grid-cols-3 gap-4 text-sm">
-            <div className="flex items-center gap-2">
-              <span>🎨</span> <strong>Tech Icons:</strong> Visual technology
-              representations
+        {/* Featured Projects Section */}
+        <section className="py-16">
+          <AnimatedContainer variant="fade">
+            <div className="mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Featured Projects
+              </h2>
+              <p className="text-lg text-muted max-w-2xl">
+                A selection of recent work showcasing AI-powered applications,
+                scalable web platforms, and innovative solutions.
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <span>📊</span> <strong>Proficiency Sizing:</strong> Bubble size
-              reflects skill level
-            </div>
-            <div className="flex items-center gap-2">
-              <span>🎭</span> <strong>Category Colors:</strong> Color-coded by
-              technology type
-            </div>
-            <div className="flex items-center gap-2">
-              <span>✨</span> <strong>Smooth Animations:</strong> Spring-based
-              entrance animations
-            </div>
-            <div className="flex items-center gap-2">
-              <span>📱</span> <strong>Responsive:</strong> Adapts to all screen
-              sizes
-            </div>
-            <div className="flex items-center gap-2">
-              <span>♿</span> <strong>Accessible:</strong> Screen reader
-              friendly
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Theme Preview Cards */}
-      <section className="py-12">
-        <h2 className="text-3xl font-bold text-center mb-8 text-foreground">
-          Theme System Test
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Card 1 */}
-          <div className="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              Component Testing
-            </h3>
-            <p className="text-muted mb-4">
-              Testing theme consistency across all UI components with proper
-              color inheritance and contrast ratios.
-            </p>
-            <button className="bg-primary text-primary-foreground px-4 py-2 rounded hover:bg-primary/90 transition-colors">
-              Learn More
-            </button>
-          </div>
+            <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProjects.map((project) => (
+                <StaggerItem key={project.id}>
+                  <div className="h-full group">
+                    <Card className="h-full bg-card border-border hover:shadow-xl transition-all duration-300 overflow-hidden">
+                      {/* Project Image Placeholder */}
+                      <div className="h-48 bg-gradient-to-br from-primary/20 to-accent/20 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        <div className="absolute top-4 right-4 flex gap-2">
+                          <Badge
+                            variant="outline"
+                            className="text-xs bg-background/80 backdrop-blur-sm"
+                          >
+                            {project.category.replace("-", " ").toUpperCase()}
+                          </Badge>
+                        </div>
+                        <div className="absolute bottom-4 left-4">
+                          <Badge
+                            variant={
+                              project.status === "completed"
+                                ? "default"
+                                : "secondary"
+                            }
+                            className="text-xs bg-background/80 backdrop-blur-sm"
+                          >
+                            {project.status.replace("-", " ")}
+                          </Badge>
+                        </div>
+                      </div>
 
-          {/* Card 2 */}
-          <div className="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              Typography Scale
-            </h3>
-            <p className="text-muted mb-4">
-              Ensuring readable typography with proper spacing, line heights,
-              and font weights across all themes.
-            </p>
-            <button className="bg-secondary text-secondary-foreground px-4 py-2 rounded hover:bg-secondary/90 transition-colors">
-              Explore
-            </button>
-          </div>
+                      <CardHeader className="pb-4">
+                        <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
+                          {project.title}
+                        </CardTitle>
+                        <CardDescription className="text-sm line-clamp-3">
+                          {project.shortDescription}
+                        </CardDescription>
+                      </CardHeader>
 
-          {/* Card 3 */}
-          <div className="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              Accessibility Features
-            </h3>
-            <p className="text-muted mb-4">
-              All themes maintain WCAG 2.1 AA compliance with proper contrast
-              ratios and focus indicators.
-            </p>
-            <button className="bg-accent text-accent-foreground px-4 py-2 rounded hover:bg-accent/90 transition-colors">
-              Test
-            </button>
-          </div>
-        </div>
-      </section>
+                      <CardContent className="pt-0">
+                        <div className="space-y-4">
+                          {/* Technologies */}
+                          <div className="flex flex-wrap gap-2">
+                            {project.technologies.slice(0, 3).map((tech) => (
+                              <Badge
+                                key={tech.name}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {tech.name}
+                              </Badge>
+                            ))}
+                            {project.technologies.length > 3 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{project.technologies.length - 3}
+                              </Badge>
+                            )}
+                          </div>
 
-      {/* Skills Overview */}
-      <section className="py-12">
-        <h2 className="text-3xl font-bold text-center mb-8 text-foreground">
-          Skills Overview
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="text-center p-6 bg-card border border-border rounded-lg">
-            <div className="text-3xl mb-3">⚛️</div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              Frontend
-            </h3>
-            <p className="text-muted text-sm">
-              React, Next.js, TypeScript, Tailwind CSS
-            </p>
-          </div>
-          <div className="text-center p-6 bg-card border border-border rounded-lg">
-            <div className="text-3xl mb-3">⚙️</div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              Backend
-            </h3>
-            <p className="text-muted text-sm">
-              Node.js, Express, Python, MongoDB
-            </p>
-          </div>
-          <div className="text-center p-6 bg-card border border-border rounded-lg">
-            <div className="text-3xl mb-3">☁️</div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              Cloud
-            </h3>
-            <p className="text-muted text-sm">AWS, Docker, Vercel, Firebase</p>
-          </div>
-          <div className="text-center p-6 bg-card border border-border rounded-lg">
-            <div className="text-3xl mb-3">🛠️</div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              Tools
-            </h3>
-            <p className="text-muted text-sm">Git, Webpack, Jest, Cypress</p>
-          </div>
-        </div>
-      </section>
-    </Container>
+                          {/* Metrics */}
+                          {project.metrics && project.metrics.length > 0 && (
+                            <div className="grid grid-cols-2 gap-2 text-xs">
+                              {project.metrics.slice(0, 2).map((metric) => (
+                                <div
+                                  key={metric.label}
+                                  className="text-center p-2 bg-muted/30 rounded"
+                                >
+                                  <div className="font-semibold text-primary">
+                                    {metric.value}
+                                  </div>
+                                  <div className="text-muted">
+                                    {metric.label}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Project Links */}
+                          <div className="flex gap-2 pt-2">
+                            {project.links.map((link) => (
+                              <Button
+                                key={link.type}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => window.open(link.url, "_blank")}
+                                className="flex-1 text-xs"
+                                icon={
+                                  link.type === "github" ? (
+                                    <Github className="h-3 w-3" />
+                                  ) : (
+                                    <ExternalLink className="h-3 w-3" />
+                                  )
+                                }
+                              >
+                                {link.label}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+
+            {/* View All Projects Link */}
+            <div className="text-center mt-12">
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={() => (window.location.href = "/projects")}
+                icon={<ArrowRight className="h-5 w-5" />}
+                className="text-primary hover:text-accent group"
+              >
+                See All Projects
+                <motion.span
+                  className="ml-2 group-hover:translate-x-1 transition-transform"
+                  initial={false}
+                >
+                  →
+                </motion.span>
+              </Button>
+            </div>
+          </AnimatedContainer>
+        </section>
+
+        {/* 
+        Temporarily removed sections - available for future use:
+        
+        Quick About Section - Building the Future with AI & Cloud
+        <section className="py-16 bg-card/30 rounded-3xl my-16">
+          <AnimatedContainer variant="fade">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
+                Building the Future with AI & Cloud
+              </h2>
+              <p className="text-lg text-muted leading-relaxed mb-8">
+                Currently pursuing my{" "}
+                <span className="text-primary font-semibold">
+                  Master&apos;s in Computer Science at Syracuse University
+                </span>{" "}
+                while working on cutting-edge GenAI solutions. I&apos;ve helped
+                companies achieve{" "}
+                <span className="text-accent font-semibold">
+                  70% automation improvements
+                </span>{" "}
+                and{" "}
+                <span className="text-secondary font-semibold">
+                  $100K+ revenue growth
+                </span>{" "}
+                through innovative software solutions.
+              </p>
+
+              <div className="flex justify-center gap-4">
+                <AccentButton
+                  size="lg"
+                  onClick={() => (window.location.href = "/about")}
+                >
+                  Learn More About Me
+                </AccentButton>
+              </div>
+            </div>
+          </AnimatedContainer>
+        </section>
+
+        Connect Section - Let's Work Together
+        <section className="py-16">
+          <AnimatedContainer variant="fade">
+            <div className="text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
+                Let&apos;s Work Together
+              </h2>
+              <p className="text-lg text-muted max-w-2xl mx-auto mb-8">
+                I&apos;m always interested in new opportunities and exciting
+                projects. Whether you&apos;re looking for a full-time developer
+                or need help with a specific project, let&apos;s connect.
+              </p>
+
+              <StaggerContainer className="flex flex-wrap justify-center gap-4">
+                <StaggerItem>
+                  <PrimaryButton
+                    size="lg"
+                    onClick={() =>
+                      (window.location.href = `mailto:${personalInfo.email}`)
+                    }
+                    icon={<Mail className="h-5 w-5" />}
+                  >
+                    Get In Touch
+                  </PrimaryButton>
+                </StaggerItem>
+
+                <StaggerItem>
+                  <OutlineButton
+                    size="lg"
+                    onClick={() =>
+                      window.open(personalInfo.socialLinks[1].url, "_blank")
+                    }
+                    icon={<ExternalLink className="h-5 w-5" />}
+                  >
+                    LinkedIn Profile
+                  </OutlineButton>
+                </StaggerItem>
+              </StaggerContainer>
+            </div>
+          </AnimatedContainer>
+        </section>
+        */}
+      </Container>
+    </>
   );
 }

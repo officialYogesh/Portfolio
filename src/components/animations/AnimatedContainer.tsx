@@ -21,7 +21,7 @@ interface AnimatedContainerProps {
   duration?: number;
   threshold?: number;
   triggerOnce?: boolean;
-  as?: React.ElementType;
+  as?: React.ElementType; // This will determine the inner element type
 }
 
 /**
@@ -37,12 +37,11 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
   duration = 0.5,
   threshold = 0.1,
   triggerOnce = true,
-  as: Component = "div",
+  as: InnerComponent = "div",
 }) => {
   const { ref, controls } = useScrollAnimation(threshold, triggerOnce);
   const { prefersReducedMotion, getDuration } = useReducedMotion();
 
-  // Select animation variant based on props
   const getAnimationVariants = (): Variants => {
     const baseDuration = getDuration(duration);
     const baseTransition: Transition = {
@@ -83,19 +82,16 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
     }
   };
 
-  // If reduced motion is preferred, use immediate visibility
   if (prefersReducedMotion) {
     return (
-      <Component ref={ref} className={className}>
+      <InnerComponent ref={ref} className={className}>
         {children}
-      </Component>
+      </InnerComponent>
     );
   }
 
-  const MotionComponent = motion(Component);
-
   return (
-    <MotionComponent
+    <motion.div
       ref={ref}
       className={className}
       initial="hidden"
@@ -103,8 +99,8 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
       variants={getAnimationVariants()}
       custom={direction}
     >
-      {children}
-    </MotionComponent>
+      <InnerComponent>{children}</InnerComponent>
+    </motion.div>
   );
 };
 

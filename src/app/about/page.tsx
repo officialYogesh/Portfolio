@@ -265,9 +265,9 @@ Generated on: ${new Date().toLocaleDateString()}`;
         {/* Reading Progress */}
         <ReadingProgress className="fixed top-16 left-0 right-0 z-40" />
 
-        <main className="relative xl:flex xl:gap-8">
+        <main className="relative xl:flex">
           {/* Side Navigation (Desktop Only) - Hidden on Mobile & iPad */}
-          <aside className="hidden xl:block xl:w-64 xl:flex-shrink-0">
+          <aside className="hidden xl:block xl:w-64 xl:flex-shrink-0 xl:ml-8">
             <div className="sticky top-1/2 -translate-y-1/2 bg-background/90 backdrop-blur-md border border-border/50 rounded-xl p-4 shadow-xl">
               <SectionNavigation
                 sections={navigationSections}
@@ -282,12 +282,12 @@ Generated on: ${new Date().toLocaleDateString()}`;
             {/* Hero Section */}
             <section
               id="hero"
-              className="min-h-screen flex items-center py-12 lg:py-20"
+              className="min-h-screen flex items-center py-16 lg:py-20"
             >
               <Container size="xl">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
                   {/* Content Column */}
-                  <AnimatedContainer className="text-center lg:text-left order-2 lg:order-1">
+                  <AnimatedContainer className="text-left order-2 md:order-2 xl:order-1">
                     <motion.h1
                       className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6"
                       initial={
@@ -308,7 +308,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                     </motion.h1>
 
                     <motion.p
-                      className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl mx-auto lg:mx-0"
+                      className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl"
                       initial={
                         hasMounted ? parallaxTextVariants.initial : false
                       }
@@ -327,7 +327,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                     </motion.p>
 
                     <motion.p
-                      className="text-base md:text-lg text-foreground/70 mb-8 max-w-xl mx-auto lg:mx-0"
+                      className="text-base md:text-lg text-foreground/70 mb-8 max-w-xl"
                       initial={
                         hasMounted ? parallaxTextVariants.initial : false
                       }
@@ -345,9 +345,9 @@ Generated on: ${new Date().toLocaleDateString()}`;
                       {hero.personalTouch}
                     </motion.p>
 
-                    {/* Mobile: Compact stats */}
+                    {/* Mobile & Tablet: Compact stats */}
                     <div className="block lg:hidden mb-8">
-                      <div className="flex flex-wrap justify-center gap-4 text-sm">
+                      <div className="flex flex-wrap justify-start gap-4 text-sm">
                         <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">
                           📍 {personalInfo.location}
                         </span>
@@ -357,11 +357,11 @@ Generated on: ${new Date().toLocaleDateString()}`;
                       </div>
                     </div>
 
-                    {/* Reading Time (Mobile: smaller) */}
+                    {/* Reading Time (Mobile & Tablet: smaller) */}
                     <div className="block lg:hidden mb-6">
                       <ReadingTimeEstimator
                         content={fullContent}
-                        className="text-sm justify-center"
+                        className="text-sm justify-start"
                       />
                     </div>
 
@@ -371,7 +371,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                     </div>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row lg:flex-row gap-4 justify-center lg:justify-start">
+                    <div className="flex flex-col lg:flex-row gap-4 justify-start">
                       <button
                         onClick={handleDownloadResume}
                         className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
@@ -380,19 +380,19 @@ Generated on: ${new Date().toLocaleDateString()}`;
                         Download Resume
                       </button>
 
-                      {/* Mobile: Read Story button */}
+                      {/* Mobile & Tablet: Read Story button */}
                       <button
                         onClick={() => scrollToSection("story-introduction")}
-                        className="block sm:hidden px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
+                        className="block md:hidden px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
                       >
                         <BookOpen size={18} className="inline mr-2" />
                         Read My Story
                       </button>
 
-                      {/* Desktop/iPad: Read My Story button */}
+                      {/* Desktop: Read My Story button */}
                       <button
                         onClick={() => scrollToSection("story-introduction")}
-                        className="hidden sm:block px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
+                        className="hidden md:block px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
                       >
                         <BookOpen size={18} className="inline mr-2" />
                         Read My Story
@@ -402,11 +402,11 @@ Generated on: ${new Date().toLocaleDateString()}`;
 
                   {/* Profile Image Column */}
                   <motion.div
-                    className="relative order-1 lg:order-2 flex justify-center lg:justify-end"
+                    className="relative order-1 md:order-1 lg:order-2 flex justify-center lg:justify-end"
                     {...heroImageVariants}
                   >
                     <div className="relative">
-                      {/* Mobile: Smaller image */}
+                      {/* Mobile & Tablet: Smaller image */}
                       <div className="block lg:hidden">
                         <Image
                           src="/images/profile/profile.jpg"
@@ -495,7 +495,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             <SectionDivider />
 
             {/* Story Introduction */}
-            <section id="story-introduction" className="py-20">
+            <section id="story-introduction" className="py-16 md:py-20">
               <Container size="xl">
                 <StorySection
                   title={storyArc.introduction.title}
@@ -514,7 +514,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             {/* Story Journey */}
             <section
               id="story-journey"
-              className="py-20 bg-gradient-to-br from-secondary/5 to-accent/5"
+              className="py-16 md:py-20 bg-gradient-to-br from-secondary/5 to-accent/5"
             >
               <Container size="xl">
                 <div className="space-y-16">
@@ -555,7 +555,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             </section>
 
             {/* Professional Journey Timeline */}
-            <section id="professional-journey" className="py-20">
+            <section id="professional-journey" className="py-16 md:py-20">
               <Container size="xl">
                 <AnimatedContainer className="text-center mb-16">
                   <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
@@ -576,7 +576,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             {/* Work Philosophy */}
             <section
               id="work-philosophy"
-              className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5"
+              className="py-16 md:py-20 bg-gradient-to-br from-primary/5 to-secondary/5"
             >
               <Container size="xl">
                 <AnimatedContainer className="text-center mb-16">
@@ -594,7 +594,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             </section>
 
             {/* Current State */}
-            <section id="story-current" className="py-20">
+            <section id="story-current" className="py-16 md:py-20">
               <Container size="xl">
                 <StorySection
                   title={storyArc.currentState.title}
@@ -611,7 +611,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             {/* Future Aspirations */}
             <section
               id="story-future"
-              className="py-20 bg-gradient-to-br from-accent/5 to-primary/5"
+              className="py-16 md:py-20 bg-gradient-to-br from-accent/5 to-primary/5"
             >
               <Container size="xl">
                 <StorySection
@@ -629,7 +629,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             <SectionDivider />
 
             {/* Offline Interests */}
-            <section id="offline-info" className="py-20">
+            <section id="offline-info" className="py-16 md:py-20">
               <Container size="xl">
                 <AnimatedContainer className="text-center mb-16">
                   <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
@@ -674,7 +674,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             {/* Connect Section */}
             <section
               id="connect"
-              className="py-20 bg-gradient-to-br from-primary/5 to-accent/5"
+              className="py-16 md:py-20 bg-gradient-to-br from-primary/5 to-accent/5"
             >
               <Container size="xl">
                 <AnimatedContainer className="text-center space-y-8">

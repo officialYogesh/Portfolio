@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "validate:config": "tsx config/validation.ts",
-    "build": "npm run validate:config && next build",
+    "build": "pnpm run validate:config && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -15,9 +15,9 @@
     "dev:type-check": "tsc --noEmit --watch",
     "build:analyze": "cross-env ANALYZE=true next build",
     "clean": "rm -rf .next && rm -rf out",
-    "preview": "npm run build && npm run start",
-    "postinstall": "npm run type-check",
-    "prebuild": "npm run validate:config"
+    "preview": "pnpm run build && npm run start",
+    "postinstall": "pnpm run type-check",
+    "prebuild": "pnpm run validate:config"
   },
   "dependencies": {
     "framer-motion": "^12.15.0",

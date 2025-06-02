@@ -60,8 +60,6 @@ export interface AboutPageContent {
     currentState: StorySection;
     futureAspirations: StorySection;
   };
-  personalJourney: PersonalJourney[];
-  workPhilosophy: WorkPhilosophy[];
   workInfo: {
     title: string;
     description: string;
@@ -128,196 +126,126 @@ export const aboutPageContent: AboutPageContent = {
   storyArc: {
     introduction: {
       id: "introduction",
-      title: "From Mumbai Streets to Global Tech",
+      title: "What Happens When Curiosity Meets a Screwdriver?",
       content: [
-        "Growing up in Mumbai, I was that kid who took apart every gadget I could find, desperate to understand how things worked. What started as childhood curiosity in the bustling tech markets of Mumbai became a journey across continents, building systems that now serve thousands.",
-        "Today, from my desk in Syracuse, I create AI solutions that automate entire business workflows. But the foundation was laid in those early days—always asking 'How can this work better?'",
+        "Picture this: a 12-year-old in a cramped Mumbai apartment, surrounded by the scattered remains of his father's radio. The humid air carries the sharp scent of metal and dust, while outside, the familiar chaos of street vendors and auto-rickshaws hums its eternal song. My father watches, a mix of frustration and curiosity creasing his brow, as I hold up a tiny circuit board to the light streaming through our single window.",
+        "What started as childhood destruction became my first lesson in creation. Each component told a story, each connection served a purpose. I didn't know it then, but I was asking the question that would shape everything: 'What if this could work better?' Today, that same curiosity drives me to build AI systems that understand human conversations and solve real problems. But the kid with the screwdriver? He's still here, still taking things apart to understand how they tick.",
       ],
       anecdote:
-        "My first 'Hello World' program in Mumbai felt like magic. Now, watching our AI systems save companies 20+ hours weekly feels like that same magic, just scaled.",
+        "When the radio crackled back to life, clearer than ever before, my father's expression shifted from worry to wonder. 'You didn't just fix it,' he said quietly, 'you improved it.' That moment taught me the difference between breaking things and understanding them.",
       emotion: "curiosity",
-      visualCue: "🌍",
+      visualCue: "🔧",
     },
 
     journey: [
       {
         id: "foundation-and-dreams",
-        title: "The Mumbai Foundation",
-        subtitle: "Where Every Coder's Journey Begins",
+        title: "When Code Became Canvas",
+        subtitle: "University of Mumbai, 2019",
         content: [
-          "At University of Mumbai, I wasn't just learning Computer Science—I was dreaming in code. The breakthrough came with 'Upside Down,' our Stranger Things-inspired game where players swipe between parallel worlds. When it hit 1,000+ downloads and won the Teknack Hackathon, I realized something powerful: great technology isn't about complex algorithms—it's about creating experiences people can't put down.",
-          "Mumbai taught me to build with constraints, to solve real problems with limited resources. That scrappy mindset became my superpower.",
-        ],
-        emotion: "achievement",
-        visualCue: "🏗️",
-      },
-      {
-        id: "enterprise-scaling",
-        title: "American Enterprise",
-        subtitle: "From Local Solutions to Global Systems",
-        content: [
-          "Moving from Mumbai's startup energy to American enterprise architecture was like switching from street cricket to the major leagues. At Tech Prescient and Xoriant, I learned that great engineering isn't just about making things work—it's about making them work for thousands of users simultaneously.",
-          "The Vonage portal I built didn't just function; it drove 400% adoption growth. The Maxar platform didn't just process data; it enabled $100K+ in new revenue. Each project taught me that the best technology amplifies human potential.",
-        ],
-        highlight:
-          "Built systems serving 10,000+ users while maintaining zero security incidents—proving that innovation and reliability aren't mutually exclusive.",
-        emotion: "growth",
-        visualCue: "🚀",
-      },
-      {
-        id: "ai-breakthrough",
-        title: "The AI Revolution",
-        subtitle: "Where Experience Meets Innovation",
-        content: [
-          "At Impel AI, everything clicked. Years of enterprise experience met cutting-edge AI, and suddenly I was building systems that don't just automate tasks—they think ahead. Our dealership AI reduces scheduling time by 80% while improving customer satisfaction.",
-          "The IBM TechXchange Hackathon was validation: our financial compliance AI proved that experience-driven engineering can tame even the most complex AI challenges.",
+          "Computer science textbooks filled our dorm room, but something felt missing. While my classmates memorized algorithms, I found myself sketching game ideas in the margins, wondering: 'What if learning could feel like playing?' The Teknack Hackathon announcement felt like fate calling. Forty-eight hours to build something people would actually use.",
+          "Our team chose an ambitious idea: 'Upside Down,' an endless runner where players literally flip between parallel worlds. The normal world was bright and safe, the Upside Down dark and dangerous. As I coded through the night, fueled by chai and determination, watching pixels come alive on my laptop screen, I felt something click. This wasn't just programming, this was digital storytelling.",
+          "Three sleepless nights later, we hit submit. Then came the waiting. When the downloads started rolling in, 100, 500, 1,000, I realized people were carrying a piece of our imagination in their pockets. First place at Teknack was just a trophy. But knowing someone smiled during their morning commute because of code I wrote? That was magic.",
         ],
         anecdote:
-          "When our AI prevented a major scheduling conflict before it happened, saving a dealership thousands in lost revenue—that's when I knew we'd built something truly intelligent.",
+          "I called my father that night, voice hoarse from excitement and exhaustion. 'Remember your radio?' I asked. 'I'm still fixing things, Dad. Just bigger things now.' His pride traveled across the phone line like electricity.",
+        emotion: "achievement",
+        visualCue: "🎮",
+      },
+      {
+        id: "enterprise-reality-check",
+        title: "The Email That Changed Everything",
+        subtitle: "Tech Prescient, 2021",
+        content: [
+          "The message arrived on a Tuesday morning like any other: 'We need you to lead frontend development for Vonage's user permission system.' I stared at my screen, coffee growing cold in my hands. This wasn't building games for fun anymore. Thousands of Vonage employees would depend on every button, every click, every security decision I made.",
+          "The weight of responsibility felt heavier than any algorithm I'd studied. No more 'move fast and break things.' Each React component had to be bulletproof. Every permission check had to protect real business operations. I spent nights sketching user flows on napkins, asking myself that familiar question with new urgency: 'How can I make this work better, but also safer?'",
+          "Three months of careful architecture later, watching real employees navigate our system effortlessly, I understood something profound. The curiosity that drove me to dismantle radios had evolved. I wasn't just solving problems anymore, I was designing experiences that made people's work lives a little bit easier.",
+        ],
+        highlight:
+          "Building for enterprise taught me that true innovation isn't about adding features, it's about removing friction from real people's daily lives.",
+        emotion: "growth",
+        visualCue: "🏢",
+      },
+      {
+        id: "ai-awakening",
+        title: "The Day AI Became Personal",
+        subtitle: "Impel AI, 2023",
+        content: [
+          "My first week at Impel AI, I was assigned to build AI that helps car dealerships manage service appointments. It sounded straightforward until I realized what we were actually creating: technology that could understand the frustration in a customer's voice when they said, 'My car's making that weird noise again.'",
+          "Working with conversational AI felt like teaching a computer empathy. Our system learned to read between the lines. A worried parent mentioning strange sounds got connected to diagnostic services. A busy professional got appointment times that worked with their schedule. Every conversation our AI handled successfully meant someone's day got a little easier.",
+          "The breakthrough came when I helped build a validation system that reduced booking errors by a third. But the real victory wasn't in the percentage, it was in the thank-you emails from customers who didn't have to call back, didn't have to explain their problem twice, didn't have to juggle their calendar for a second appointment.",
+        ],
+        anecdote:
+          "Watching our AI resolve a complex scheduling conflict in real-time, suggesting solutions I hadn't even programmed, I felt that familiar tingle of discovery. The radio-dismantling kid in me whispered: 'Now we're building things that can think ahead.'",
         emotion: "innovation",
-        visualCue: "🧠",
+        visualCue: "🤖",
       },
     ],
 
     currentState: {
       id: "current-state",
-      title: "The Syracuse Chapter",
+      title: "Where Two Worlds Meet",
       content: [
-        "Now pursuing my Master's at Syracuse University, I'm not just learning—I'm synthesizing everything. The Mumbai hustle, the enterprise precision, the AI innovation—all converging into something bigger.",
-        "I build systems that businesses bet their growth on. React interfaces that users love, Python backends that scale effortlessly, AI that makes complex decisions transparently. The kid from Mumbai is now engineering the future.",
+        "Walking across Syracuse University's snow-covered campus, I sometimes pause and think about that humid Mumbai apartment. The journey from dismantling radios to designing AI systems feels impossible, yet here I am, bridging two worlds with every line of code I write.",
+        "At Impel AI, I don't just build software, I translate human needs into digital solutions. React interfaces that make complex tasks feel simple. Backend systems that scale from dozens to thousands of users without breaking a sweat. AI that makes decisions with the wisdom of human experience. Every project carries the DNA of that curious 12-year-old and the discipline of enterprise engineering.",
+        "What excites me most isn't what I've built, it's what becomes possible when technology truly understands human intent. Because that kid with the screwdriver? He's not done asking questions.",
       ],
       highlight:
-        "From Mumbai's constraints to Syracuse's possibilities—every challenge shaped the engineer I am today.",
+        "Every problem I solve now carries the thread from Mumbai to Syracuse, connecting curiosity with capability, dreams with delivery.",
       emotion: "confidence",
-      visualCue: "🎓",
+      visualCue: "🌉",
     },
 
     futureAspirations: {
       id: "future-aspirations",
-      title: "The Next Chapter",
+      title: "The Problem That Keeps Me Awake",
       content: [
-        "The journey from Mumbai to Syracuse taught me that great engineering transcends geography. I want to build AI systems that don't just serve Silicon Valley—they empower people everywhere, solving problems I first witnessed on Mumbai's streets.",
-        "The future I'm building is one where technology adapts to humans, not the other way around.",
+        "There's a specific challenge that lights up my brain at 2 AM. Picture the small business owner in rural India who has brilliant ideas but struggles with technology barriers. Or the family shop in Syracuse that could thrive with better digital tools but can't afford complex enterprise solutions. How do we build AI that bridges these gaps?",
+        "I'm working on AI systems that adapt to how people naturally communicate, not forcing them to learn technical language. Technology that understands cultural nuances, adjusts to different communication styles, and meets people exactly where they are. The same curiosity that made me dismantle that radio is now driving me to dismantle the barriers between people and helpful technology.",
+        "Success for me looks like this: someday, a small business owner will solve a complex problem using AI I helped create, without even realizing they're using AI. They'll just think, 'Wow, this works exactly how I hoped it would.' That's when I'll know we've built something truly useful.",
       ],
       anecdote:
-        "Every line of code I write today carries the dreams of that Mumbai kid who believed technology could change everything.",
+        "My father's words echo in every algorithm I design: 'Beta, when you fix something, make it better than before.' The radio was just the beginning.",
       emotion: "vision",
-      visualCue: "🌟",
+      visualCue: "🌱",
     },
   },
 
-  personalJourney: [
-    {
-      phase: "Innovation Foundation",
-      title: "Award-Winning Creator",
-      period: "2016 - 2020",
-      description:
-        "Built strong technical fundamentals at University of Mumbai while proving innovation ability through award-winning game development and academic excellence.",
-      challenge:
-        "Balancing rigorous computer science coursework with hands-on development that people would actually use and love.",
-      growth:
-        "Learned that technical skill without user impact is incomplete—developed my philosophy of building technology that genuinely improves people's lives.",
-      keyMoment:
-        "Winning first place at Teknack Game Development Hackathon with 'Upside Down' game, achieving 1,000+ downloads and proving I could build products people actually wanted to use.",
-    },
-    {
-      phase: "Enterprise Excellence",
-      title: "Business Impact Driver",
-      period: "2020 - 2023",
-      description:
-        "Mastered enterprise-scale system development at Xoriant Solutions and Tech Prescient, building platforms that drove measurable business outcomes and revenue growth.",
-      challenge:
-        "Scaling from individual contributor to technical leader while delivering systems that balance innovation with enterprise reliability requirements.",
-      growth:
-        "Developed expertise in architecting systems that don't just work technically—they drive business results, from 4x platform adoption to $100K+ revenue enablement.",
-      keyMoment:
-        "Leading the Vonage enterprise portal that achieved 400% platform adoption growth, proving I could build systems that users and businesses both love.",
-    },
-    {
-      phase: "AI Innovation Leadership",
-      title: "Intelligent Automation Pioneer",
-      period: "2023 - Present",
-      description:
-        "Advancing Computer Science studies at Syracuse University while pioneering GenAI solutions at Impel AI, demonstrating leadership in the most cutting-edge areas of technology.",
-      challenge:
-        "Integrating breakthrough AI technologies with enterprise-grade reliability while maintaining the performance and security standards of production systems.",
-      growth:
-        "Became an expert in LangChain, RAG systems, and prompt engineering while proving these technologies can deliver transformational business impact at scale.",
-      keyMoment:
-        "Automating 70% of dealership workflows with GenAI pipelines and winning recognition at IBM TechXchange watsonx Hackathon—establishing myself as a leader in practical AI implementation.",
-    },
-  ],
-
-  workPhilosophy: [
-    {
-      principle: "Impact-Driven Innovation",
-      description:
-        "Every technical decision should ultimately create measurable value—whether that's saving time, generating revenue, or fundamentally improving how people work.",
-      example:
-        "Built LangChain RAG pipelines that automated 70% of dealership workflows while reducing scheduling time by 80%, proving AI can deliver both efficiency and user experience improvements.",
-      icon: "target",
-    },
-    {
-      principle: "Performance as a Feature",
-      description:
-        "Speed and reliability aren't just technical requirements—they're user experience features that can make or break adoption and business success.",
-      example:
-        "Improved API response times by 42% and reduced communication latency by 66%, directly contributing to 19% increase in appointment confirmations and better customer satisfaction.",
-      icon: "zap",
-    },
-    {
-      principle: "Scalable Problem-Solving",
-      description:
-        "Build solutions that grow with the problem—from supporting thousands of users today to millions tomorrow, while maintaining quality and reliability.",
-      example:
-        "Designed microservices handling 100+ data sources and 5K+ concurrent data points, plus multi-tenant RBAC systems that scale from startups to enterprise clients.",
-      icon: "layers",
-    },
-    {
-      principle: "Human-Centered AI",
-      description:
-        "The best AI systems don't replace human judgment—they amplify human capabilities while maintaining transparency, control, and ethical considerations.",
-      example:
-        "Created AI-powered compliance assistant for financial services that augments regulatory expertise rather than replacing it, ensuring humans remain in control of critical decisions.",
-      icon: "brain",
-    },
-  ],
-
   workInfo: {
-    title: "Work",
+    title: "What I'm Building Now",
     description:
-      "Currently working as a Software Engineer Intern at Impel AI, where I specialize in building GenAI solutions for the automotive industry. My focus is on LangChain-powered automation systems, microservices architecture, and cloud infrastructure that drives real business impact.",
+      "At Impel AI, I'm turning that childhood curiosity into AI systems that understand human conversations. Every day, I work on technology that bridges the gap between complex automotive processes and the people who need them to work seamlessly.",
     highlights: [
-      "Automated 70% of dealership service appointment workflows",
-      "Improved communication latency by 66% with asynchronous messaging",
-      "Built LLM-based validation middleware with 32% accuracy improvement",
-      "Increased appointment confirmations by 19% through AI personalization",
+      "Teaching AI to understand frustration in a customer's voice",
+      "Building systems that anticipate needs before problems arise",
+      "Creating technology that feels intuitive, not intimidating",
+      "Helping dealerships serve customers better through intelligent automation",
     ],
     approach:
-      "I combine cutting-edge AI technologies with proven software engineering practices to build systems that are not only innovative but also reliable, scalable, and maintainable.",
+      "The same hands that dismantled radios now architect AI systems that make complex things simple. Every line of code carries forward that question: 'How can this work better?'",
     link: "/resume",
   },
 
   projectsInfo: {
-    title: "Projects",
+    title: "Stories in Code",
     description:
-      "I love building innovative solutions that solve real-world problems. From AI-powered career platforms to enterprise automation systems, my projects showcase the intersection of cutting-edge technology and practical application.",
+      "From award-winning games that transported players between worlds to AI systems that solve real business challenges, my projects reflect a consistent thread: building technology that understands and serves human needs.",
     passion:
-      "My projects reflect my passion for AI innovation, performance optimization, and creating technology that makes a meaningful difference in people's lives and business operations.",
+      "Each project is a new chapter in the same story - taking complex problems apart to understand them, then rebuilding them in ways that make people's lives a little bit easier.",
     link: "/projects",
   },
 
   offlineInfo: {
     title: "Beyond the Screen",
     description:
-      "Exploring the world, one destination at a time—each journey bringing fresh perspectives to my work.",
+      "The same curiosity that drives me to explore code leads me to explore the world. Each journey teaches me something new about human diversity, cultural context, and the universal challenges that technology should solve.",
     interests: [
       {
-        activity: "Global Explorer",
+        activity: "Cultural Explorer & Digital Empathy Builder",
         description:
-          "From Niagara's thundering falls to NYC's electric energy, Boston's historic charm to Vegas's innovative entertainment—each destination teaches me something new about human experience and technology's role in connecting us.",
+          "Standing at Niagara Falls, feeling the raw power of nature, I understood something about scale and systems. Walking through NYC's streets, observing how millions of people navigate complexity daily, I learned about user experience in the real world. In Boston's historic neighborhoods, seeing how old and new coexist, I grasped the art of integrating innovation with established systems. Each destination becomes a lesson in human diversity that shapes how I build technology.",
         connection:
-          "Travel shapes how I build—creating software that works for everyone, everywhere.",
+          "Travel isn't escapism for me, it's research. Every culture I encounter, every problem I see people solving differently, every moment of being the outsider trying to understand local customs - these experiences directly influence how I approach building AI that works for everyone, everywhere. The kid who dismantled radios to understand them now dismantles cultural assumptions to build more inclusive technology.",
       },
     ],
   },
@@ -340,8 +268,6 @@ export const aboutPageContent: AboutPageContent = {
 export const {
   hero,
   storyArc,
-  personalJourney,
-  workPhilosophy,
   workInfo,
   projectsInfo,
   offlineInfo,

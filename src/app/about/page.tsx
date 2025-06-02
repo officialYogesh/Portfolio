@@ -11,8 +11,6 @@ import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import {
   ReadingProgress,
   StorySection,
-  JourneyTimeline,
-  PhilosophyCards,
   SectionDivider,
 } from "@/components/ui/ScrollytellComponents";
 import {
@@ -24,24 +22,31 @@ import { PrimaryButton, OutlineButton } from "@/components/ui/Button";
 import { CitySkylinesIllustration } from "@/components/illustrations/AboutPageIllustrations";
 
 // Data
-import { aboutPageContent } from "../../../config/about-content";
+import {
+  aboutPageContent,
+  projectsInfo,
+  workInfo,
+} from "../../../config/about-content";
 import { personalInfo } from "../../../config/personal-info";
 
 // Types
 interface StoryItem {
+  id: string;
+  title: string;
+  subtitle?: string;
   content: string[];
   anecdote?: string;
   highlight?: string;
-}
-
-interface PersonalJourneyItem {
-  description: string;
-  growth: string;
-}
-
-interface WorkPhilosophyItem {
-  principle: string;
-  description: string;
+  emotion?:
+    | "curiosity"
+    | "challenge"
+    | "growth"
+    | "achievement"
+    | "reflection"
+    | "innovation"
+    | "confidence"
+    | "vision";
+  visualCue?: string;
 }
 
 interface InterestItem {
@@ -109,12 +114,9 @@ const prepareContentForReading = (content: typeof aboutPageContent) => {
           (section.highlight || "")
       )
       .join(" ") +
-    content.personalJourney
-      .map((phase: PersonalJourneyItem) => phase.description + phase.growth)
-      .join(" ") +
-    content.workPhilosophy
-      .map((phil: WorkPhilosophyItem) => phil.description)
-      .join(" ")
+    content.workInfo.description +
+    content.projectsInfo.description +
+    content.offlineInfo.description
   );
 };
 
@@ -132,12 +134,14 @@ const AboutPage: React.FC = () => {
   // Section tracking
   const sectionIds = [
     "hero",
-    "story-introduction",
-    "story-journey",
+    "story-intro",
+    "foundation-and-dreams",
+    "enterprise-reality-check",
+    "ai-awakening",
     "story-current",
     "story-future",
-    "professional-journey",
-    "work-philosophy",
+    "work-info",
+    "projects-info",
     "offline-info",
     "connect",
   ];
@@ -160,28 +164,48 @@ const AboutPage: React.FC = () => {
         completed: completedSections.has("hero"),
       },
       {
-        id: "story-introduction",
-        title: "Story Beginning",
-        completed: completedSections.has("story-introduction"),
+        id: "story-intro",
+        title: "The Beginning",
+        completed: completedSections.has("story-intro"),
       },
       {
-        id: "story-journey",
-        title: "The Journey",
-        completed: completedSections.has("story-journey"),
+        id: "foundation-and-dreams",
+        title: "Foundation",
+        completed: completedSections.has("foundation-and-dreams"),
       },
       {
-        id: "professional-journey",
-        title: "Professional Path",
-        completed: completedSections.has("professional-journey"),
+        id: "enterprise-reality-check",
+        title: "Enterprise Growth",
+        completed: completedSections.has("enterprise-reality-check"),
       },
       {
-        id: "work-philosophy",
-        title: "Work Philosophy",
-        completed: completedSections.has("work-philosophy"),
+        id: "ai-awakening",
+        title: "AI Discovery",
+        completed: completedSections.has("ai-awakening"),
+      },
+      {
+        id: "story-current",
+        title: "Present",
+        completed: completedSections.has("story-current"),
+      },
+      {
+        id: "story-future",
+        title: "Future Vision",
+        completed: completedSections.has("story-future"),
+      },
+      {
+        id: "work-info",
+        title: "Current Work",
+        completed: completedSections.has("work-info"),
+      },
+      {
+        id: "projects-info",
+        title: "Projects",
+        completed: completedSections.has("projects-info"),
       },
       {
         id: "offline-info",
-        title: "Offline Interests",
+        title: "Beyond the Screen",
         completed: completedSections.has("offline-info"),
       },
       {
@@ -233,10 +257,8 @@ ${personalInfo.bio}
 Professional Summary:
 ${aboutPageContent.storyArc.currentState.content.join("\n")}
 
-Work Philosophy:
-${aboutPageContent.workPhilosophy
-  .map((phil: WorkPhilosophyItem) => `${phil.principle}: ${phil.description}`)
-  .join("\n")}
+Current Focus:
+${aboutPageContent.workInfo.description}
 
 Generated on: ${new Date().toLocaleDateString()}`;
 
@@ -255,14 +277,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
   };
 
   // Extract content data
-  const {
-    hero,
-    storyArc,
-    personalJourney,
-    workPhilosophy,
-    offlineInfo,
-    connectInfo,
-  } = aboutPageContent;
+  const { hero, storyArc, offlineInfo, connectInfo } = aboutPageContent;
 
   return (
     <ErrorBoundary>
@@ -369,7 +384,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
 
                       {/* Mobile & Tablet: Read Story button */}
                       <button
-                        onClick={() => scrollToSection("story-introduction")}
+                        onClick={() => scrollToSection("story-intro")}
                         className="block md:hidden px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
                       >
                         <BookOpen size={18} className="inline mr-2" />
@@ -378,7 +393,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
 
                       {/* Desktop: Read My Story button */}
                       <button
-                        onClick={() => scrollToSection("story-introduction")}
+                        onClick={() => scrollToSection("story-intro")}
                         className="hidden md:block px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
                       >
                         <BookOpen size={18} className="inline mr-2" />
@@ -478,14 +493,11 @@ Generated on: ${new Date().toLocaleDateString()}`;
               </Container>
             </section>
 
-            {/* Story Arc Sections */}
-            <SectionDivider />
-
-            {/* Story Introduction */}
-            <section id="story-introduction" className="py-16 md:py-20">
+            {/* Introduction Section */}
+            <section id="story-intro" className="py-16 md:py-20">
               <Container size="xl">
                 <StorySection
-                  id="story-introduction"
+                  id="story-intro"
                   title={storyArc.introduction.title}
                   subtitle={storyArc.introduction.subtitle}
                   content={storyArc.introduction.content}
@@ -499,91 +511,34 @@ Generated on: ${new Date().toLocaleDateString()}`;
 
             <SectionDivider />
 
-            {/* Story Journey */}
-            <section
-              id="story-journey"
-              className="py-16 md:py-20 bg-gradient-to-br from-secondary/5 to-accent/5"
-            >
-              <Container size="xl">
-                <div className="space-y-16">
-                  {storyArc.journey.map(
-                    (
-                      section: StoryItem & {
-                        id: string;
-                        title?: string;
-                        subtitle?: string;
-                        emotion?: string;
-                        visualCue?: string;
-                      },
-                      index: number
-                    ) => (
-                      <StorySection
-                        key={section.id}
-                        id={section.id}
-                        title={section.title || ""}
-                        subtitle={section.subtitle}
-                        content={section.content}
-                        anecdote={section.anecdote}
-                        highlight={section.highlight}
-                        emotion={
-                          section.emotion as
-                            | "curiosity"
-                            | "challenge"
-                            | "growth"
-                            | "achievement"
-                            | "reflection"
-                            | "innovation"
-                            | "confidence"
-                            | "vision"
-                            | undefined
-                        }
-                        visualCue={section.visualCue}
-                        delay={index * 0.2}
-                      />
-                    )
-                  )}
-                </div>
-              </Container>
-            </section>
-
-            {/* Professional Journey Timeline */}
-            <section id="professional-journey" className="py-16 md:py-20">
-              <Container size="xl">
-                <AnimatedContainer className="text-center mb-16">
-                  <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                    Professional Journey
-                  </h2>
-                  <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
-                    Key phases that shaped my professional development and
-                    expertise
-                  </p>
-                </AnimatedContainer>
-
-                <JourneyTimeline phases={personalJourney} />
-              </Container>
-            </section>
+            {/* Journey Sections */}
+            {storyArc.journey.map((section: StoryItem, index: number) => (
+              <section
+                key={section.id}
+                id={section.id}
+                className={`py-16 md:py-20 ${
+                  index % 2 === 1
+                    ? "bg-gradient-to-br from-accent/5 to-primary/5"
+                    : ""
+                }`}
+              >
+                <Container size="xl">
+                  <StorySection
+                    id={section.id}
+                    title={section.title}
+                    subtitle={section.subtitle}
+                    content={section.content}
+                    anecdote={section.anecdote}
+                    highlight={section.highlight}
+                    emotion={section.emotion}
+                    visualCue={section.visualCue}
+                  />
+                </Container>
+                {index < storyArc.journey.length - 1 && <SectionDivider />}
+              </section>
+            ))}
 
             <SectionDivider />
-
-            {/* Work Philosophy */}
-            <section
-              id="work-philosophy"
-              className="py-16 md:py-20 bg-gradient-to-br from-primary/5 to-secondary/5"
-            >
-              <Container size="xl">
-                <AnimatedContainer className="text-center mb-16">
-                  <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                    Work Philosophy
-                  </h2>
-                  <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
-                    The principles that guide my approach to software
-                    development and collaboration
-                  </p>
-                </AnimatedContainer>
-
-                <PhilosophyCards philosophies={workPhilosophy} />
-              </Container>
-            </section>
 
             {/* Current State */}
             <section id="story-current" className="py-16 md:py-20">
@@ -617,6 +572,124 @@ Generated on: ${new Date().toLocaleDateString()}`;
                   emotion={storyArc.futureAspirations.emotion}
                   visualCue={storyArc.futureAspirations.visualCue}
                 />
+              </Container>
+            </section>
+
+            <SectionDivider />
+
+            {/* Work Info Section */}
+            <section id="work-info" className="py-16 md:py-20">
+              <Container size="xl">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12">
+                  <div className="flex-1 space-y-8">
+                    <AnimatedContainer>
+                      <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                        {workInfo.title}
+                      </h2>
+                      <p className="text-lg text-foreground/80 mb-8">
+                        {workInfo.description}
+                      </p>
+                    </AnimatedContainer>
+
+                    <AnimatedContainer delay={0.2}>
+                      <div className="space-y-4">
+                        <h3 className="text-2xl font-semibold text-foreground mb-4">
+                          Key Achievements
+                        </h3>
+                        <ul className="space-y-3">
+                          {workInfo.highlights.map(
+                            (highlight: string, index: number) => (
+                              <li
+                                key={index}
+                                className="flex items-start space-x-3"
+                              >
+                                <span
+                                  className="text-primary mt-1 text-lg"
+                                  role="img"
+                                  aria-label="Checkmark"
+                                >
+                                  ✓
+                                </span>
+                                <span className="text-foreground/80">
+                                  {highlight}
+                                </span>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    </AnimatedContainer>
+
+                    <AnimatedContainer delay={0.4}>
+                      <div className="p-6 rounded-lg bg-primary/10 border-l-4 border-primary/30 backdrop-blur-sm">
+                        <p className="text-base text-foreground/80 italic">
+                          {workInfo.approach}
+                        </p>
+                      </div>
+                    </AnimatedContainer>
+
+                    {workInfo.link && (
+                      <AnimatedContainer delay={0.6}>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          <a href={workInfo.link}>
+                            <PrimaryButton
+                              icon={<BookOpen size={18} />}
+                              size="lg"
+                              className="w-full sm:w-auto"
+                            >
+                              View Full Resume
+                            </PrimaryButton>
+                          </a>
+                        </div>
+                      </AnimatedContainer>
+                    )}
+                  </div>
+                </div>
+              </Container>
+            </section>
+
+            <SectionDivider />
+
+            {/* Projects Info Section */}
+            <section
+              id="projects-info"
+              className="py-16 md:py-20 bg-gradient-to-br from-secondary/5 to-accent/5"
+            >
+              <Container size="xl">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12">
+                  <div className="flex-1 space-y-8">
+                    <AnimatedContainer>
+                      <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                        {projectsInfo.title}
+                      </h2>
+                      <p className="text-lg text-foreground/80 mb-8">
+                        {projectsInfo.description}
+                      </p>
+                    </AnimatedContainer>
+
+                    <AnimatedContainer delay={0.2}>
+                      <div className="p-6 rounded-lg bg-accent/10 border-l-4 border-accent/30 backdrop-blur-sm">
+                        <p className="text-base text-foreground/80 italic">
+                          {projectsInfo.passion}
+                        </p>
+                      </div>
+                    </AnimatedContainer>
+
+                    <AnimatedContainer delay={0.4}>
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <a href={projectsInfo.link}>
+                          <PrimaryButton
+                            icon={<Github size={18} />}
+                            size="lg"
+                            className="w-full sm:w-auto"
+                          >
+                            Explore Projects
+                          </PrimaryButton>
+                        </a>
+                      </div>
+                    </AnimatedContainer>
+                  </div>
+                </div>
               </Container>
             </section>
 
@@ -685,8 +758,8 @@ Generated on: ${new Date().toLocaleDateString()}`;
                   </div>
 
                   {/* Desktop Illustrations Side - Hidden on mobile */}
-                  <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:items-center lg:justify-start pt-8 lg:pt-0 lg:pl-12 lg:sticky lg:top-20 h-full">
-                    <AnimatedContainer delay={0.3}>
+                  <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:items-center lg:justify-start lg:pl-12">
+                    <AnimatedContainer delay={0.3} className="mt-16">
                       <div className="relative w-full max-w-lg">
                         {/* Background decoration for better theme integration - more subtle */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-primary/5 via-transparent to-accent/5 rounded-full blur-2xl scale-90 opacity-70" />
@@ -696,7 +769,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                             alt="Yogesh exploring new destinations and technologies"
                             width={450}
                             height={450}
-                            className="opacity-90 drop-shadow-lg transition-all duration-500 hover:opacity-100 hover:scale-105 rounded-lg object-contain transform -translate-y-10 lg:translate-x-8"
+                            className="opacity-90 drop-shadow-lg transition-all duration-500 hover:opacity-100 hover:scale-105 rounded-lg object-contain transform lg:translate-x-8"
                             priority
                           />
                         </div>

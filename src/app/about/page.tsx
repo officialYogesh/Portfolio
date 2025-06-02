@@ -21,6 +21,10 @@ import {
   ProgressIndicator,
 } from "@/components/ui/ReadingTimeEstimator";
 import { PrimaryButton, OutlineButton } from "@/components/ui/Button";
+import {
+  TravelIllustration,
+  CitySkylinesIllustration,
+} from "@/components/illustrations/AboutPageIllustrations";
 
 // Data
 import { aboutPageContent } from "../../../config/about-content";
@@ -484,6 +488,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             <section id="story-introduction" className="py-16 md:py-20">
               <Container size="xl">
                 <StorySection
+                  id="story-introduction"
                   title={storyArc.introduction.title}
                   subtitle={storyArc.introduction.subtitle}
                   content={storyArc.introduction.content}
@@ -517,6 +522,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                     ) => (
                       <StorySection
                         key={section.id}
+                        id={section.id}
                         title={section.title || ""}
                         subtitle={section.subtitle}
                         content={section.content}
@@ -529,6 +535,9 @@ Generated on: ${new Date().toLocaleDateString()}`;
                             | "growth"
                             | "achievement"
                             | "reflection"
+                            | "innovation"
+                            | "confidence"
+                            | "vision"
                             | undefined
                         }
                         visualCue={section.visualCue}
@@ -583,6 +592,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             <section id="story-current" className="py-16 md:py-20">
               <Container size="xl">
                 <StorySection
+                  id="story-current"
                   title={storyArc.currentState.title}
                   subtitle={storyArc.currentState.subtitle}
                   content={storyArc.currentState.content}
@@ -601,6 +611,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
             >
               <Container size="xl">
                 <StorySection
+                  id="story-future"
                   title={storyArc.futureAspirations.title}
                   subtitle={storyArc.futureAspirations.subtitle}
                   content={storyArc.futureAspirations.content}
@@ -617,42 +628,61 @@ Generated on: ${new Date().toLocaleDateString()}`;
             {/* Offline Interests */}
             <section id="offline-info" className="py-16 md:py-20">
               <Container size="xl">
-                <AnimatedContainer className="text-center mb-16">
-                  <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                    {offlineInfo.title}
-                  </h2>
-                  <p className="text-lg text-foreground/80 max-w-3xl mx-auto mb-8">
-                    {offlineInfo.description}
-                  </p>
-                </AnimatedContainer>
+                <div className="flex flex-col lg:flex-row items-center gap-12">
+                  {/* Content Side */}
+                  <div className="flex-1 space-y-8">
+                    <AnimatedContainer>
+                      <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                        {offlineInfo.title}
+                      </h2>
+                      <p className="text-lg text-foreground/80 mb-8">
+                        {offlineInfo.description}
+                      </p>
+                    </AnimatedContainer>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {offlineInfo.interests.map(
-                    (interest: InterestItem, index: number) => (
-                      <AnimatedContainer key={index} delay={index * 0.1}>
-                        <motion.div
-                          whileHover={{ y: -5 }}
-                          transition={{ duration: 0.2 }}
-                          className="p-6 bg-card/50 rounded-xl border border-border/50 h-full"
-                        >
-                          <h3 className="text-xl font-semibold text-foreground mb-3">
-                            {interest.activity}
-                          </h3>
-                          <p className="text-foreground/80 mb-4">
-                            {interest.description}
-                          </p>
-                          {interest.connection && (
-                            <div className="pt-4 border-t border-border/30">
-                              <p className="text-sm text-foreground/60 italic">
-                                <strong>How it connects:</strong>{" "}
-                                {interest.connection}
-                              </p>
+                    {offlineInfo.interests.map(
+                      (interest: InterestItem, index: number) => (
+                        <AnimatedContainer key={index} delay={index * 0.2}>
+                          <div className="space-y-4">
+                            <div className="flex items-center space-x-3">
+                              <span className="text-2xl">🌍</span>
+                              <h3 className="text-2xl font-semibold text-foreground">
+                                {interest.activity}
+                              </h3>
                             </div>
-                          )}
-                        </motion.div>
-                      </AnimatedContainer>
-                    )
-                  )}
+                            <p className="text-lg text-foreground/80 leading-relaxed">
+                              {interest.description}
+                            </p>
+                            {interest.connection && (
+                              <div className="p-4 rounded-lg bg-primary/10 border-l-4 border-primary/30">
+                                <p className="text-base text-foreground/70 italic">
+                                  {interest.connection}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </AnimatedContainer>
+                      )
+                    )}
+                  </div>
+
+                  {/* Illustrations Side */}
+                  <div className="flex-1 space-y-8">
+                    <AnimatedContainer delay={0.3}>
+                      <div className="flex justify-center">
+                        <TravelIllustration size="xl" className="opacity-80" />
+                      </div>
+                    </AnimatedContainer>
+
+                    <AnimatedContainer delay={0.5}>
+                      <div className="flex justify-center">
+                        <CitySkylinesIllustration
+                          size="xl"
+                          className="opacity-70"
+                        />
+                      </div>
+                    </AnimatedContainer>
+                  </div>
                 </div>
               </Container>
             </section>

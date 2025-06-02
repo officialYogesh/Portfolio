@@ -1,5 +1,5 @@
 // Personal Information Configuration
-// This file contains all personal and professional information
+// This file contains personal details used throughout the portfolio
 
 export interface PersonalInfo {
   name: string;
@@ -23,24 +23,25 @@ export const personalInfo: PersonalInfo = {
   name: "Yogesh Patil",
   title: "Software Development Engineer",
   email: "officialyogeshp@gmail.com",
-  location: "New York, USA",
+  location: "Remote, New York, USA",
   experience: "4+ years",
   availability: "Open to opportunities",
-  tagline: "Building scalable applications with AI/LLM integration",
-  bio: `Passionate Software Development Engineer with 4+ years of experience building scalable web applications and GenAI solutions. Currently working at Impel AI, specializing in LangChain-powered GenAI pipelines, microservices architecture, and cloud infrastructure. Proven track record of improving system performance by 66%+, automating 70% of workflows, and enabling significant revenue growth through innovative technical solutions.`,
+  tagline:
+    "Building scalable AI-powered solutions with modern web technologies",
+  bio: "Passionate Software Development Engineer specializing in GenAI solutions, cloud architecture, and full-stack development. With 4+ years of experience building scalable systems at companies like Impel AI and Tech Prescient, I focus on creating intelligent automation that drives real business impact. Expert in LangChain, AWS, and modern JavaScript/TypeScript ecosystems.",
   socialLinks: [
+    {
+      platform: "LinkedIn",
+      url: "https://linkedin.com/in/yogeshpatil28",
+      username: "yogeshpatil28",
+    },
     {
       platform: "GitHub",
       url: "https://github.com/officialYogesh",
-      username: "@officialYogesh",
+      username: "officialYogesh",
     },
     {
-      platform: "LinkedIn",
-      url: "https://www.linkedin.com/in/yogeshpatil28/",
-      username: "Yogesh Patil",
-    },
-    {
-      platform: "Website",
+      platform: "Portfolio",
       url: "https://iamyogesh.com",
       username: "iamyogesh.com",
     },

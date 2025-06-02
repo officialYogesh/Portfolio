@@ -8,7 +8,15 @@ export interface StorySection {
   content: string[];
   anecdote?: string;
   highlight?: string;
-  emotion?: "curiosity" | "challenge" | "growth" | "achievement" | "reflection";
+  emotion?:
+    | "curiosity"
+    | "challenge"
+    | "growth"
+    | "achievement"
+    | "reflection"
+    | "innovation"
+    | "confidence"
+    | "vision";
   visualCue?: string; // Icon or visual element
 }
 
@@ -35,6 +43,16 @@ export interface AboutPageContent {
     introduction: string;
     tagline: string;
     personalTouch: string;
+    professionalImage: {
+      src: string;
+      alt: string;
+      description: string;
+    };
+    quickStats: Array<{
+      label: string;
+      value: string;
+      description: string;
+    }>;
   };
   storyArc: {
     introduction: StorySection;
@@ -77,233 +95,229 @@ export interface AboutPageContent {
 // Main About Page Content
 export const aboutPageContent: AboutPageContent = {
   hero: {
-    greeting: "Hello! I'm Yogesh Patil",
+    greeting: "Hello, my name is Yogesh",
     introduction:
-      "A passionate full-stack developer who believes technology should solve real problems and make life better.",
+      "I'm a Software Development Engineer specializing in GenAI solutions, cloud architecture, and full-stack development.",
     tagline: "Crafting digital experiences that matter",
     personalTouch:
       "When I'm not coding, you'll find me exploring new technologies, contributing to open source, or sharing knowledge with the developer community.",
+    professionalImage: {
+      src: "/images/profile/profile.jpg",
+      alt: "Yogesh Patil - Software Development Engineer",
+      description: "Professional headshot of Yogesh Patil",
+    },
+    quickStats: [
+      {
+        label: "Experience",
+        value: "4+ years",
+        description: "Building scalable systems and AI solutions",
+      },
+      {
+        label: "Current Focus",
+        value: "GenAI & LLMs",
+        description: "LangChain, RAG, and AI automation",
+      },
+      {
+        label: "Location",
+        value: "Remote, NY",
+        description: "Available for remote opportunities",
+      },
+    ],
   },
 
   storyArc: {
     introduction: {
       id: "introduction",
-      title: "Where It All Began",
+      title: "From Mumbai Streets to Global Tech",
       content: [
-        "My journey into technology started with a simple question: 'How can I use code to solve real-world problems?' This curiosity led me from writing my first 'Hello World' program to building applications that impact thousands of users.",
-        "Growing up in Mumbai, I was fascinated by how technology could bridge gaps and create opportunities. This fascination turned into a passion, and eventually, into a career where I get to build solutions that matter.",
+        "Growing up in Mumbai, I was that kid who took apart every gadget I could find, desperate to understand how things worked. What started as childhood curiosity in the bustling tech markets of Mumbai became a journey across continents, building systems that now serve thousands.",
+        "Today, from my desk in Syracuse, I create AI solutions that automate entire business workflows. But the foundation was laid in those early days—always asking 'How can this work better?'",
       ],
       anecdote:
-        "I still remember the excitement I felt when my first web application went live – seeing real users interact with something I built was magical.",
+        "My first 'Hello World' program in Mumbai felt like magic. Now, watching our AI systems save companies 20+ hours weekly feels like that same magic, just scaled.",
       emotion: "curiosity",
-      visualCue: "✨",
+      visualCue: "🌍",
     },
 
     journey: [
       {
-        id: "early-days",
-        title: "The Learning Years",
-        subtitle: "Building Foundations",
+        id: "foundation-and-dreams",
+        title: "The Mumbai Foundation",
+        subtitle: "Where Every Coder's Journey Begins",
         content: [
-          "During my computer science studies at the University of Mumbai, I dove deep into programming fundamentals. But it was the late-night coding sessions, hackathons, and side projects that truly shaped my understanding of software development.",
-          "I learned that great code isn't just about syntax – it's about empathy, understanding user needs, and crafting solutions that feel intuitive and powerful.",
+          "At University of Mumbai, I wasn't just learning Computer Science—I was dreaming in code. The breakthrough came with 'Upside Down,' our Stranger Things-inspired game where players swipe between parallel worlds. When it hit 1,000+ downloads and won the Teknack Hackathon, I realized something powerful: great technology isn't about complex algorithms—it's about creating experiences people can't put down.",
+          "Mumbai taught me to build with constraints, to solve real problems with limited resources. That scrappy mindset became my superpower.",
         ],
-        anecdote:
-          "During one hackathon, our team built a solution for local businesses to manage inventory. Seeing a small shop owner's face light up when they understood how our app could save them hours of manual work – that's when I knew I wanted to build technology that truly serves people.",
+        emotion: "achievement",
+        visualCue: "🏗️",
+      },
+      {
+        id: "enterprise-scaling",
+        title: "American Enterprise",
+        subtitle: "From Local Solutions to Global Systems",
+        content: [
+          "Moving from Mumbai's startup energy to American enterprise architecture was like switching from street cricket to the major leagues. At Tech Prescient and Xoriant, I learned that great engineering isn't just about making things work—it's about making them work for thousands of users simultaneously.",
+          "The Vonage portal I built didn't just function; it drove 400% adoption growth. The Maxar platform didn't just process data; it enabled $100K+ in new revenue. Each project taught me that the best technology amplifies human potential.",
+        ],
+        highlight:
+          "Built systems serving 10,000+ users while maintaining zero security incidents—proving that innovation and reliability aren't mutually exclusive.",
         emotion: "growth",
         visualCue: "🚀",
       },
       {
-        id: "professional-growth",
-        title: "Entering the Professional World",
-        subtitle: "From Code to Impact",
+        id: "ai-breakthrough",
+        title: "The AI Revolution",
+        subtitle: "Where Experience Meets Innovation",
         content: [
-          "My first professional role taught me that engineering isn't just about writing code – it's about understanding business needs, collaborating with diverse teams, and delivering value consistently.",
-          "I've had the privilege of working on projects ranging from e-commerce platforms handling thousands of transactions to AI-powered applications that automate complex workflows.",
-        ],
-        highlight:
-          "Led development of a system that reduced manual processing time by 70%, directly impacting the daily workflow of over 100 team members.",
-        emotion: "achievement",
-        visualCue: "💼",
-      },
-      {
-        id: "specialization",
-        title: "Finding My Niche",
-        subtitle: "The AI Revolution",
-        content: [
-          "The emergence of generative AI opened up new possibilities for solving complex problems. I dove deep into this space, exploring how AI can augment human capabilities rather than replace them.",
-          "Working with large language models, RAG systems, and prompt engineering has shown me the incredible potential of AI when combined with thoughtful engineering and user-centered design.",
+          "At Impel AI, everything clicked. Years of enterprise experience met cutting-edge AI, and suddenly I was building systems that don't just automate tasks—they think ahead. Our dealership AI reduces scheduling time by 80% while improving customer satisfaction.",
+          "The IBM TechXchange Hackathon was validation: our financial compliance AI proved that experience-driven engineering can tame even the most complex AI challenges.",
         ],
         anecdote:
-          "Building my first RAG-powered application felt like giving a computer the ability to have context-aware conversations. The possibilities seemed endless.",
-        emotion: "challenge",
-        visualCue: "🤖",
+          "When our AI prevented a major scheduling conflict before it happened, saving a dealership thousands in lost revenue—that's when I knew we'd built something truly intelligent.",
+        emotion: "innovation",
+        visualCue: "🧠",
       },
     ],
 
     currentState: {
       id: "current-state",
-      title: "Where I Am Today",
+      title: "The Syracuse Chapter",
       content: [
-        "Today, I'm a full-stack developer with a specialization in AI-powered solutions. I work across the entire technology stack, from crafting responsive user interfaces to designing scalable backend systems and integrating cutting-edge AI capabilities.",
-        "My approach combines technical excellence with user empathy. I believe the best solutions are those that feel invisible to users – they just work, and they work beautifully.",
-        "I'm particularly passionate about the intersection of AI and user experience, exploring how we can make powerful technologies accessible and helpful for everyone.",
+        "Now pursuing my Master's at Syracuse University, I'm not just learning—I'm synthesizing everything. The Mumbai hustle, the enterprise precision, the AI innovation—all converging into something bigger.",
+        "I build systems that businesses bet their growth on. React interfaces that users love, Python backends that scale effortlessly, AI that makes complex decisions transparently. The kid from Mumbai is now engineering the future.",
       ],
       highlight:
-        "Currently focused on building AI-enhanced applications that democratize access to advanced capabilities while maintaining user privacy and control.",
-      emotion: "reflection",
-      visualCue: "🎯",
+        "From Mumbai's constraints to Syracuse's possibilities—every challenge shaped the engineer I am today.",
+      emotion: "confidence",
+      visualCue: "🎓",
     },
 
     futureAspirations: {
       id: "future-aspirations",
-      title: "Looking Ahead",
+      title: "The Next Chapter",
       content: [
-        "The future excites me. I see a world where AI and human creativity work together to solve our biggest challenges – from climate change to education accessibility.",
-        "I want to be part of building that future. Whether it's through open-source contributions, mentoring other developers, or creating products that make a real difference, I'm committed to using technology as a force for good.",
-        "My goal is to continue growing as both a technologist and a problem-solver, always staying curious and always putting people first.",
+        "The journey from Mumbai to Syracuse taught me that great engineering transcends geography. I want to build AI systems that don't just serve Silicon Valley—they empower people everywhere, solving problems I first witnessed on Mumbai's streets.",
+        "The future I'm building is one where technology adapts to humans, not the other way around.",
       ],
       anecdote:
-        "Every line of code I write is a small bet on a better future. That's what keeps me motivated.",
-      emotion: "growth",
+        "Every line of code I write today carries the dreams of that Mumbai kid who believed technology could change everything.",
+      emotion: "vision",
       visualCue: "🌟",
     },
   },
 
   personalJourney: [
     {
-      phase: "Discovery",
-      title: "First Lines of Code",
-      period: "2015-2019",
+      phase: "Innovation Foundation",
+      title: "Award-Winning Creator",
+      period: "2016 - 2020",
       description:
-        "University years focused on building strong programming fundamentals and discovering my passion for web development.",
+        "Built strong technical fundamentals at University of Mumbai while proving innovation ability through award-winning game development and academic excellence.",
       challenge:
-        "Learning to think in code and understanding how to translate ideas into working software.",
+        "Balancing rigorous computer science coursework with hands-on development that people would actually use and love.",
       growth:
-        "Developed problem-solving mindset and learned the importance of user-centered design.",
+        "Learned that technical skill without user impact is incomplete—developed my philosophy of building technology that genuinely improves people's lives.",
       keyMoment:
-        "Built first full-stack application - a task management system for my student organization.",
+        "Winning first place at Teknack Game Development Hackathon with 'Upside Down' game, achieving 1,000+ downloads and proving I could build products people actually wanted to use.",
     },
     {
-      phase: "Foundation",
-      title: "Professional Growth",
-      period: "2019-2022",
+      phase: "Enterprise Excellence",
+      title: "Business Impact Driver",
+      period: "2020 - 2023",
       description:
-        "Early career focused on mastering modern web technologies and understanding business requirements.",
+        "Mastered enterprise-scale system development at Xoriant Solutions and Tech Prescient, building platforms that drove measurable business outcomes and revenue growth.",
       challenge:
-        "Balancing technical excellence with business needs and tight deadlines.",
+        "Scaling from individual contributor to technical leader while delivering systems that balance innovation with enterprise reliability requirements.",
       growth:
-        "Learned to communicate technical concepts to non-technical stakeholders and lead small development teams.",
+        "Developed expertise in architecting systems that don't just work technically—they drive business results, from 4x platform adoption to $100K+ revenue enablement.",
       keyMoment:
-        "Led my first major project - an e-commerce platform that increased client revenue by 40%.",
+        "Leading the Vonage enterprise portal that achieved 400% platform adoption growth, proving I could build systems that users and businesses both love.",
     },
     {
-      phase: "Specialization",
-      title: "AI Integration",
-      period: "2022-Present",
+      phase: "AI Innovation Leadership",
+      title: "Intelligent Automation Pioneer",
+      period: "2023 - Present",
       description:
-        "Diving deep into AI/ML integration, focusing on practical applications that enhance user experiences.",
+        "Advancing Computer Science studies at Syracuse University while pioneering GenAI solutions at Impel AI, demonstrating leadership in the most cutting-edge areas of technology.",
       challenge:
-        "Staying current with rapidly evolving AI landscape while building production-ready systems.",
+        "Integrating breakthrough AI technologies with enterprise-grade reliability while maintaining the performance and security standards of production systems.",
       growth:
-        "Developed expertise in AI engineering and learned to bridge the gap between AI research and practical applications.",
+        "Became an expert in LangChain, RAG systems, and prompt engineering while proving these technologies can deliver transformational business impact at scale.",
       keyMoment:
-        "Successfully deployed first LLM-powered application that automated 60% of customer service inquiries.",
+        "Automating 70% of dealership workflows with GenAI pipelines and winning recognition at IBM TechXchange watsonx Hackathon—establishing myself as a leader in practical AI implementation.",
     },
   ],
 
   workPhilosophy: [
     {
-      principle: "User-Centric Design",
+      principle: "Impact-Driven Innovation",
       description:
-        "Every technical decision should ultimately serve the user's needs and improve their experience.",
+        "Every technical decision should ultimately create measurable value—whether that's saving time, generating revenue, or fundamentally improving how people work.",
       example:
-        "I always start by understanding the problem from the user's perspective before diving into technical solutions.",
-      icon: "👥",
+        "Built LangChain RAG pipelines that automated 70% of dealership workflows while reducing scheduling time by 80%, proving AI can deliver both efficiency and user experience improvements.",
+      icon: "target",
     },
     {
-      principle: "Continuous Learning",
+      principle: "Performance as a Feature",
       description:
-        "Technology evolves rapidly, and staying curious is essential for building relevant solutions.",
+        "Speed and reliability aren't just technical requirements—they're user experience features that can make or break adoption and business success.",
       example:
-        "I dedicate time each week to exploring new technologies and contributing to open-source projects.",
-      icon: "📚",
+        "Improved API response times by 42% and reduced communication latency by 66%, directly contributing to 19% increase in appointment confirmations and better customer satisfaction.",
+      icon: "zap",
     },
     {
-      principle: "Collaborative Excellence",
+      principle: "Scalable Problem-Solving",
       description:
-        "The best solutions emerge when diverse perspectives come together with shared goals.",
+        "Build solutions that grow with the problem—from supporting thousands of users today to millions tomorrow, while maintaining quality and reliability.",
       example:
-        "I believe in clear communication, knowledge sharing, and lifting up fellow developers.",
-      icon: "🤝",
+        "Designed microservices handling 100+ data sources and 5K+ concurrent data points, plus multi-tenant RBAC systems that scale from startups to enterprise clients.",
+      icon: "layers",
     },
     {
-      principle: "Quality Over Speed",
+      principle: "Human-Centered AI",
       description:
-        "Well-crafted code that's maintainable and scalable serves everyone better in the long run.",
+        "The best AI systems don't replace human judgment—they amplify human capabilities while maintaining transparency, control, and ethical considerations.",
       example:
-        "I prioritize clean architecture, comprehensive testing, and thoughtful documentation.",
-      icon: "⚡",
+        "Created AI-powered compliance assistant for financial services that augments regulatory expertise rather than replacing it, ensuring humans remain in control of critical decisions.",
+      icon: "brain",
     },
   ],
 
   workInfo: {
-    title: "My Work",
+    title: "Work",
     description:
-      "I specialize in building full-stack web applications with a focus on user experience and AI integration.",
+      "Currently working as a Software Engineer Intern at Impel AI, where I specialize in building GenAI solutions for the automotive industry. My focus is on LangChain-powered automation systems, microservices architecture, and cloud infrastructure that drives real business impact.",
     highlights: [
-      "Full-stack development with React, Next.js, Node.js, and Python",
-      "AI/ML integration using LangChain, OpenAI APIs, and custom models",
-      "Cloud architecture and deployment on AWS and Vercel",
-      "Database design and optimization (PostgreSQL, MongoDB)",
-      "API design and microservices architecture",
+      "Automated 70% of dealership service appointment workflows",
+      "Improved communication latency by 66% with asynchronous messaging",
+      "Built LLM-based validation middleware with 32% accuracy improvement",
+      "Increased appointment confirmations by 19% through AI personalization",
     ],
     approach:
-      "I believe in building solutions that are not just functional, but delightful to use. Every project starts with understanding the real problem and ends with measuring real impact.",
+      "I combine cutting-edge AI technologies with proven software engineering practices to build systems that are not only innovative but also reliable, scalable, and maintainable.",
     link: "/resume",
   },
 
   projectsInfo: {
-    title: "My Projects",
+    title: "Projects",
     description:
-      "A collection of applications that solve real problems, from AI-powered tools to full-stack web applications.",
+      "I love building innovative solutions that solve real-world problems. From AI-powered career platforms to enterprise automation systems, my projects showcase the intersection of cutting-edge technology and practical application.",
     passion:
-      "Each project represents a learning journey and an opportunity to explore new technologies while solving meaningful problems.",
+      "My projects reflect my passion for AI innovation, performance optimization, and creating technology that makes a meaningful difference in people's lives and business operations.",
     link: "/projects",
   },
 
   offlineInfo: {
-    title: "Beyond the Code",
+    title: "Beyond the Screen",
     description:
-      "When I'm not coding, I'm usually exploring ideas that eventually find their way back into my work.",
+      "Exploring the world, one destination at a time—each journey bringing fresh perspectives to my work.",
     interests: [
       {
-        activity: "Technical Writing",
+        activity: "Global Explorer",
         description:
-          "Sharing knowledge through blog posts and tutorials about web development and AI integration.",
+          "From Niagara's thundering falls to NYC's electric energy, Boston's historic charm to Vegas's innovative entertainment—each destination teaches me something new about human experience and technology's role in connecting us.",
         connection:
-          "Writing helps me clarify complex concepts and stay connected with the developer community.",
-      },
-      {
-        activity: "Open Source",
-        description:
-          "Contributing to projects that make development easier and more accessible for everyone.",
-        connection:
-          "Open source teaches me about code quality, collaboration, and building for diverse use cases.",
-      },
-      {
-        activity: "Mentoring",
-        description:
-          "Helping new developers navigate their journey in tech through informal mentoring and code reviews.",
-        connection:
-          "Teaching others helps me see familiar problems from fresh perspectives.",
-      },
-      {
-        activity: "Reading",
-        description:
-          "Exploring topics ranging from system design to psychology and design thinking.",
-        connection:
-          "Understanding human behavior and mental models makes me a better product developer.",
+          "Travel shapes how I build—creating software that works for everyone, everywhere.",
       },
     ],
   },
@@ -311,11 +325,11 @@ export const aboutPageContent: AboutPageContent = {
   connectInfo: {
     title: "Let's Connect",
     description:
-      "I'm always excited to discuss technology, share ideas, or explore collaboration opportunities.",
+      "I'm always interested in discussing new opportunities, innovative projects, or just talking about the latest developments in AI and software engineering.",
     invitation:
-      "Whether you're working on an interesting project, need technical advice, or just want to chat about the future of web development, I'd love to hear from you.",
+      "Feel free to reach out – I'd love to hear about your projects and explore how we can collaborate or create something amazing together.",
     preferredChannels: [
-      "Email for detailed discussions",
+      "Email for opportunities and detailed discussions",
       "LinkedIn for professional networking",
       "GitHub for code collaboration",
     ],

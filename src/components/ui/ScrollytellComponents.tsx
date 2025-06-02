@@ -25,18 +25,28 @@ export const ReadingProgress: React.FC<ReadingProgressProps> = ({
 
 // Story Section Component with Narrative Design
 interface StorySectionProps {
+  id: string;
   title: string;
   subtitle?: string;
   content: string[];
   anecdote?: string;
   highlight?: string;
-  emotion?: "curiosity" | "challenge" | "growth" | "achievement" | "reflection";
+  emotion?:
+    | "curiosity"
+    | "challenge"
+    | "growth"
+    | "achievement"
+    | "reflection"
+    | "innovation"
+    | "confidence"
+    | "vision";
   visualCue?: string;
   className?: string;
   delay?: number;
 }
 
 export const StorySection: React.FC<StorySectionProps> = ({
+  id,
   title,
   subtitle,
   content,
@@ -53,106 +63,111 @@ export const StorySection: React.FC<StorySectionProps> = ({
   const getEmotionStyles = (emotion?: string) => {
     switch (emotion) {
       case "curiosity":
-        return "border-l-blue-400 bg-blue-50/50 dark:bg-blue-900/10";
+        return "border-l-blue-400/30 bg-blue-50/20 dark:bg-blue-900/5";
       case "challenge":
-        return "border-l-orange-400 bg-orange-50/50 dark:bg-orange-900/10";
+        return "border-l-orange-400/30 bg-orange-50/20 dark:bg-orange-900/5";
       case "growth":
-        return "border-l-green-400 bg-green-50/50 dark:bg-green-900/10";
+        return "border-l-green-400/30 bg-green-50/20 dark:bg-green-900/5";
       case "achievement":
-        return "border-l-purple-400 bg-purple-50/50 dark:bg-purple-900/10";
+        return "border-l-purple-400/30 bg-purple-50/20 dark:bg-purple-900/5";
       case "reflection":
-        return "border-l-indigo-400 bg-indigo-50/50 dark:bg-indigo-900/10";
+        return "border-l-indigo-400/30 bg-indigo-50/20 dark:bg-indigo-900/5";
+      case "innovation":
+        return "border-l-pink-400/30 bg-pink-50/20 dark:bg-pink-900/5";
+      case "confidence":
+        return "border-l-teal-400/30 bg-teal-50/20 dark:bg-teal-900/5";
+      case "vision":
+        return "border-l-lime-400/30 bg-lime-50/20 dark:bg-lime-900/5";
       default:
-        return "border-l-primary bg-primary/5";
+        return "";
     }
   };
 
   return (
-    <motion.section
+    <motion.div
       ref={ref}
+      id={id}
+      className={`space-y-6 ${className}`}
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8, delay: delay * 0.1, ease: "easeOut" }}
-      className={`mb-16 scroll-mt-24 ${className}`}
     >
-      <div className="space-y-6">
-        {/* Visual Cue and Title */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-          transition={{ duration: 0.6, delay: delay * 0.1 + 0.2 }}
-          className="flex items-center space-x-4"
-        >
-          {visualCue && (
-            <span className="text-3xl" role="img" aria-label="Visual cue">
-              {visualCue}
-            </span>
+      {/* Visual Cue and Title */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+        transition={{ duration: 0.6, delay: delay * 0.1 + 0.2 }}
+        className="flex items-center space-x-4"
+      >
+        {visualCue && (
+          <span className="text-3xl" role="img" aria-label="Visual cue">
+            {visualCue}
+          </span>
+        )}
+        <div>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="text-lg text-muted font-medium">{subtitle}</p>
           )}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-              {title}
-            </h2>
-            {subtitle && (
-              <p className="text-lg text-muted font-medium">{subtitle}</p>
-            )}
+        </div>
+      </motion.div>
+
+      {/* Main Content */}
+      <div className="space-y-4">
+        {content.map((paragraph, index) => (
+          <motion.p
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{
+              duration: 0.6,
+              delay: delay * 0.1 + 0.3 + index * 0.1,
+              ease: "easeOut",
+            }}
+            className="text-lg leading-relaxed text-foreground/90"
+          >
+            {paragraph}
+          </motion.p>
+        ))}
+      </div>
+
+      {/* Highlight */}
+      {highlight && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={
+            isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }
+          }
+          transition={{ duration: 0.6, delay: delay * 0.1 + 0.5 }}
+          className={`p-6 rounded-lg border-l-4 ${getEmotionStyles(
+            emotion
+          )} backdrop-blur-sm`}
+        >
+          <div className="flex items-start space-x-3">
+            <Heart className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+            <p className="text-base font-medium text-foreground/90 italic">
+              {highlight}
+            </p>
           </div>
         </motion.div>
+      )}
 
-        {/* Main Content */}
-        <div className="space-y-4">
-          {content.map((paragraph, index) => (
-            <motion.p
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{
-                duration: 0.6,
-                delay: delay * 0.1 + 0.3 + index * 0.1,
-                ease: "easeOut",
-              }}
-              className="text-lg leading-relaxed text-foreground/90"
-            >
-              {paragraph}
-            </motion.p>
-          ))}
-        </div>
-
-        {/* Highlight */}
-        {highlight && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={
-              isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }
-            }
-            transition={{ duration: 0.6, delay: delay * 0.1 + 0.5 }}
-            className={`p-6 rounded-lg border-l-4 ${getEmotionStyles(
-              emotion
-            )} backdrop-blur-sm`}
-          >
-            <div className="flex items-start space-x-3">
-              <Heart className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-              <p className="text-base font-medium text-foreground/90 italic">
-                {highlight}
-              </p>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Anecdote */}
-        {anecdote && (
-          <motion.blockquote
-            initial={{ opacity: 0, x: 20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-            transition={{ duration: 0.6, delay: delay * 0.1 + 0.6 }}
-            className="border-l-4 border-accent pl-6 py-4 bg-accent/5 rounded-r-lg"
-          >
-            <p className="text-base italic text-foreground/80 leading-relaxed">
-              &ldquo;{anecdote}&rdquo;
-            </p>
-          </motion.blockquote>
-        )}
-      </div>
-    </motion.section>
+      {/* Anecdote */}
+      {anecdote && (
+        <motion.blockquote
+          initial={{ opacity: 0, x: 20 }}
+          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+          transition={{ duration: 0.6, delay: delay * 0.1 + 0.6 }}
+          className="border-l-4 border-accent pl-6 py-4 bg-accent/5 rounded-r-lg"
+        >
+          <p className="text-base italic text-foreground/80 leading-relaxed">
+            &ldquo;{anecdote}&rdquo;
+          </p>
+        </motion.blockquote>
+      )}
+    </motion.div>
   );
 };
 

@@ -112,71 +112,153 @@ export const projectCategories: Record<string, ProjectCategory> = {
 
 export const projects: Project[] = [
   {
-    id: "jobfit-ai",
-    title: "JobFit AI - Your Career Copilot",
+    id: "upside-down-game",
+    title: "Upside Down",
     shortDescription:
-      "Serverless LangChain RAG pipeline on Firebase for LLM-driven resume feedback, ATS scoring, and career gap analysis.",
-    fullDescription: `JobFit AI is an innovative career guidance platform that leverages cutting-edge AI technology to help job seekers optimize their resumes and improve their career prospects. Built using a serverless LangChain RAG (Retrieval-Augmented Generation) pipeline on Firebase, the platform provides intelligent resume feedback, ATS (Applicant Tracking System) scoring, and comprehensive career gap analysis.
-
-    The system improved resume match accuracy by 40% through sophisticated natural language processing and machine learning algorithms. By combining resume analysis with real-time job market data, JobFit AI delivers personalized recommendations that help users align their skills and experience with current industry demands.
-
-    The platform features a modern, responsive interface built with Next.js and integrates seamlessly with various job boards and career platforms to provide comprehensive career guidance.`,
+      "Award-winning endless runner game inspired by Stranger Things with dual-world gameplay mechanics",
+    fullDescription:
+      "An innovative endless runner game inspired by Netflix's Stranger Things where players can swipe to switch between two parallel worlds - the normal world and the Upside Down. Players collect coins while dodging unique enemies in each dimension, creating an engaging dual-reality gaming experience that captivated over 1,000 players.",
     status: "completed",
-    category: "web-app",
+    category: "mobile-app",
     featured: true,
-    thumbnail: "/projects/jobfit-ai-thumb.jpg",
+    thumbnail: "/images/projects/upside-down-thumbnail.jpg",
     screenshots: [
-      "/projects/jobfit-ai-1.jpg",
-      "/projects/jobfit-ai-2.jpg",
-      "/projects/jobfit-ai-3.jpg",
+      "/images/projects/upside-down-gameplay-1.jpg",
+      "/images/projects/upside-down-gameplay-2.jpg",
+      "/images/projects/upside-down-menu.jpg",
     ],
     technologies: [
-      { name: "LangChain", category: "backend" },
-      { name: "Firebase", category: "cloud" },
-      { name: "GPT-3.5", category: "backend" },
-      { name: "Next.js", category: "frontend" },
-      { name: "TypeScript", category: "frontend" },
-      { name: "Python", category: "backend" },
-      { name: "Serverless", category: "cloud" },
-      { name: "RAG", category: "backend" },
+      { name: "Unity", category: "tools", proficiency: 8 },
+      { name: "C#", category: "backend", proficiency: 7 },
+      { name: "Android", category: "mobile", proficiency: 7 },
+      { name: "iOS", category: "mobile", proficiency: 7 },
+      { name: "Game Design", category: "frontend", proficiency: 8 },
     ],
     features: [
       {
-        title: "Resume Analysis",
+        title: "Dual World Mechanics",
         description:
-          "AI-powered resume analysis with detailed feedback and suggestions",
-        icon: "document",
+          "Innovative swipe-to-switch gameplay between normal world and Upside Down dimensions",
+        icon: "layers",
       },
       {
-        title: "ATS Scoring",
+        title: "Endless Runner Gameplay",
         description:
-          "Comprehensive ATS compatibility scoring and optimization recommendations",
-        icon: "target",
-      },
-      {
-        title: "Career Gap Analysis",
-        description:
-          "Identify and address career gaps with personalized recommendations",
-        icon: "analytics",
-      },
-      {
-        title: "Real-time Feedback",
-        description:
-          "Instant AI-driven feedback on resume content and formatting",
+          "Fast-paced infinite runner with progressively challenging obstacles and enemies",
         icon: "zap",
+      },
+      {
+        title: "Stranger Things Theme",
+        description:
+          "Authentic visual design and atmosphere inspired by the popular Netflix series",
+        icon: "film",
+      },
+      {
+        title: "Cross-Platform Release",
+        description:
+          "Deployed on both Google Play Store and Apple App Store with optimized performance",
+        icon: "smartphone",
       },
     ],
     challenges: [
-      "Implementing accurate resume parsing across different formats and layouts",
-      "Creating a robust RAG pipeline that maintains context across large datasets",
-      "Optimizing serverless functions for consistent performance and cost efficiency",
-      "Developing accurate ATS scoring algorithms that match real-world systems",
+      "Creating smooth world-switching animations without performance drops",
+      "Balancing difficulty progression across two different game dimensions",
+      "Optimizing graphics and physics for mobile devices with varying specs",
+      "Implementing engaging gameplay mechanics that felt intuitive to players",
     ],
     solutions: [
-      "Built custom document parsing pipeline using LangChain's document loaders and text splitters",
-      "Implemented vector embeddings with efficient similarity search for relevant context retrieval",
-      "Optimized Firebase Cloud Functions with smart caching and connection pooling",
-      "Trained models on real ATS data and continuously refined scoring algorithms",
+      "Developed efficient rendering system that pre-loads both worlds for seamless transitions",
+      "Created adaptive difficulty algorithm that adjusts based on player performance and world switching frequency",
+      "Implemented LOD (Level of Detail) system and optimized assets for different device capabilities",
+      "Conducted extensive user testing to refine swipe gestures and game feedback systems",
+    ],
+    links: [
+      {
+        type: "case-study",
+        url: "https://teknack.in/hall-of-fame/",
+        label: "Teknack Hall of Fame",
+      },
+      {
+        type: "documentation",
+        url: "https://teknack.in/about/",
+        label: "ACM DBIT Gaming Studio",
+      },
+    ],
+    startDate: "2018-10-01",
+    endDate: "2019-03-01",
+    teamSize: 2,
+    role: "Co-Developer & Game Designer",
+    metrics: [
+      { label: "Downloads", value: "1,000+" },
+      { label: "Award", value: "1st Place" },
+      { label: "Platforms", value: "2" },
+      { label: "Development Time", value: "5 months" },
+    ],
+  },
+  {
+    id: "jobfit-ai",
+    title: "JobFit AI",
+    shortDescription:
+      "LangChain-powered career platform that matches job seekers with opportunities using advanced AI",
+    fullDescription:
+      "An intelligent career platform that leverages LangChain and advanced language models to analyze resumes, job descriptions, and career goals to provide personalized job recommendations. The system uses RAG (Retrieval-Augmented Generation) to match candidates with opportunities based on skills, experience, and career aspirations, while providing actionable feedback for improving job application success rates.",
+    status: "completed",
+    category: "web-app",
+    featured: true,
+    thumbnail: "/images/projects/jobfit-ai-thumbnail.jpg",
+    screenshots: [
+      "/images/projects/jobfit-ai-dashboard.jpg",
+      "/images/projects/jobfit-ai-matching.jpg",
+      "/images/projects/jobfit-ai-analytics.jpg",
+    ],
+    technologies: [
+      { name: "LangChain", category: "backend", proficiency: 9 },
+      { name: "Python", category: "backend", proficiency: 9 },
+      { name: "FastAPI", category: "backend", proficiency: 8 },
+      { name: "React", category: "frontend", proficiency: 9 },
+      { name: "TypeScript", category: "frontend", proficiency: 9 },
+      { name: "PostgreSQL", category: "database", proficiency: 8 },
+      { name: "Redis", category: "database", proficiency: 8 },
+      { name: "AWS Lambda", category: "cloud", proficiency: 8 },
+      { name: "OpenAI GPT", category: "backend", proficiency: 8 },
+    ],
+    features: [
+      {
+        title: "AI-Powered Job Matching",
+        description:
+          "Uses LangChain and vector embeddings to match candidates with relevant job opportunities",
+        icon: "target",
+      },
+      {
+        title: "Resume Analysis & Optimization",
+        description:
+          "Provides detailed feedback and suggestions for improving resume effectiveness",
+        icon: "file-text",
+      },
+      {
+        title: "Career Path Recommendations",
+        description:
+          "Suggests career progression paths based on skills and market demand",
+        icon: "trending-up",
+      },
+      {
+        title: "Real-time Market Insights",
+        description:
+          "Delivers up-to-date salary data and skill demand analytics",
+        icon: "bar-chart",
+      },
+    ],
+    challenges: [
+      "Ensuring accurate job-candidate matching with complex skill requirements",
+      "Processing and analyzing large volumes of job posting data in real-time",
+      "Creating interpretable AI recommendations that users can understand and act upon",
+      "Maintaining data privacy while providing personalized recommendations",
+    ],
+    solutions: [
+      "Implemented semantic search using vector embeddings and cosine similarity for nuanced matching",
+      "Built efficient data pipeline with Redis caching and background job processing",
+      "Developed explainable AI features that show reasoning behind recommendations",
+      "Implemented privacy-first architecture with data anonymization and user consent management",
     ],
     links: [
       {
@@ -189,273 +271,344 @@ export const projects: Project[] = [
         url: "https://github.com/officialYogesh/jobfit-ai",
         label: "Source Code",
       },
+      {
+        type: "case-study",
+        url: "https://iamyogesh.com/projects/jobfit-ai",
+        label: "Case Study",
+      },
     ],
-    startDate: "2025-01-01",
-    endDate: "2025-03-01",
+    startDate: "2024-01-15",
+    endDate: "2024-05-30",
     teamSize: 1,
-    role: "Full Stack Developer",
+    role: "Full-Stack Developer & AI Engineer",
     metrics: [
-      { label: "Resume Match Accuracy", value: "40% improvement" },
-      { label: "Response Time", value: "< 2 seconds" },
-      { label: "User Satisfaction", value: "4.8/5 stars" },
+      { label: "Accuracy", value: "87%" },
+      { label: "User Satisfaction", value: "4.6/5" },
+      { label: "Job Matches", value: "10K+" },
+      { label: "Processing Speed", value: "<3s" },
     ],
   },
   {
-    id: "covid-19-india-tracker",
-    title: "Covid-19 India Tracker",
+    id: "dealership-automation-platform",
+    title: "GenAI Dealership Automation Platform",
     shortDescription:
-      "A comprehensive React-based dashboard for tracking COVID-19 statistics across India with real-time data visualization and state-wise analysis.",
-    fullDescription: `A comprehensive React-based dashboard designed to provide real-time COVID-19 statistics across India. 
-    The application features interactive maps, state-wise data analysis, and trend visualization to help users understand 
-    the pandemic's impact across different regions. Built with modern web technologies and optimized for performance, 
-    the dashboard processes large datasets and presents them in an intuitive, accessible interface.
-    
-    The project was developed during the peak of the pandemic to provide reliable, up-to-date information to the public, 
-    featuring responsive design for mobile users and accessibility compliance for users with disabilities.`,
+      "LangChain-powered automation system for automotive service workflows",
+    fullDescription:
+      "Enterprise-grade conversational AI platform that automates dealership service appointment workflows using advanced LLM integration, reducing manual processes by 70% and improving customer experience.",
     status: "completed",
     category: "web-app",
     featured: true,
-    thumbnail: "/projects/covid-tracker-thumb.jpg",
+    thumbnail: "/projects/dealership-automation-thumbnail.jpg",
     screenshots: [
-      "/projects/covid-tracker-1.jpg",
-      "/projects/covid-tracker-2.jpg",
-      "/projects/covid-tracker-3.jpg",
+      "/projects/dealership-automation-1.jpg",
+      "/projects/dealership-automation-2.jpg",
     ],
     technologies: [
-      { name: "React", category: "frontend" },
-      { name: "JavaScript", category: "frontend" },
-      { name: "Chart.js", category: "frontend" },
-      { name: "Material-UI", category: "frontend" },
-      { name: "Node.js", category: "backend" },
-      { name: "Express.js", category: "backend" },
-      { name: "MongoDB", category: "database" },
+      { name: "LangChain", category: "backend", proficiency: 9 },
+      { name: "Python", category: "backend", proficiency: 9 },
+      { name: "AWS SQS", category: "cloud", proficiency: 8 },
+      { name: "AWS Lambda", category: "cloud", proficiency: 8 },
+      { name: "Docker", category: "tools", proficiency: 8 },
+      { name: "PostgreSQL", category: "database", proficiency: 8 },
     ],
     features: [
       {
-        title: "Interactive Maps",
+        title: "Automated Workflow Management",
         description:
-          "State-wise interactive maps showing COVID-19 data distribution",
-        icon: "map",
+          "Intelligent automation of 70% of dealership service appointment processes",
       },
-      {
-        title: "Real-time Data Updates",
-        description: "Automatic data synchronization every 15 minutes",
-        icon: "refresh",
-      },
-      {
-        title: "Responsive Design",
-        description: "Optimized for all device sizes and screen orientations",
-        icon: "smartphone",
-      },
-      {
-        title: "Data Visualization",
-        description: "Charts and graphs for trend analysis and historical data",
-        icon: "bar-chart",
-      },
-    ],
-    challenges: [
-      "Processing large datasets efficiently for real-time updates",
-      "Creating accessible charts and maps for users with disabilities",
-      "Handling inconsistent data formats from multiple government APIs",
-      "Optimizing performance for mobile devices with limited bandwidth",
-    ],
-    solutions: [
-      "Implemented data caching and incremental updates to reduce API calls",
-      "Added ARIA labels and keyboard navigation for all interactive elements",
-      "Built a data normalization layer to standardize various API responses",
-      "Used lazy loading and image optimization for better mobile performance",
-    ],
-    links: [
-      {
-        type: "demo",
-        url: "https://covid-tracker-demo.vercel.app",
-        label: "Live Demo",
-      },
-      {
-        type: "github",
-        url: "https://github.com/officialYogesh/covid-tracker",
-        label: "Source Code",
-      },
-    ],
-    startDate: "2020-04-01",
-    endDate: "2020-08-15",
-    teamSize: 1,
-    role: "Full Stack Developer",
-    metrics: [
-      { label: "Daily Active Users", value: "10,000+" },
-      { label: "Page Load Time", value: "< 2 seconds" },
-      { label: "API Response Time", value: "< 500ms" },
-    ],
-  },
-  {
-    id: "ecommerce-platform",
-    title: "E-Commerce Platform",
-    shortDescription:
-      "Full-stack e-commerce solution with modern payment integration, inventory management, and customer analytics.",
-    fullDescription: `A comprehensive e-commerce platform built with modern web technologies, featuring a complete 
-    shopping experience from product browsing to checkout. The platform includes advanced features like inventory 
-    management, order tracking, customer analytics, and multi-payment gateway integration.
-    
-    The system is designed to handle high traffic loads with optimized database queries, caching strategies, 
-    and CDN integration. It includes both customer-facing features and a comprehensive admin dashboard for 
-    business management.`,
-    status: "completed",
-    category: "web-app",
-    featured: true,
-    thumbnail: "/projects/ecommerce-thumb.jpg",
-    screenshots: [
-      "/projects/ecommerce-1.jpg",
-      "/projects/ecommerce-2.jpg",
-      "/projects/ecommerce-3.jpg",
-      "/projects/ecommerce-4.jpg",
-    ],
-    technologies: [
-      { name: "Next.js", category: "frontend" },
-      { name: "TypeScript", category: "frontend" },
-      { name: "PostgreSQL", category: "database" },
-      { name: "Tailwind CSS", category: "frontend" },
-      { name: "Node.js", category: "backend" },
-      { name: "Express.js", category: "backend" },
-      { name: "Redis", category: "database" },
-    ],
-    features: [
-      {
-        title: "Payment Processing",
-        description: "Secure payment integration with Stripe and PayPal",
-        icon: "credit-card",
-      },
-      {
-        title: "Admin Dashboard",
-        description:
-          "Comprehensive dashboard for inventory and order management",
-        icon: "dashboard",
-      },
-      {
-        title: "Customer Analytics",
-        description: "Detailed analytics and reporting for business insights",
-        icon: "analytics",
-      },
-      {
-        title: "Mobile Optimized",
-        description: "Fully responsive design optimized for mobile shopping",
-        icon: "smartphone",
-      },
-    ],
-    challenges: [
-      "Implementing secure payment processing with multiple gateways",
-      "Building a scalable inventory management system",
-      "Creating real-time order tracking functionality",
-      "Optimizing database performance for large product catalogs",
-    ],
-    solutions: [
-      "Integrated multiple payment providers with fallback mechanisms",
-      "Implemented event-driven architecture for inventory updates",
-      "Built WebSocket connections for real-time order status updates",
-      "Used database indexing and query optimization for better performance",
-    ],
-    links: [
-      {
-        type: "demo",
-        url: "https://ecommerce-demo.vercel.app",
-        label: "Live Demo",
-      },
-      {
-        type: "github",
-        url: "https://github.com/officialYogesh/ecommerce-platform",
-        label: "Source Code",
-      },
-    ],
-    startDate: "2023-01-15",
-    endDate: "2023-06-30",
-    teamSize: 3,
-    role: "Lead Developer",
-    metrics: [
-      { label: "Conversion Rate", value: "3.2%" },
-      { label: "Page Load Speed", value: "< 1.5s" },
-      { label: "Orders Processed", value: "1,500+" },
-    ],
-  },
-  {
-    id: "realtime-chat-app",
-    title: "Real-Time Chat Application",
-    shortDescription:
-      "WebSocket-based chat application with room management, file sharing, and real-time notifications.",
-    fullDescription: `A modern real-time chat application built with WebSocket technology, supporting multiple chat rooms, 
-    private messaging, and file sharing capabilities. The application features real-time notifications, message encryption, 
-    and user presence indicators.
-    
-    The platform supports both one-on-one conversations and group chats, with features like message reactions, 
-    typing indicators, and message history. Built with scalability in mind to handle thousands of concurrent users.`,
-    status: "in-progress",
-    category: "web-app",
-    featured: true,
-    thumbnail: "/projects/chat-app-thumb.jpg",
-    screenshots: [
-      "/projects/chat-app-1.jpg",
-      "/projects/chat-app-2.jpg",
-      "/projects/chat-app-3.jpg",
-    ],
-    technologies: [
-      { name: "React", category: "frontend" },
-      { name: "Node.js", category: "backend" },
-      { name: "Socket.io", category: "backend" },
-      { name: "MongoDB", category: "database" },
-      { name: "Express.js", category: "backend" },
-      { name: "TypeScript", category: "frontend" },
-    ],
-    features: [
       {
         title: "Real-time Messaging",
-        description: "Instant message delivery using WebSocket connections",
-        icon: "message-circle",
+        description:
+          "Asynchronous messaging system with 66% latency improvement",
       },
       {
-        title: "File Uploads",
-        description: "Support for image, document, and media file sharing",
-        icon: "upload",
+        title: "Multi-channel Communication",
+        description:
+          "Integrated SMS and email channels with dead-letter queue handling",
       },
       {
-        title: "User Authentication",
-        description: "Secure user registration and authentication system",
-        icon: "shield",
-      },
-      {
-        title: "Group Chats",
-        description: "Create and manage group conversations and channels",
-        icon: "users",
+        title: "LLM-based Validation",
+        description:
+          "Entity extraction and intent classification with 32% accuracy improvement",
       },
     ],
     challenges: [
-      "Handling high-frequency real-time message updates efficiently",
-      "Implementing secure file upload and storage system",
-      "Managing user presence and connection states across multiple devices",
-      "Building scalable WebSocket infrastructure for concurrent users",
+      "Integrating with legacy dealership management systems",
+      "Ensuring real-time performance across multiple communication channels",
+      "Building reliable LLM-based validation middleware",
+      "Handling high-concurrency scenarios with message queues",
     ],
     solutions: [
-      "Implemented message queuing and batching for optimal performance",
-      "Built secure file upload with virus scanning and size limitations",
-      "Created robust connection management with automatic reconnection",
-      "Used horizontal scaling with Socket.io cluster adapter for Redis",
+      "Developed robust API adapters for DMS integration",
+      "Implemented asynchronous messaging with AWS SQS and DLQ",
+      "Created custom LLM validation pipeline with error handling",
+      "Designed event-driven architecture for scalable message processing",
     ],
     links: [
       {
-        type: "demo",
-        url: "https://chat-app-demo.vercel.app",
-        label: "Live Demo",
-      },
-      {
-        type: "github",
-        url: "https://github.com/officialYogesh/chat-application",
-        label: "Source Code",
+        type: "case-study",
+        url: "https://impel.ai/case-studies/dealership-automation",
+        label: "View Case Study",
       },
     ],
-    startDate: "2024-03-01",
-    teamSize: 2,
-    role: "Full Stack Developer",
+    startDate: "2024-05-01",
+    endDate: "2025-05-01",
+    teamSize: 4,
+    role: "Senior Software Engineer - GenAI",
     metrics: [
-      { label: "Concurrent Users", value: "500+" },
-      { label: "Message Latency", value: "< 50ms" },
-      { label: "Uptime", value: "99.9%" },
+      {
+        label: "Workflow Automation",
+        value: "70% automated",
+      },
+      {
+        label: "Scheduling Time Reduction",
+        value: "80% faster",
+      },
+      {
+        label: "Communication Latency",
+        value: "66% improvement",
+      },
+      {
+        label: "Appointment Confirmations",
+        value: "19% increase",
+      },
+    ],
+  },
+  {
+    id: "vonage-enterprise-portal",
+    title: "Vonage Enterprise Admin Console",
+    shortDescription: "Role-based access control system with Okta integration",
+    fullDescription:
+      "Scalable RBAC admin console built with React/TypeScript and Okta integration, enabling secure multi-tenant user provisioning for enterprise communications platform with 4x adoption growth.",
+    status: "completed",
+    category: "web-app",
+    featured: true,
+    thumbnail: "/projects/vonage-portal-thumbnail.jpg",
+    screenshots: [
+      "/projects/vonage-portal-1.jpg",
+      "/projects/vonage-portal-2.jpg",
+    ],
+    technologies: [
+      { name: "React", category: "frontend", proficiency: 9 },
+      { name: "TypeScript", category: "frontend", proficiency: 9 },
+      { name: "Node.js", category: "backend", proficiency: 9 },
+      { name: "AWS", category: "cloud", proficiency: 8 },
+      { name: "PostgreSQL", category: "database", proficiency: 8 },
+    ],
+    features: [
+      {
+        title: "Role-Based Access Control",
+        description:
+          "Comprehensive RBAC system with granular permissions and role hierarchies",
+      },
+      {
+        title: "Okta Integration",
+        description:
+          "Seamless SSO and identity management with Okta authentication",
+      },
+      {
+        title: "Multi-tenant Architecture",
+        description:
+          "Secure isolation and data segregation for enterprise clients",
+      },
+      {
+        title: "Real-time Monitoring",
+        description: "Live user activity tracking and audit logging",
+      },
+    ],
+    challenges: [
+      "Designing secure multi-tenant architecture",
+      "Integrating complex Okta authentication flows",
+      "Building scalable RBAC with performance optimization",
+      "Ensuring enterprise-grade security compliance",
+    ],
+    solutions: [
+      "Implemented tenant isolation at database and application layers",
+      "Built robust Okta SDK integration with error handling",
+      "Optimized role queries with caching and indexing strategies",
+      "Applied security best practices and compliance frameworks",
+    ],
+    links: [
+      {
+        type: "case-study",
+        url: "https://techprescient.com/case-studies/vonage-enterprise-portal",
+        label: "View Case Study",
+      },
+    ],
+    startDate: "2022-03-01",
+    endDate: "2023-07-01",
+    teamSize: 6,
+    role: "Lead Frontend Developer",
+    metrics: [
+      {
+        label: "Platform Adoption",
+        value: "4x growth",
+      },
+      {
+        label: "User Onboarding",
+        value: "60% faster",
+      },
+      {
+        label: "Security Incidents",
+        value: "Zero breaches",
+      },
+    ],
+  },
+  {
+    id: "maritime-data-platform",
+    title: "Maritime Analytics Microservice",
+    shortDescription:
+      "Oceanographic data unification platform for vessel tracking",
+    fullDescription:
+      "Greenfield microservice that unifies 100+ oceanographic data sources for Maxar, enabling advanced vessel tracking and maritime analytics across 5K+ data points with projected $100K+ revenue impact.",
+    status: "completed",
+    category: "api",
+    featured: true,
+    thumbnail: "/projects/maritime-platform-thumbnail.jpg",
+    screenshots: ["/projects/maritime-platform-1.jpg"],
+    technologies: [
+      { name: "Python", category: "backend", proficiency: 9 },
+      { name: "FastAPI", category: "backend", proficiency: 8 },
+      { name: "PostgreSQL", category: "database", proficiency: 8 },
+      { name: "Redis", category: "database", proficiency: 8 },
+      { name: "Docker", category: "tools", proficiency: 8 },
+      { name: "AWS", category: "cloud", proficiency: 8 },
+    ],
+    features: [
+      {
+        title: "Data Source Integration",
+        description:
+          "Unified access to 100+ disparate oceanographic data sources",
+      },
+      {
+        title: "Real-time Analytics",
+        description: "Live vessel tracking and maritime pattern analysis",
+      },
+      {
+        title: "Scalable Architecture",
+        description:
+          "Microservice design supporting 5K+ concurrent data points",
+      },
+      {
+        title: "API Gateway",
+        description:
+          "High-performance REST API with rate limiting and authentication",
+      },
+    ],
+    challenges: [
+      "Integrating heterogeneous data sources with varying formats",
+      "Ensuring real-time performance at scale",
+      "Building reliable data validation and quality checks",
+      "Designing fault-tolerant distributed architecture",
+    ],
+    solutions: [
+      "Developed standardized ETL pipelines with data transformation",
+      "Implemented Redis caching and database optimization",
+      "Created comprehensive data validation framework",
+      "Built circuit breaker patterns and health monitoring",
+    ],
+    links: [
+      {
+        type: "case-study",
+        url: "https://techprescient.com/case-studies/maritime-analytics-platform",
+        label: "View Case Study",
+      },
+    ],
+    startDate: "2022-08-01",
+    endDate: "2023-05-01",
+    teamSize: 3,
+    role: "Backend Developer",
+    metrics: [
+      {
+        label: "Data Sources Unified",
+        value: "100+ sources",
+      },
+      {
+        label: "Data Points Processed",
+        value: "5K+ concurrent",
+      },
+      {
+        label: "Revenue Impact",
+        value: "$100K+ projected",
+      },
+    ],
+  },
+  {
+    id: "hr-management-system",
+    title: "Enterprise HR Management System",
+    shortDescription:
+      "Comprehensive payroll and leave management for 3000+ employees",
+    fullDescription:
+      "Full-stack HR management platform built with Node.js and React, featuring automated payroll processing, leave management, and employee self-service portal, saving 20+ engineering hours per week.",
+    status: "completed",
+    category: "web-app",
+    featured: false,
+    thumbnail: "/projects/hr-system-thumbnail.jpg",
+    screenshots: ["/projects/hr-system-1.jpg", "/projects/hr-system-2.jpg"],
+    technologies: [
+      { name: "Node.js", category: "backend", proficiency: 9 },
+      { name: "React", category: "frontend", proficiency: 9 },
+      { name: "MongoDB", category: "database", proficiency: 8 },
+      { name: "Redis", category: "database", proficiency: 8 },
+      { name: "Express.js", category: "backend", proficiency: 8 },
+    ],
+    features: [
+      {
+        title: "Automated Payroll Processing",
+        description:
+          "Intelligent payroll calculation with tax compliance and reporting",
+      },
+      {
+        title: "Leave Management System",
+        description: "Comprehensive leave tracking with approval workflows",
+      },
+      {
+        title: "Employee Self-Service",
+        description:
+          "Portal for employees to manage personal information and requests",
+      },
+      {
+        title: "Analytics Dashboard",
+        description: "HR metrics and reporting with data visualization",
+      },
+    ],
+    challenges: [
+      "Handling complex payroll calculations and compliance",
+      "Building scalable system for 3000+ users",
+      "Ensuring data security and privacy",
+      "Integrating with existing HR systems",
+    ],
+    solutions: [
+      "Implemented modular payroll engine with validation rules",
+      "Designed efficient database schema with proper indexing",
+      "Applied security best practices and encryption",
+      "Built flexible API adapters for system integration",
+    ],
+    links: [
+      {
+        type: "case-study",
+        url: "https://xoriant.com/case-studies/hr-management-system",
+        label: "View Case Study",
+      },
+    ],
+    startDate: "2020-11-01",
+    endDate: "2022-03-01",
+    teamSize: 5,
+    role: "Full-Stack Developer",
+    metrics: [
+      {
+        label: "Users Supported",
+        value: "3000+ employees",
+      },
+      {
+        label: "Time Saved",
+        value: "20+ hours/week",
+      },
+      {
+        label: "Process Automation",
+        value: "85% automated",
+      },
     ],
   },
 ];

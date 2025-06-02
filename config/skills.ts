@@ -1,5 +1,5 @@
 // Skills Configuration
-// This file contains all technical skills and expertise
+// This file contains all technical skills and their proficiency levels
 
 export interface Skill {
   name: string;
@@ -31,85 +31,55 @@ export const skillCategories: Record<SkillCategory, SkillCategoryInfo> = {
   frontend: {
     name: "frontend",
     displayName: "Frontend",
-    description: "User interface and client-side technologies",
-    color: "#3b82f6",
+    description: "Modern frontend frameworks and libraries",
+    color: "hsl(200, 100%, 60%)",
   },
   backend: {
     name: "backend",
     displayName: "Backend",
-    description: "Server-side technologies and APIs",
-    color: "#10b981",
+    description: "Server-side technologies and frameworks",
+    color: "hsl(120, 50%, 50%)",
   },
   database: {
     name: "database",
     displayName: "Database",
-    description: "Data storage and management systems",
-    color: "#8b5cf6",
-  },
-  cloud: {
-    name: "cloud",
-    displayName: "Cloud & DevOps",
-    description: "Cloud platforms and deployment technologies",
-    color: "#f59e0b",
+    description: "Database systems and data storage",
+    color: "hsl(270, 50%, 60%)",
   },
   tools: {
     name: "tools",
-    displayName: "Tools & Utilities",
-    description: "Development tools and productivity software",
-    color: "#ef4444",
+    displayName: "Tools & DevOps",
+    description: "Development tools and CI/CD",
+    color: "hsl(30, 80%, 60%)",
+  },
+  cloud: {
+    name: "cloud",
+    displayName: "Cloud",
+    description: "Cloud platforms and services",
+    color: "hsl(190, 70%, 50%)",
   },
   testing: {
     name: "testing",
     displayName: "Testing",
-    description: "Testing frameworks and quality assurance",
-    color: "#06b6d4",
+    description: "Testing frameworks and methodologies",
+    color: "hsl(340, 70%, 60%)",
   },
   mobile: {
     name: "mobile",
     displayName: "Mobile",
-    description: "Mobile application development",
-    color: "#8b5cf6",
+    description: "Mobile development technologies",
+    color: "hsl(260, 60%, 60%)",
   },
   ai: {
     name: "ai",
     displayName: "AI/LLM",
-    description: "Artificial Intelligence and Large Language Models",
-    color: "#ec4899",
+    description: "Artificial Intelligence and Language Models",
+    color: "hsl(280, 70%, 65%)",
   },
 };
 
 export const skills: Skill[] = [
-  // AI/LLM Technologies
-  {
-    name: "LangChain",
-    category: "ai",
-    proficiency: 9,
-    experience: "2+ years",
-    icon: "🦜",
-  },
-  {
-    name: "RAG",
-    category: "ai",
-    proficiency: 8,
-    experience: "1+ years",
-    icon: "🔍",
-  },
-  {
-    name: "Prompt Engineering",
-    category: "ai",
-    proficiency: 8,
-    experience: "2+ years",
-    icon: "✨",
-  },
-  {
-    name: "A/B Testing",
-    category: "ai",
-    proficiency: 7,
-    experience: "1+ years",
-    icon: "📊",
-  },
-
-  // Backend Technologies
+  // Programming Languages
   {
     name: "Python",
     category: "backend",
@@ -125,6 +95,27 @@ export const skills: Skill[] = [
     icon: "🟢",
   },
   {
+    name: "JavaScript",
+    category: "frontend",
+    proficiency: 9,
+    experience: "4+ years",
+    icon: "🟨",
+  },
+  {
+    name: "TypeScript",
+    category: "frontend",
+    proficiency: 9,
+    experience: "3+ years",
+    icon: "📘",
+  },
+  {
+    name: "React",
+    category: "frontend",
+    proficiency: 9,
+    experience: "4+ years",
+    icon: "⚛️",
+  },
+  {
     name: "FastAPI",
     category: "backend",
     proficiency: 8,
@@ -136,72 +127,7 @@ export const skills: Skill[] = [
     category: "backend",
     proficiency: 7,
     experience: "2+ years",
-    icon: "◉",
-  },
-  {
-    name: "Express.js",
-    category: "backend",
-    proficiency: 8,
-    experience: "3+ years",
-    icon: "📦",
-  },
-  {
-    name: "Microservices",
-    category: "backend",
-    proficiency: 8,
-    experience: "3+ years",
-    icon: "🏗️",
-  },
-  {
-    name: "REST APIs",
-    category: "backend",
-    proficiency: 9,
-    experience: "4+ years",
     icon: "🔗",
-  },
-  {
-    name: "Event-Driven Architecture",
-    category: "backend",
-    proficiency: 8,
-    experience: "2+ years",
-    icon: "⚡",
-  },
-
-  // Frontend Technologies
-  {
-    name: "React",
-    category: "frontend",
-    proficiency: 9,
-    experience: "4+ years",
-    icon: "⚛️",
-  },
-  {
-    name: "TypeScript",
-    category: "frontend",
-    proficiency: 9,
-    experience: "3+ years",
-    icon: "📘",
-  },
-  {
-    name: "JavaScript",
-    category: "frontend",
-    proficiency: 9,
-    experience: "4+ years",
-    icon: "📜",
-  },
-  {
-    name: "Next.js",
-    category: "frontend",
-    proficiency: 8,
-    experience: "2+ years",
-    icon: "▲",
-  },
-  {
-    name: "Tailwind CSS",
-    category: "frontend",
-    proficiency: 8,
-    experience: "2+ years",
-    icon: "🎨",
   },
 
   // Cloud & DevOps
@@ -245,7 +171,7 @@ export const skills: Skill[] = [
     category: "cloud",
     proficiency: 7,
     experience: "2+ years",
-    icon: "⚡",
+    icon: "☁️",
   },
   {
     name: "Firebase",
@@ -256,31 +182,31 @@ export const skills: Skill[] = [
   },
   {
     name: "Docker",
-    category: "cloud",
+    category: "tools",
     proficiency: 8,
     experience: "3+ years",
     icon: "🐳",
   },
   {
     name: "Kubernetes",
-    category: "cloud",
+    category: "tools",
     proficiency: 7,
     experience: "2+ years",
     icon: "☸️",
   },
   {
     name: "GitHub Actions",
-    category: "cloud",
-    proficiency: 8,
-    experience: "3+ years",
-    icon: "⚙️",
-  },
-  {
-    name: "CI/CD Pipelines",
-    category: "cloud",
+    category: "tools",
     proficiency: 8,
     experience: "3+ years",
     icon: "🔄",
+  },
+  {
+    name: "CI/CD",
+    category: "tools",
+    proficiency: 8,
+    experience: "3+ years",
+    icon: "🚀",
   },
 
   // Databases
@@ -288,7 +214,7 @@ export const skills: Skill[] = [
     name: "PostgreSQL",
     category: "database",
     proficiency: 8,
-    experience: "3+ years",
+    experience: "4+ years",
     icon: "🐘",
   },
   {
@@ -301,8 +227,8 @@ export const skills: Skill[] = [
   {
     name: "Redis",
     category: "database",
-    proficiency: 7,
-    experience: "2+ years",
+    proficiency: 8,
+    experience: "3+ years",
     icon: "🔴",
   },
   {
@@ -310,17 +236,137 @@ export const skills: Skill[] = [
     category: "database",
     proficiency: 7,
     experience: "2+ years",
-    icon: "💾",
+    icon: "⚡",
   },
   {
     name: "SQL",
     category: "database",
-    proficiency: 8,
+    proficiency: 9,
     experience: "4+ years",
-    icon: "📊",
+    icon: "🗄️",
   },
 
-  // Tools & Development
+  // AI/LLM Technologies
+  {
+    name: "LangChain",
+    category: "ai",
+    proficiency: 9,
+    experience: "1+ years",
+    icon: "🦜",
+  },
+  {
+    name: "RAG",
+    category: "ai",
+    proficiency: 8,
+    experience: "1+ years",
+    icon: "🔍",
+  },
+  {
+    name: "Prompt Engineering",
+    category: "ai",
+    proficiency: 8,
+    experience: "1+ years",
+    icon: "💬",
+  },
+  {
+    name: "A/B Testing",
+    category: "ai",
+    proficiency: 7,
+    experience: "2+ years",
+    icon: "🧪",
+  },
+  {
+    name: "LLM Integration",
+    category: "ai",
+    proficiency: 8,
+    experience: "1+ years",
+    icon: "🤖",
+  },
+
+  // Additional Frontend Technologies
+  {
+    name: "Next.js",
+    category: "frontend",
+    proficiency: 8,
+    experience: "2+ years",
+    icon: "▲",
+  },
+  {
+    name: "HTML5",
+    category: "frontend",
+    proficiency: 9,
+    experience: "4+ years",
+    icon: "🌐",
+  },
+  {
+    name: "CSS3",
+    category: "frontend",
+    proficiency: 8,
+    experience: "4+ years",
+    icon: "🎨",
+  },
+  {
+    name: "Tailwind CSS",
+    category: "frontend",
+    proficiency: 8,
+    experience: "2+ years",
+    icon: "💨",
+  },
+
+  // Architecture & Systems
+  {
+    name: "Microservices",
+    category: "backend",
+    proficiency: 8,
+    experience: "3+ years",
+    icon: "🔧",
+  },
+  {
+    name: "REST APIs",
+    category: "backend",
+    proficiency: 9,
+    experience: "4+ years",
+    icon: "🔌",
+  },
+  {
+    name: "Serverless",
+    category: "cloud",
+    proficiency: 8,
+    experience: "2+ years",
+    icon: "⚡",
+  },
+  {
+    name: "Event-Driven Architecture",
+    category: "backend",
+    proficiency: 7,
+    experience: "2+ years",
+    icon: "📡",
+  },
+  {
+    name: "Message Queues",
+    category: "backend",
+    proficiency: 7,
+    experience: "2+ years",
+    icon: "📫",
+  },
+
+  // Testing
+  {
+    name: "Jest",
+    category: "testing",
+    proficiency: 7,
+    experience: "3+ years",
+    icon: "🃏",
+  },
+  {
+    name: "Unit Testing",
+    category: "testing",
+    proficiency: 8,
+    experience: "4+ years",
+    icon: "✅",
+  },
+
+  // Tools
   {
     name: "Git",
     category: "tools",
@@ -335,52 +381,9 @@ export const skills: Skill[] = [
     experience: "4+ years",
     icon: "💻",
   },
-  {
-    name: "Postman",
-    category: "tools",
-    proficiency: 8,
-    experience: "3+ years",
-    icon: "📮",
-  },
-  {
-    name: "Webpack",
-    category: "tools",
-    proficiency: 7,
-    experience: "2+ years",
-    icon: "📦",
-  },
-  {
-    name: "npm/yarn",
-    category: "tools",
-    proficiency: 9,
-    experience: "4+ years",
-    icon: "📦",
-  },
-
-  // Testing
-  {
-    name: "Jest",
-    category: "testing",
-    proficiency: 7,
-    experience: "2+ years",
-    icon: "🃏",
-  },
-  {
-    name: "Cypress",
-    category: "testing",
-    proficiency: 6,
-    experience: "1+ years",
-    icon: "🌲",
-  },
-  {
-    name: "Unit Testing",
-    category: "testing",
-    proficiency: 8,
-    experience: "3+ years",
-    icon: "🧪",
-  },
 ];
 
+// Helper functions
 export function getSkillsByCategory(category: SkillCategory): Skill[] {
   return skills.filter((skill) => skill.category === category);
 }

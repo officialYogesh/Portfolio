@@ -621,3 +621,305 @@ export const SectionDivider: React.FC<{
 
   return variants[variant];
 };
+
+export const TravelIllustration: React.FC<IllustrationProps> = ({
+  className = "",
+  animate = true,
+  size = "md",
+}) => {
+  const getSizeClasses = () => {
+    switch (size) {
+      case "sm":
+        return "w-16 h-16";
+      case "md":
+        return "w-24 h-24";
+      case "lg":
+        return "w-32 h-32";
+      case "xl":
+        return "w-48 h-48";
+      default:
+        return "w-24 h-24";
+    }
+  };
+
+  return (
+    <motion.svg
+      className={`${getSizeClasses()} ${className}`}
+      viewBox="0 0 400 400"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      initial={animate ? { opacity: 0, scale: 0.8 } : false}
+      animate={animate ? { opacity: 1, scale: 1 } : false}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      {/* Globe */}
+      <motion.circle
+        cx="200"
+        cy="200"
+        r="120"
+        stroke="hsl(var(--primary))"
+        strokeWidth="3"
+        fill="hsl(var(--primary) / 0.1)"
+        initial={animate ? { pathLength: 0 } : false}
+        animate={animate ? { pathLength: 1 } : false}
+        transition={{ duration: 2, delay: 0.2 }}
+      />
+
+      {/* Latitude lines */}
+      <motion.ellipse
+        cx="200"
+        cy="200"
+        rx="120"
+        ry="40"
+        stroke="hsl(var(--accent))"
+        strokeWidth="2"
+        fill="none"
+        initial={animate ? { pathLength: 0 } : false}
+        animate={animate ? { pathLength: 1 } : false}
+        transition={{ duration: 1.5, delay: 0.5 }}
+      />
+      <motion.ellipse
+        cx="200"
+        cy="200"
+        rx="120"
+        ry="80"
+        stroke="hsl(var(--accent))"
+        strokeWidth="2"
+        fill="none"
+        initial={animate ? { pathLength: 0 } : false}
+        animate={animate ? { pathLength: 1 } : false}
+        transition={{ duration: 1.5, delay: 0.6 }}
+      />
+
+      {/* Longitude lines */}
+      <motion.ellipse
+        cx="200"
+        cy="200"
+        rx="40"
+        ry="120"
+        stroke="hsl(var(--accent))"
+        strokeWidth="2"
+        fill="none"
+        initial={animate ? { pathLength: 0 } : false}
+        animate={animate ? { pathLength: 1 } : false}
+        transition={{ duration: 1.5, delay: 0.7 }}
+      />
+      <motion.ellipse
+        cx="200"
+        cy="200"
+        rx="80"
+        ry="120"
+        stroke="hsl(var(--accent))"
+        strokeWidth="2"
+        fill="none"
+        initial={animate ? { pathLength: 0 } : false}
+        animate={animate ? { pathLength: 1 } : false}
+        transition={{ duration: 1.5, delay: 0.8 }}
+      />
+
+      {/* Travel markers */}
+      <motion.circle
+        cx="150"
+        cy="160"
+        r="6"
+        fill="hsl(var(--primary))"
+        initial={animate ? { scale: 0 } : false}
+        animate={animate ? { scale: 1 } : false}
+        transition={{ duration: 0.3, delay: 1.2 }}
+      />
+      <motion.circle
+        cx="250"
+        cy="180"
+        r="6"
+        fill="hsl(var(--primary))"
+        initial={animate ? { scale: 0 } : false}
+        animate={animate ? { scale: 1 } : false}
+        transition={{ duration: 0.3, delay: 1.4 }}
+      />
+      <motion.circle
+        cx="180"
+        cy="240"
+        r="6"
+        fill="hsl(var(--primary))"
+        initial={animate ? { scale: 0 } : false}
+        animate={animate ? { scale: 1 } : false}
+        transition={{ duration: 0.3, delay: 1.6 }}
+      />
+
+      {/* Flight path */}
+      <motion.path
+        d="M150 160 Q200 120 250 180 Q220 220 180 240"
+        stroke="hsl(var(--secondary))"
+        strokeWidth="2"
+        strokeDasharray="5,5"
+        fill="none"
+        initial={animate ? { pathLength: 0 } : false}
+        animate={animate ? { pathLength: 1 } : false}
+        transition={{ duration: 2, delay: 1.8 }}
+      />
+    </motion.svg>
+  );
+};
+
+export const CitySkylinesIllustration: React.FC<IllustrationProps> = ({
+  className = "",
+  animate = true,
+  size = "lg",
+}) => {
+  const getSizeClasses = () => {
+    switch (size) {
+      case "sm":
+        return "w-32 h-16";
+      case "md":
+        return "w-48 h-24";
+      case "lg":
+        return "w-64 h-32";
+      case "xl":
+        return "w-96 h-48";
+      default:
+        return "w-64 h-32";
+    }
+  };
+
+  return (
+    <motion.svg
+      className={`${getSizeClasses()} ${className}`}
+      viewBox="0 0 800 400"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      initial={animate ? { opacity: 0, y: 20 } : false}
+      animate={animate ? { opacity: 1, y: 0 } : false}
+      transition={{ duration: 1, ease: "easeOut" }}
+    >
+      {/* Mumbai skyline */}
+      <motion.g
+        initial={animate ? { x: -50, opacity: 0 } : false}
+        animate={animate ? { x: 0, opacity: 1 } : false}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <rect
+          x="50"
+          y="200"
+          width="30"
+          height="180"
+          fill="hsl(var(--primary) / 0.7)"
+        />
+        <rect
+          x="90"
+          y="150"
+          width="25"
+          height="230"
+          fill="hsl(var(--primary) / 0.8)"
+        />
+        <rect
+          x="125"
+          y="180"
+          width="35"
+          height="200"
+          fill="hsl(var(--primary) / 0.6)"
+        />
+        <rect
+          x="170"
+          y="120"
+          width="28"
+          height="260"
+          fill="hsl(var(--primary) / 0.9)"
+        />
+      </motion.g>
+
+      {/* NYC skyline */}
+      <motion.g
+        initial={animate ? { x: 0, opacity: 0 } : false}
+        animate={animate ? { x: 0, opacity: 1 } : false}
+        transition={{ duration: 0.8, delay: 0.5 }}
+      >
+        <rect
+          x="300"
+          y="100"
+          width="40"
+          height="280"
+          fill="hsl(var(--secondary) / 0.8)"
+        />
+        <rect
+          x="350"
+          y="80"
+          width="35"
+          height="300"
+          fill="hsl(var(--secondary) / 0.9)"
+        />
+        <rect
+          x="395"
+          y="120"
+          width="30"
+          height="260"
+          fill="hsl(var(--secondary) / 0.7)"
+        />
+        <rect
+          x="435"
+          y="90"
+          width="25"
+          height="290"
+          fill="hsl(var(--secondary) / 0.6)"
+        />
+      </motion.g>
+
+      {/* Boston/Syracuse skyline */}
+      <motion.g
+        initial={animate ? { x: 50, opacity: 0 } : false}
+        animate={animate ? { x: 0, opacity: 1 } : false}
+        transition={{ duration: 0.8, delay: 0.8 }}
+      >
+        <rect
+          x="600"
+          y="180"
+          width="25"
+          height="200"
+          fill="hsl(var(--accent) / 0.7)"
+        />
+        <rect
+          x="635"
+          y="160"
+          width="30"
+          height="220"
+          fill="hsl(var(--accent) / 0.8)"
+        />
+        <rect
+          x="675"
+          y="140"
+          width="35"
+          height="240"
+          fill="hsl(var(--accent) / 0.6)"
+        />
+        <rect
+          x="720"
+          y="170"
+          width="28"
+          height="210"
+          fill="hsl(var(--accent) / 0.9)"
+        />
+      </motion.g>
+
+      {/* Connection lines */}
+      <motion.path
+        d="M200 250 Q350 200 300 250"
+        stroke="hsl(var(--primary))"
+        strokeWidth="2"
+        strokeDasharray="3,3"
+        fill="none"
+        initial={animate ? { pathLength: 0 } : false}
+        animate={animate ? { pathLength: 1 } : false}
+        transition={{ duration: 1.5, delay: 1.2 }}
+      />
+      <motion.path
+        d="M460 250 Q550 200 600 250"
+        stroke="hsl(var(--secondary))"
+        strokeWidth="2"
+        strokeDasharray="3,3"
+        fill="none"
+        initial={animate ? { pathLength: 0 } : false}
+        animate={animate ? { pathLength: 1 } : false}
+        transition={{ duration: 1.5, delay: 1.5 }}
+      />
+    </motion.svg>
+  );
+};

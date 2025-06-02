@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ChevronRight, Clock, Heart } from "lucide-react";
 
-// Reading Progress Indicator
+// Optimized Reading Progress Indicator
 interface ReadingProgressProps {
   className?: string;
 }
@@ -18,12 +18,12 @@ export const ReadingProgress: React.FC<ReadingProgressProps> = ({
   return (
     <motion.div
       className={`fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent origin-left z-50 ${className}`}
-      style={{ scaleX }}
+      style={{ scaleX, willChange: "transform" }}
     />
   );
 };
 
-// Story Section Component with Narrative Design
+// Optimized Story Section Component with Reduced Animations
 interface StorySectionProps {
   id: string;
   title: string;
@@ -58,45 +58,84 @@ export const StorySection: React.FC<StorySectionProps> = ({
   delay = 0,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: 0.2, once: true });
+  const isInView = useInView(ref, {
+    amount: 0.1,
+    once: true,
+    margin: "0px 0px -100px 0px",
+  });
 
-  const getEmotionStyles = (emotion?: string) => {
+  // Memoized emotion styles to prevent recalculation
+  const emotionStyles = useMemo(() => {
     switch (emotion) {
       case "curiosity":
-        return "border-l-blue-400/30 bg-blue-50/20 dark:bg-blue-900/5";
+        return "border-l-blue-400/20 bg-blue-50/10";
       case "challenge":
-        return "border-l-orange-400/30 bg-orange-50/20 dark:bg-orange-900/5";
+        return "border-l-orange-400/20 bg-orange-50/10";
       case "growth":
-        return "border-l-green-400/30 bg-green-50/20 dark:bg-green-900/5";
+        return "border-l-green-400/20 bg-green-50/10";
       case "achievement":
-        return "border-l-purple-400/30 bg-purple-50/20 dark:bg-purple-900/5";
+        return "border-l-purple-400/20 bg-purple-50/10";
       case "reflection":
-        return "border-l-indigo-400/30 bg-indigo-50/20 dark:bg-indigo-900/5";
+        return "border-l-indigo-400/20 bg-indigo-50/10";
       case "innovation":
-        return "border-l-pink-400/30 bg-pink-50/20 dark:bg-pink-900/5";
+        return "border-l-pink-400/20 bg-pink-50/10";
       case "confidence":
-        return "border-l-teal-400/30 bg-teal-50/20 dark:bg-teal-900/5";
+        return "border-l-teal-400/20 bg-teal-50/10";
       case "vision":
-        return "border-l-lime-400/30 bg-lime-50/20 dark:bg-lime-900/5";
+        return "border-l-lime-400/20 bg-lime-50/10";
       default:
         return "";
     }
-  };
+  }, [emotion]);
+
+  // Simplified animation variants
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 20 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          type: "tween",
+          duration: 0.4,
+          delay: delay * 0.05, // Reduced delay multiplier
+          ease: "easeOut",
+        },
+      },
+    }),
+    [delay]
+  );
+
+  const titleVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, x: -10 },
+      visible: {
+        opacity: 1,
+        x: 0,
+        transition: {
+          type: "tween",
+          duration: 0.3,
+          delay: delay * 0.05 + 0.1,
+          ease: "easeOut",
+        },
+      },
+    }),
+    [delay]
+  );
 
   return (
     <motion.div
       ref={ref}
       id={id}
       className={`space-y-6 ${className}`}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.8, delay: delay * 0.1, ease: "easeOut" }}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={containerVariants}
+      style={{ willChange: "transform, opacity" }}
     >
       {/* Visual Cue and Title */}
       <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-        transition={{ duration: 0.6, delay: delay * 0.1 + 0.2 }}
+        variants={titleVariants}
         className="flex items-center space-x-4"
       >
         {visualCue && (
@@ -114,16 +153,17 @@ export const StorySection: React.FC<StorySectionProps> = ({
         </div>
       </motion.div>
 
-      {/* Main Content */}
+      {/* Main Content - Simplified Animation */}
       <div className="space-y-4">
         {content.map((paragraph, index) => (
           <motion.p
             key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{
-              duration: 0.6,
-              delay: delay * 0.1 + 0.3 + index * 0.1,
+              type: "tween",
+              duration: 0.3,
+              delay: delay * 0.05 + 0.15 + index * 0.05, // Reduced stagger
               ease: "easeOut",
             }}
             className="text-lg leading-relaxed text-foreground/90"
@@ -133,17 +173,18 @@ export const StorySection: React.FC<StorySectionProps> = ({
         ))}
       </div>
 
-      {/* Highlight */}
+      {/* Highlight - Simplified */}
       {highlight && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={
-            isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }
-          }
-          transition={{ duration: 0.6, delay: delay * 0.1 + 0.5 }}
-          className={`p-6 rounded-lg border-l-4 ${getEmotionStyles(
-            emotion
-          )} backdrop-blur-sm`}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{
+            type: "tween",
+            duration: 0.3,
+            delay: delay * 0.05 + 0.2,
+            ease: "easeOut",
+          }}
+          className={`p-6 rounded-lg border-l-4 ${emotionStyles} backdrop-blur-sm`}
         >
           <div className="flex items-start space-x-3">
             <Heart className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
@@ -154,12 +195,17 @@ export const StorySection: React.FC<StorySectionProps> = ({
         </motion.div>
       )}
 
-      {/* Anecdote */}
+      {/* Anecdote - Simplified */}
       {anecdote && (
         <motion.blockquote
-          initial={{ opacity: 0, x: 20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-          transition={{ duration: 0.6, delay: delay * 0.1 + 0.6 }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{
+            type: "tween",
+            duration: 0.3,
+            delay: delay * 0.05 + 0.25,
+            ease: "easeOut",
+          }}
           className="border-l-4 border-accent pl-6 py-4 bg-accent/5 rounded-r-lg"
         >
           <p className="text-base italic text-foreground/80 leading-relaxed">
@@ -171,7 +217,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
   );
 };
 
-// Parallax Text Component
+// Optimized Parallax Text Component with Throttling
 interface ParallaxTextProps {
   children: React.ReactNode;
   speed?: number;
@@ -180,7 +226,7 @@ interface ParallaxTextProps {
 
 export const ParallaxText: React.FC<ParallaxTextProps> = ({
   children,
-  speed = 0.5,
+  speed = 0.3, // Reduced default speed for better performance
   className = "",
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -189,10 +235,14 @@ export const ParallaxText: React.FC<ParallaxTextProps> = ({
     offset: ["start end", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", `${speed * 100}%`]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", `${speed * 50}%`]); // Reduced movement
 
   return (
-    <motion.div ref={ref} style={{ y }} className={className}>
+    <motion.div
+      ref={ref}
+      style={{ y, willChange: "transform" }}
+      className={className}
+    >
       {children}
     </motion.div>
   );

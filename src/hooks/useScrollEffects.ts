@@ -1,105 +1,174 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
-// Hook for tracking scroll progress
+// Throttle function for performance optimization
+const throttle = <T extends (...args: Parameters<T>) => void>(
+  func: T,
+  limit: number
+) => {
+  let inThrottle: boolean;
+  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+};
+
+// Debounce function for theme changes
+const debounce = <T extends (...args: Parameters<T>) => void>(
+  func: T,
+  delay: number
+) => {
+  let timeoutId: NodeJS.Timeout;
+  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
+};
+
+// Hook for tracking scroll progress with throttling
 export const useScrollProgress = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const currentProgress = window.scrollY;
-      const progress = (currentProgress / totalHeight) * 100;
-      setScrollProgress(Math.min(Math.max(progress, 0), 100));
-    };
+    const handleScroll = throttle(() => {
+      // Use RAF for smooth updates
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+
+      rafId.current = requestAnimationFrame(() => {
+        const totalHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const currentProgress = window.scrollY;
+        const progress = Math.min(
+          Math.max((currentProgress / totalHeight) * 100, 0),
+          100
+        );
+        setScrollProgress(progress);
+      });
+    }, 16); // ~60fps
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Initial call
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
   }, []);
 
   return scrollProgress;
 };
 
-// Hook for parallax effects
+// Hook for parallax effects with throttling
 export const useParallax = (speed: number = 0.5) => {
   const [offset, setOffset] = useState(0);
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setOffset(window.scrollY * speed);
-    };
+    const handleScroll = throttle(() => {
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+
+      rafId.current = requestAnimationFrame(() => {
+        setOffset(window.scrollY * speed);
+      });
+    }, 16); // ~60fps
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
   }, [speed]);
 
   return offset;
 };
 
-// Hook for section tracking
+// Optimized hook for section tracking with reduced frequency
 export const useSectionTracking = (sectionIds: string[]) => {
   const [activeSection, setActiveSection] = useState("");
   const [completedSections, setCompletedSections] = useState<Set<string>>(
     new Set()
   );
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
+    // Cleanup previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
     const observerOptions = {
       root: null,
-      rootMargin: "-20% 0px -80% 0px",
-      threshold: 0,
+      rootMargin: "-10% 0px -70% 0px", // Reduced sensitivity for better performance
+      threshold: [0, 0.25], // Reduced threshold points
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const sectionId = entry.target.id;
+    // Debounced handler to prevent excessive state updates
+    const handleIntersection = debounce(
+      (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+          const sectionId = entry.target.id;
 
-        if (entry.isIntersecting) {
-          setActiveSection(sectionId);
-        }
+          if (entry.isIntersecting && entry.intersectionRatio > 0.25) {
+            setActiveSection(sectionId);
+          }
 
-        // Mark section as completed when user scrolls past it
-        if (
-          entry.boundingClientRect.top < 0 &&
-          entry.boundingClientRect.bottom < window.innerHeight / 2
-        ) {
-          setCompletedSections((prev) => new Set(prev).add(sectionId));
-        }
-      });
-    }, observerOptions);
+          // Mark section as completed when user scrolls past it
+          if (
+            entry.boundingClientRect.top < 0 &&
+            entry.boundingClientRect.bottom < window.innerHeight / 2
+          ) {
+            setCompletedSections((prev) => new Set(prev).add(sectionId));
+          }
+        });
+      },
+      100
+    ); // 100ms debounce
 
+    observerRef.current = new IntersectionObserver(
+      handleIntersection,
+      observerOptions
+    );
+
+    // Observe sections with error handling
     sectionIds.forEach((id) => {
       const element = document.getElementById(id);
-      if (element) {
-        observer.observe(element);
+      if (element && observerRef.current) {
+        observerRef.current.observe(element);
       }
     });
 
     return () => {
-      sectionIds.forEach((id) => {
-        const element = document.getElementById(id);
-        if (element) {
-          observer.unobserve(element);
-        }
-      });
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
   }, [sectionIds]);
 
   return { activeSection, completedSections };
 };
 
-// Hook for smooth scrolling
+// Hook for smooth scrolling with optimization
 export const useSmoothScroll = () => {
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerHeight = 80; // Adjust based on your header height
+      const headerHeight = 80;
       const elementPosition = element.offsetTop - headerHeight;
 
+      // Use native smooth scroll for better performance
       window.scrollTo({
         top: elementPosition,
         behavior: "smooth",
@@ -110,7 +179,7 @@ export const useSmoothScroll = () => {
   return { scrollToSection };
 };
 
-// Hook for touch gestures (mobile interactions)
+// Hook for touch gestures with optimization
 export const useTouchGestures = () => {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -131,108 +200,77 @@ export const useTouchGestures = () => {
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
 
-    // Return gesture information for handling in components
     return { isLeftSwipe, isRightSwipe, distance };
   }, [touchStart, touchEnd]);
 
   return { onTouchStart, onTouchMove, onTouchEnd };
 };
 
-// Hook for theme-aware animations
+// Optimized hook for theme-aware animations
 export const useThemeAwareAnimations = () => {
   const [theme, setTheme] = useState<string>("");
+  const observerRef = useRef<MutationObserver | null>(null);
 
   useEffect(() => {
-    // Get current theme from DOM with memoization
     const getTheme = () => {
-      const themeAttribute =
-        document.documentElement.getAttribute("data-theme");
-      return themeAttribute || "dracula";
+      return document.documentElement.getAttribute("data-theme") || "dracula";
     };
 
     setTheme(getTheme());
 
-    // Debounced theme change handler to prevent excessive updates
-    let timeoutId: NodeJS.Timeout;
+    // Cleanup previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
 
-    // Watch for theme changes with optimized observer
-    const observer = new MutationObserver((mutations) => {
+    // Debounced theme change handler
+    const handleThemeChange = debounce(() => {
+      setTheme(getTheme());
+    }, 100);
+
+    observerRef.current = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
           mutation.type === "attributes" &&
           mutation.attributeName === "data-theme"
         ) {
-          // Debounce theme updates to prevent animation jank
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => {
-            setTheme(getTheme());
-          }, 50);
+          handleThemeChange();
         }
       });
     });
 
-    observer.observe(document.documentElement, {
+    observerRef.current.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
 
     return () => {
-      clearTimeout(timeoutId);
-      observer.disconnect();
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
   }, []);
 
-  // Memoized theme-specific animation variants to prevent recalculation
+  // Memoized and optimized theme-specific animation variants
   const getThemeAnimations = useCallback(() => {
     const baseAnimations = {
-      initial: { opacity: 0, y: 20 },
+      initial: { opacity: 0, y: 10 }, // Reduced movement for better performance
       animate: { opacity: 1, y: 0 },
-      exit: { opacity: 0, y: -20 },
+      exit: { opacity: 0, y: -10 },
     };
 
-    // Optimize transition configurations for smoother performance
-    switch (theme) {
-      case "nord":
-        return {
-          ...baseAnimations,
-          transition: {
-            type: "spring",
-            stiffness: 120,
-            damping: 15,
-            mass: 0.8,
-          },
-        };
-      case "gruvbox":
-        return {
-          ...baseAnimations,
-          transition: {
-            type: "tween",
-            duration: 0.3,
-            ease: "easeOut",
-          },
-        };
-      case "solarized-dark":
-        return {
-          ...baseAnimations,
-          transition: {
-            type: "spring",
-            stiffness: 140,
-            damping: 12,
-            mass: 0.7,
-          },
-        };
-      default:
-        return {
-          ...baseAnimations,
-          transition: {
-            type: "spring",
-            stiffness: 200,
-            damping: 20,
-            mass: 0.9,
-          },
-        };
-    }
-  }, [theme]);
+    // Simplified transitions for better performance
+    const optimizedTransition = {
+      type: "tween" as const, // Use tween instead of spring for better performance
+      duration: 0.3, // Shorter duration
+      ease: [0.4, 0, 0.2, 1] as const, // Cubic bezier for smooth transitions
+    };
+
+    return {
+      ...baseAnimations,
+      transition: optimizedTransition,
+    };
+  }, []);
 
   return { theme, getThemeAnimations };
 };

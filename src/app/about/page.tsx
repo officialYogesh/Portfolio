@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Download, Mail, Linkedin, Github, BookOpen } from "lucide-react";
@@ -55,32 +55,32 @@ interface InterestItem {
   connection?: string;
 }
 
-// Hooks
+// Optimized Hooks - Import only what's needed
 import {
   useScrollProgress,
   useSectionTracking,
   useSmoothScroll,
   useThemeAwareAnimations,
   useReadingTime,
-  useErrorHandling,
 } from "../../hooks/useScrollEffects";
 
-// Error Boundary Component
+// Simplified Error Boundary Component
 const ErrorBoundary: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { errors, handleError } = useErrorHandling();
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const errorHandler = (event: ErrorEvent) => {
-      handleError(new Error(event.message));
+      console.error("Error caught by boundary:", event.error);
+      setHasError(true);
     };
 
     window.addEventListener("error", errorHandler);
     return () => window.removeEventListener("error", errorHandler);
-  }, [handleError]);
+  }, []);
 
-  if (errors.length > 0) {
+  if (hasError) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">
@@ -88,6 +88,12 @@ const ErrorBoundary: React.FC<{ children: React.ReactNode }> = ({
             Something went wrong
           </h2>
           <p className="text-muted">Please refresh the page and try again.</p>
+          <button
+            onClick={() => setHasError(false)}
+            className="px-4 py-2 bg-primary text-primary-foreground rounded"
+          >
+            Try Again
+          </button>
         </div>
       </div>
     );
@@ -96,7 +102,7 @@ const ErrorBoundary: React.FC<{ children: React.ReactNode }> = ({
   return <>{children}</>;
 };
 
-// Main content preparation
+// Optimized content preparation with memoization
 const prepareContentForReading = (content: typeof aboutPageContent) => {
   const sections = [
     content.storyArc.introduction,
@@ -131,20 +137,23 @@ const AboutPage: React.FC = () => {
     setHasMounted(true);
   }, []);
 
-  // Section tracking
-  const sectionIds = [
-    "hero",
-    "story-intro",
-    "foundation-and-dreams",
-    "enterprise-reality-check",
-    "ai-awakening",
-    "story-current",
-    "story-future",
-    "work-info",
-    "projects-info",
-    "offline-info",
-    "connect",
-  ];
+  // Reduced section IDs for better performance
+  const sectionIds = useMemo(
+    () => [
+      "hero",
+      "story-intro",
+      "foundation-and-dreams",
+      "enterprise-reality-check",
+      "ai-awakening",
+      "story-current",
+      "story-future",
+      "work-info",
+      "projects-info",
+      "offline-info",
+      "connect",
+    ],
+    []
+  );
 
   const { activeSection, completedSections } = useSectionTracking(sectionIds);
 
@@ -217,33 +226,32 @@ const AboutPage: React.FC = () => {
     [completedSections]
   );
 
-  // Animation variants - memoized for performance
-  const parallaxTextVariants = useMemo(() => {
+  // Optimized Animation variants with reduced complexity
+  const optimizedTextVariants = useMemo(() => {
     if (hasMounted && theme) {
       return getThemeAnimations();
     }
     return {
-      initial: { opacity: 0, y: 20 },
+      initial: { opacity: 0, y: 5 }, // Reduced movement
       animate: { opacity: 1, y: 0 },
-      exit: { opacity: 0, y: -20 },
-      transition: { type: "spring", stiffness: 200, damping: 20, mass: 0.9 },
+      transition: { type: "tween", duration: 0.3, ease: "easeOut" },
     };
   }, [getThemeAnimations, hasMounted, theme]);
 
   const heroImageVariants = useMemo(
     () => ({
-      initial: { scale: 1.1, opacity: 0 },
+      initial: { scale: 1.02, opacity: 0 }, // Reduced scale
       animate: {
         scale: 1,
         opacity: 1,
-        transition: { duration: 0.8, ease: "easeOut" },
+        transition: { duration: 0.5, ease: "easeOut" }, // Shortened duration
       },
     }),
     []
   );
 
-  // Handlers
-  const handleDownloadResume = () => {
+  // Memoized handlers
+  const handleDownloadResume = useCallback(() => {
     try {
       const resumeContent = `${personalInfo.name} - Resume
       
@@ -274,7 +282,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
     } catch (error) {
       console.error("Error downloading resume:", error);
     }
-  };
+  }, []);
 
   // Extract content data
   const { hero, storyArc, offlineInfo, connectInfo } = aboutPageContent;
@@ -316,19 +324,19 @@ Generated on: ${new Date().toLocaleDateString()}`;
                   >
                     <motion.h1
                       className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6"
-                      initial={parallaxTextVariants.initial}
-                      animate={parallaxTextVariants.animate}
-                      transition={parallaxTextVariants.transition}
+                      initial={optimizedTextVariants.initial}
+                      animate={optimizedTextVariants.animate}
+                      transition={optimizedTextVariants.transition}
                     >
                       {hero.greeting}
                     </motion.h1>
 
                     <motion.p
                       className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl"
-                      initial={parallaxTextVariants.initial}
-                      animate={parallaxTextVariants.animate}
+                      initial={optimizedTextVariants.initial}
+                      animate={optimizedTextVariants.animate}
                       transition={{
-                        ...parallaxTextVariants.transition,
+                        ...optimizedTextVariants.transition,
                         delay: 0.1,
                       }}
                     >
@@ -337,10 +345,10 @@ Generated on: ${new Date().toLocaleDateString()}`;
 
                     <motion.p
                       className="text-base md:text-lg text-foreground/70 mb-8 max-w-xl"
-                      initial={parallaxTextVariants.initial}
-                      animate={parallaxTextVariants.animate}
+                      initial={optimizedTextVariants.initial}
+                      animate={optimizedTextVariants.animate}
                       transition={{
-                        ...parallaxTextVariants.transition,
+                        ...optimizedTextVariants.transition,
                         delay: 0.2,
                       }}
                     >

@@ -1,16 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { motion, Variants, Transition } from "framer-motion";
 import {
   useScrollAnimation,
   useReducedMotion,
 } from "../../lib/animations/hooks";
-import {
-  fadeVariants,
-  slideVariants,
-  scaleVariants,
-} from "../../lib/animations/variants";
 
 interface AnimatedContainerProps {
   children: React.ReactNode;
@@ -25,8 +20,8 @@ interface AnimatedContainerProps {
 }
 
 /**
- * Animated container component with scroll-triggered animations
- * Automatically handles reduced motion preferences
+ * Optimized animated container component with scroll-triggered animations
+ * Automatically handles reduced motion preferences and performance optimization
  */
 export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
   children,
@@ -34,7 +29,7 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
   variant = "fade",
   direction = "up",
   delay = 0,
-  duration = 0.5,
+  duration = 0.3, // Shorter duration for better performance
   threshold = 0.1,
   triggerOnce = true,
   as: InnerComponent = "div",
@@ -42,18 +37,39 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
   const { ref, controls } = useScrollAnimation(threshold, triggerOnce);
   const { prefersReducedMotion, getDuration } = useReducedMotion();
 
-  const getAnimationVariants = (): Variants => {
+  // Memoize animation variants to prevent unnecessary recalculations
+  const animationVariants = useMemo((): Variants => {
     const baseDuration = getDuration(duration);
+
+    // Optimized transition with better performance settings
     const baseTransition: Transition = {
+      type: "tween", // Use tween instead of spring for better performance
       duration: baseDuration,
       delay,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.25, 0.46, 0.45, 0.94], // Optimized easing curve
     };
+
+    // Reduced movement for better performance
+    const optimizedMovement = 10; // Reduced from default values
 
     switch (variant) {
       case "slide":
         return {
-          ...slideVariants,
+          hidden: {
+            opacity: 0,
+            y:
+              direction === "up"
+                ? optimizedMovement
+                : direction === "down"
+                ? -optimizedMovement
+                : 0,
+            x:
+              direction === "left"
+                ? optimizedMovement
+                : direction === "right"
+                ? -optimizedMovement
+                : 0,
+          },
           visible: {
             opacity: 1,
             y: 0,
@@ -63,7 +79,10 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
         };
       case "scale":
         return {
-          ...scaleVariants,
+          hidden: {
+            opacity: 0,
+            scale: 0.95, // Minimal scale change for performance
+          },
           visible: {
             opacity: 1,
             scale: 1,
@@ -73,15 +92,18 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
       case "fade":
       default:
         return {
-          ...fadeVariants,
+          hidden: {
+            opacity: 0,
+          },
           visible: {
             opacity: 1,
             transition: baseTransition,
           },
         };
     }
-  };
+  }, [variant, direction, getDuration, duration, delay]);
 
+  // Early return for reduced motion
   if (prefersReducedMotion) {
     return (
       <InnerComponent ref={ref} className={className}>
@@ -96,8 +118,9 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
       className={className}
       initial="hidden"
       animate={controls}
-      variants={getAnimationVariants()}
-      custom={direction}
+      variants={animationVariants}
+      // Performance optimizations
+      style={{ willChange: "transform, opacity" }}
     >
       <InnerComponent>{children}</InnerComponent>
     </motion.div>

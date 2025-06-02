@@ -21,10 +21,7 @@ import {
   ProgressIndicator,
 } from "@/components/ui/ReadingTimeEstimator";
 import { PrimaryButton, OutlineButton } from "@/components/ui/Button";
-import {
-  TravelIllustration,
-  CitySkylinesIllustration,
-} from "@/components/illustrations/AboutPageIllustrations";
+import { CitySkylinesIllustration } from "@/components/illustrations/AboutPageIllustrations";
 
 // Data
 import { aboutPageContent } from "../../../config/about-content";
@@ -628,7 +625,22 @@ Generated on: ${new Date().toLocaleDateString()}`;
             {/* Offline Interests */}
             <section id="offline-info" className="py-16 md:py-20">
               <Container size="xl">
-                <div className="flex flex-col lg:flex-row items-center gap-12">
+                {/* Mobile Travel Illustration - Displayed at top on mobile */}
+                <div className="block lg:hidden mb-12">
+                  <AnimatedContainer delay={0.2}>
+                    <div className="flex justify-center">
+                      <Image
+                        src="/images/illustrations/travel2.png"
+                        alt="Travel illustration"
+                        width={300}
+                        height={300}
+                        className="opacity-90 drop-shadow-sm rounded-lg object-contain"
+                      />
+                    </div>
+                  </AnimatedContainer>
+                </div>
+
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12">
                   {/* Content Side */}
                   <div className="flex-1 space-y-8">
                     <AnimatedContainer>
@@ -645,7 +657,13 @@ Generated on: ${new Date().toLocaleDateString()}`;
                         <AnimatedContainer key={index} delay={index * 0.2}>
                           <div className="space-y-4">
                             <div className="flex items-center space-x-3">
-                              <span className="text-2xl">🌍</span>
+                              <span
+                                className="text-2xl"
+                                role="img"
+                                aria-label="Globe"
+                              >
+                                🌍
+                              </span>
                               <h3 className="text-2xl font-semibold text-foreground">
                                 {interest.activity}
                               </h3>
@@ -654,7 +672,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                               {interest.description}
                             </p>
                             {interest.connection && (
-                              <div className="p-4 rounded-lg bg-primary/10 border-l-4 border-primary/30">
+                              <div className="p-4 rounded-lg bg-primary/10 border-l-4 border-primary/30 backdrop-blur-sm">
                                 <p className="text-base text-foreground/70 italic">
                                   {interest.connection}
                                 </p>
@@ -666,23 +684,53 @@ Generated on: ${new Date().toLocaleDateString()}`;
                     )}
                   </div>
 
-                  {/* Illustrations Side */}
-                  <div className="flex-1 space-y-8">
+                  {/* Desktop Illustrations Side - Hidden on mobile */}
+                  <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:items-center lg:justify-start pt-8 lg:pt-0 lg:pl-12 lg:sticky lg:top-20 h-full">
                     <AnimatedContainer delay={0.3}>
-                      <div className="flex justify-center">
-                        <TravelIllustration size="xl" className="opacity-80" />
+                      <div className="relative w-full max-w-lg">
+                        {/* Background decoration for better theme integration - more subtle */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-primary/5 via-transparent to-accent/5 rounded-full blur-2xl scale-90 opacity-70" />
+                        <div className="relative flex justify-center items-center">
+                          <Image
+                            src="/images/illustrations/travel2.png"
+                            alt="Yogesh exploring new destinations and technologies"
+                            width={450}
+                            height={450}
+                            className="opacity-90 drop-shadow-lg transition-all duration-500 hover:opacity-100 hover:scale-105 rounded-lg object-contain transform -translate-y-10 lg:translate-x-8"
+                            priority
+                          />
+                        </div>
                       </div>
                     </AnimatedContainer>
 
-                    <AnimatedContainer delay={0.5}>
-                      <div className="flex justify-center">
-                        <CitySkylinesIllustration
-                          size="xl"
-                          className="opacity-70"
-                        />
+                    {/* CitySkylinesIllustration can be a secondary, less prominent element or removed if too cluttered */}
+                    <AnimatedContainer
+                      delay={0.5}
+                      className="mt-8 w-full max-w-md"
+                    >
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-secondary/5 via-transparent to-primary/5 rounded-lg blur-xl scale-100 opacity-60" />
+                        <div className="relative flex justify-center p-2">
+                          <CitySkylinesIllustration
+                            size="lg"
+                            className="opacity-70 drop-shadow-md transition-all duration-500 hover:opacity-80"
+                          />
+                        </div>
                       </div>
                     </AnimatedContainer>
                   </div>
+                </div>
+
+                {/* Mobile City Illustration - Displayed at bottom on mobile */}
+                <div className="block lg:hidden mt-12">
+                  <AnimatedContainer delay={0.6}>
+                    <div className="flex justify-center">
+                      <CitySkylinesIllustration
+                        size="lg"
+                        className="opacity-80 drop-shadow-sm"
+                      />
+                    </div>
+                  </AnimatedContainer>
                 </div>
               </Container>
             </section>

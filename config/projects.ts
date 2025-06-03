@@ -40,7 +40,7 @@ export interface Project {
     | "tool"
     | "landing-page";
   featured: boolean;
-  thumbnail: string; // Path to thumbnail image
+  thumbnail?: string; // Optional path to thumbnail image
   screenshots: string[]; // Array of screenshot paths
   technologies: ProjectTechnology[];
   features: ProjectFeature[];
@@ -121,12 +121,7 @@ export const projects: Project[] = [
     status: "completed",
     category: "mobile-app",
     featured: true,
-    thumbnail: "/images/projects/upside-down-thumbnail.jpg",
-    screenshots: [
-      "/images/projects/upside-down-gameplay-1.jpg",
-      "/images/projects/upside-down-gameplay-2.jpg",
-      "/images/projects/upside-down-menu.jpg",
-    ],
+    screenshots: [],
     technologies: [
       { name: "Unity", category: "tools", proficiency: 8 },
       { name: "C#", category: "backend", proficiency: 7 },
@@ -206,11 +201,7 @@ export const projects: Project[] = [
     category: "web-app",
     featured: true,
     thumbnail: "/images/projects/jobfit-ai-thumbnail.jpg",
-    screenshots: [
-      "/images/projects/jobfit-ai-dashboard.jpg",
-      "/images/projects/jobfit-ai-matching.jpg",
-      "/images/projects/jobfit-ai-analytics.jpg",
-    ],
+    screenshots: [],
     technologies: [
       { name: "LangChain", category: "backend", proficiency: 9 },
       { name: "Python", category: "backend", proficiency: 9 },
@@ -263,21 +254,16 @@ export const projects: Project[] = [
     links: [
       {
         type: "demo",
-        url: "https://jobfit-ai-demo.vercel.app",
+        url: "https://jobfitai.iamyogesh.com/",
         label: "Live Demo",
       },
       {
         type: "github",
-        url: "https://github.com/officialYogesh/jobfit-ai",
+        url: "https://github.com/officialYogesh/JobFitAI",
         label: "Source Code",
       },
-      {
-        type: "case-study",
-        url: "https://iamyogesh.com/projects/jobfit-ai",
-        label: "Case Study",
-      },
     ],
-    startDate: "2024-01-15",
+    startDate: "2025-01-15",
     endDate: "2025-05-30",
     teamSize: 1,
     role: "Full-Stack Developer & AI Engineer",

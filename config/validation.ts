@@ -296,7 +296,6 @@ function validateProjects(): ValidationError[] {
       "status",
       "category",
       "featured",
-      "thumbnail",
       "technologies",
       "startDate",
       "teamSize",

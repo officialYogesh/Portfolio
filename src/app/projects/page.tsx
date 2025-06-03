@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Search, SortAsc, SortDesc, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
@@ -31,9 +31,11 @@ const ProjectsPage: React.FC = () => {
     direction: "desc",
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  // Simulate loading state on mount
+  // Prevent hydration mismatch by ensuring client-side rendering
   useEffect(() => {
+    setIsMounted(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);
@@ -81,38 +83,46 @@ const ProjectsPage: React.FC = () => {
       );
     }
 
-    // Apply sorting
+    // Apply sorting with explicit direction handling
     filtered.sort((a, b) => {
       let comparison = 0;
+      // Define dates for consistent use in multiple cases
+      const aDate = new Date(a.endDate || a.startDate).getTime();
+      const bDate = new Date(b.endDate || b.startDate).getTime();
+      const aStartDate = new Date(a.startDate).getTime();
+      const bStartDate = new Date(b.startDate).getTime();
 
       switch (sortConfig.option) {
-        case "newest":
-          comparison =
-            new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+        case "newest": // Base comparison: older date first (ascending)
+          comparison = aDate - bDate;
           break;
-        case "oldest":
-          comparison =
-            new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+        case "oldest": // Base comparison: older start date first (ascending)
+          comparison = aStartDate - bStartDate;
           break;
-        case "featured":
-          comparison = (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+        case "featured": // Base comparison: non-featured first, then older date first
+          if (a.featured !== b.featured) {
+            comparison = (a.featured ? 1 : 0) - (b.featured ? 1 : 0); // (0 - 1 = -1 for a=non-feat, b=feat)
+          } else {
+            comparison = aDate - bDate; // Ascending date order for ties
+          }
           break;
-        case "title":
+        case "title": // Base comparison: alphabetical ascending
           comparison = a.title.localeCompare(b.title);
           break;
-        case "status":
+        case "status": // Base comparison: logical ascending order of status importance
           const statusOrder = {
-            "in-progress": 4,
-            completed: 3,
-            planned: 2,
+            // Lower number = less active/important for ASC sort
             archived: 1,
+            planned: 2,
+            completed: 3,
+            "in-progress": 4,
           };
-          comparison = statusOrder[b.status] - statusOrder[a.status];
+          comparison = statusOrder[a.status] - statusOrder[b.status];
           break;
         default:
           comparison = 0;
       }
-
+      // Apply direction: if 'desc', invert the ascending comparison
       return sortConfig.direction === "asc" ? comparison : -comparison;
     });
 
@@ -141,10 +151,25 @@ const ProjectsPage: React.FC = () => {
   // Memoized handler functions to prevent unnecessary re-renders
   const handleSortChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const [option, direction] = e.target.value.split("-") as [
-        SortOption,
-        "asc" | "desc"
-      ];
+      const value = e.target.value;
+      let option: SortOption;
+      let direction: "asc" | "desc";
+
+      if (value.includes("-")) {
+        [option, direction] = value.split("-") as [SortOption, "asc" | "desc"];
+      } else {
+        option = value as SortOption;
+        // Set default directions for options that don't specify it
+        if (
+          option === "newest" ||
+          option === "featured" ||
+          option === "status"
+        ) {
+          direction = "desc";
+        } else {
+          direction = "asc"; // oldest, title A-Z default to asc
+        }
+      }
       setSortConfig({ option, direction });
     },
     []
@@ -180,12 +205,10 @@ const ProjectsPage: React.FC = () => {
     []
   );
 
-  const toggleSortDirection = useCallback(() => {
-    setSortConfig((prev) => ({
-      ...prev,
-      direction: prev.direction === "asc" ? "desc" : "asc",
-    }));
-  }, []);
+  // Don't render content until mounted to prevent hydration mismatch
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen py-16 lg:py-20">
@@ -281,42 +304,25 @@ const ProjectsPage: React.FC = () => {
                 </label>
                 <select
                   id="sort-select"
-                  value={`${sortConfig.option}-${sortConfig.direction}`}
+                  value={`${sortConfig.option}${
+                    sortConfig.direction ? "-" + sortConfig.direction : ""
+                  }`}
                   onChange={handleSortChange}
-                  className="bg-card border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="bg-card border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer hover:bg-card/80 transition-colors appearance-none bg-no-repeat bg-right pr-10"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                    backgroundPosition: "right 12px center",
+                    backgroundSize: "16px 16px",
+                  }}
                 >
                   <option value="featured-desc">Featured First</option>
                   <option value="newest-desc">Newest First</option>
                   <option value="oldest-asc">Oldest First</option>
                   <option value="title-asc">Title A-Z</option>
                   <option value="title-desc">Title Z-A</option>
-                  <option value="status-asc">Status</option>
+                  <option value="status-desc">Status</option>
                 </select>
               </div>
-
-              {/* Sort Direction Indicator */}
-              <button
-                onClick={toggleSortDirection}
-                className="p-2 bg-muted hover:bg-muted/80 rounded-md transition-colors relative group"
-                aria-label={`Current sort: ${
-                  sortConfig.direction === "asc" ? "ascending" : "descending"
-                }. Click to switch to ${
-                  sortConfig.direction === "asc" ? "descending" : "ascending"
-                }`}
-                title={`Sort ${
-                  sortConfig.direction === "asc" ? "Descending" : "Ascending"
-                }`}
-              >
-                {sortConfig.direction === "asc" ? (
-                  <SortAsc size={16} />
-                ) : (
-                  <SortDesc size={16} />
-                )}
-                {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-background border border-border rounded text-xs text-foreground opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                  {sortConfig.direction === "asc" ? "Ascending" : "Descending"}
-                </div>
-              </button>
             </div>
           </div>
         </AnimatedContainer>

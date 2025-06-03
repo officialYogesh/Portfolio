@@ -282,6 +282,52 @@ export const skills: Skill[] = [
     experience: "1+ years",
     icon: "🤖",
   },
+  {
+    name: "OpenAI GPT",
+    category: "ai",
+    proficiency: 8,
+    experience: "1+ years",
+    icon: "🧠",
+  },
+
+  // Mobile Development Technologies
+  {
+    name: "Android",
+    category: "mobile",
+    proficiency: 7,
+    experience: "2+ years",
+    icon: "🤖",
+  },
+  {
+    name: "iOS",
+    category: "mobile",
+    proficiency: 7,
+    experience: "2+ years",
+    icon: "📱",
+  },
+
+  // Game Development Technologies
+  {
+    name: "Unity",
+    category: "tools",
+    proficiency: 8,
+    experience: "2+ years",
+    icon: "🎮",
+  },
+  {
+    name: "C#",
+    category: "backend",
+    proficiency: 7,
+    experience: "2+ years",
+    icon: "🔷",
+  },
+  {
+    name: "Game Design",
+    category: "frontend",
+    proficiency: 8,
+    experience: "2+ years",
+    icon: "🎯",
+  },
 
   // Additional Frontend Technologies
   {

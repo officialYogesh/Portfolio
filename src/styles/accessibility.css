@@ -148,9 +148,11 @@ nav a:focus-visible {
   display: none;
 }
 
+/*
 [aria-hidden="true"] {
   display: none !important;
 }
+*/
 
 [aria-disabled="true"] {
   opacity: 0.6;

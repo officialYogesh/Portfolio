@@ -190,7 +190,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     >
       <div className="relative aspect-video overflow-hidden bg-muted">
         <div className="w-full h-full">
-          {imageError ? (
+          {imageError || !project.thumbnail ? (
             <ImagePlaceholder title={project.title} />
           ) : (
             <>

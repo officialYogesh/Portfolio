@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Search, X } from "lucide-react";
+import { Search, X, ChevronDown } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
@@ -302,26 +302,40 @@ const ProjectsPage: React.FC = () => {
                 >
                   Sort by:
                 </label>
-                <select
-                  id="sort-select"
-                  value={`${sortConfig.option}${
-                    sortConfig.direction ? "-" + sortConfig.direction : ""
-                  }`}
-                  onChange={handleSortChange}
-                  className="bg-card border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer hover:bg-card/80 transition-colors appearance-none bg-no-repeat bg-right pr-10"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                    backgroundPosition: "right 12px center",
-                    backgroundSize: "16px 16px",
-                  }}
-                >
-                  <option value="featured-desc">Featured First</option>
-                  <option value="newest-desc">Newest First</option>
-                  <option value="oldest-asc">Oldest First</option>
-                  <option value="title-asc">Title A-Z</option>
-                  <option value="title-desc">Title Z-A</option>
-                  <option value="status-desc">Status</option>
-                </select>
+                <div className="relative">
+                  <select
+                    id="sort-select"
+                    value={`${sortConfig.option}${
+                      sortConfig.direction ? "-" + sortConfig.direction : ""
+                    }`}
+                    onChange={handleSortChange}
+                    className="bg-card border border-border rounded-md px-3 py-2 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer hover:bg-card/80 transition-colors appearance-none min-w-[140px]"
+                    style={{
+                      WebkitAppearance: "none",
+                      MozAppearance: "none",
+                    }}
+                  >
+                    <option value="featured-desc" className="cursor-pointer">
+                      Featured First
+                    </option>
+                    <option value="newest-desc" className="cursor-pointer">
+                      Newest First
+                    </option>
+                    <option value="oldest-asc" className="cursor-pointer">
+                      Oldest First
+                    </option>
+                    <option value="title-asc" className="cursor-pointer">
+                      Title A-Z
+                    </option>
+                    <option value="title-desc" className="cursor-pointer">
+                      Title Z-A
+                    </option>
+                    <option value="status-desc" className="cursor-pointer">
+                      Status
+                    </option>
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                </div>
               </div>
             </div>
           </div>

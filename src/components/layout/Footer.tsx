@@ -82,23 +82,23 @@ const Footer: React.FC = () => {
                 <div className="flex flex-row md:flex-col lg:flex-row items-center justify-center lg:justify-start gap-4 mb-8 mt-8 lg:mt-0">
                   <motion.a
                     href={`mailto:${personalInfo.email}`}
-                    className="group inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-background font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/25 w-full sm:w-auto lg:w-full xl:w-auto"
+                    className="group inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-background font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/25 w-full sm:w-auto lg:w-full xl:w-auto min-w-[160px] whitespace-nowrap justify-center"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <Mail className="w-5 h-5" />
-                    Get In Touch
-                    <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                    <Mail className="w-5 h-5 flex-shrink-0" />
+                    <span>Get In Touch</span>
+                    <ArrowUpRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
                   </motion.a>
 
                   <motion.a
                     href="/resume"
-                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full sm:w-auto lg:w-full xl:w-auto"
+                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full sm:w-auto lg:w-full xl:w-auto min-w-[140px] whitespace-nowrap justify-center"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    View Resume
-                    <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                    <span>View Resume</span>
+                    <ArrowUpRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
                   </motion.a>
                 </div>
 

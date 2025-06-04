@@ -350,8 +350,8 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
       <section className="py-16 lg:py-20">
         <Container>
           <StaggerContainer>
-            <StaggerItem>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
+            <StaggerItem className="mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-16 text-center">
                 Key Features
               </h2>
             </StaggerItem>
@@ -422,8 +422,8 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
         <Container>
           <div className="max-w-4xl mx-auto">
             <StaggerContainer>
-              <StaggerItem>
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
+              <StaggerItem className="mb-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-16 text-center">
                   Challenges & Solutions
                 </h2>
               </StaggerItem>
@@ -432,7 +432,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 {/* Challenges */}
                 <StaggerItem>
                   <div className="space-y-6">
-                    <div className="flex items-center gap-3 mb-6">
+                    <div className="flex items-center gap-3 mb-8">
                       <div className="w-8 h-8 bg-warning/10 rounded-lg flex items-center justify-center">
                         <AlertCircle className="w-5 h-5 text-warning" />
                       </div>
@@ -457,7 +457,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 {/* Solutions */}
                 <StaggerItem>
                   <div className="space-y-6">
-                    <div className="flex items-center gap-3 mb-6">
+                    <div className="flex items-center gap-3 mb-8">
                       <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center">
                         <CheckCircle className="w-5 h-5 text-success" />
                       </div>

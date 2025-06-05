@@ -77,12 +77,12 @@ const Footer: React.FC = () => {
               </div>
 
               {/* Right Side: Actions with improved spacing */}
-              <div className="lg:flex-shrink-0 lg:w-80 xl:w-96">
+              <div className="lg:flex-shrink-0 lg:w-auto xl:w-auto min-w-[320px]">
                 {/* CTA Buttons */}
-                <div className="flex flex-row md:flex-col lg:flex-row items-center justify-center lg:justify-start gap-4 mb-8 mt-8 lg:mt-0">
+                <div className="flex flex-col sm:flex-row lg:flex-row items-center justify-center lg:justify-start gap-4 mb-8 mt-8 lg:mt-0">
                   <motion.a
                     href={`mailto:${personalInfo.email}`}
-                    className="group inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-background font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/25 w-full sm:w-auto lg:w-full xl:w-auto min-w-[160px] whitespace-nowrap justify-center"
+                    className="group inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-background font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/25 w-full sm:w-auto lg:w-auto min-w-[160px] whitespace-nowrap justify-center"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -91,20 +91,25 @@ const Footer: React.FC = () => {
                     <ArrowUpRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
                   </motion.a>
 
-                  <motion.a
-                    href="/resume"
-                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full sm:w-auto lg:w-full xl:w-auto min-w-[140px] whitespace-nowrap justify-center"
+                  <motion.button
+                    onClick={() =>
+                      window.open(
+                        "/documents/Yogesh-Patil-Resume.pdf",
+                        "_blank"
+                      )
+                    }
+                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full sm:w-auto lg:w-auto min-w-[140px] whitespace-nowrap justify-center"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <span>View Resume</span>
                     <ArrowUpRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
-                  </motion.a>
+                  </motion.button>
                 </div>
 
                 {/* Social Links with enhanced styling */}
                 <motion.div
-                  className="flex items-center justify-center lg:justify-start gap-4"
+                  className="flex items-center justify-center gap-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
@@ -112,35 +117,39 @@ const Footer: React.FC = () => {
                   <span className="text-muted text-sm font-medium hidden lg:block">
                     Connect:
                   </span>
-                  {personalInfo.socialLinks.map((social, index) => (
-                    <motion.div
-                      key={social.platform}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      className="group"
-                    >
-                      <SocialIcon
-                        url={social.url}
-                        target={
-                          social.platform.toLowerCase() === "email"
-                            ? undefined
-                            : "_blank"
-                        }
-                        rel={
-                          social.platform.toLowerCase() === "email"
-                            ? undefined
-                            : "noopener noreferrer"
-                        }
-                        style={{ height: 48, width: 48 }}
-                        bgColor="transparent"
-                        fgColor="currentColor"
-                        className="text-muted hover:text-primary transition-all duration-300 border border-border/30 hover:border-primary/50 rounded-full hover:shadow-lg hover:shadow-primary/10"
-                        aria-label={`Connect on ${social.platform}`}
-                      />
-                    </motion.div>
-                  ))}
+                  {personalInfo.socialLinks
+                    .filter(
+                      (social) => social.platform.toLowerCase() !== "portfolio"
+                    )
+                    .map((social, index) => (
+                      <motion.div
+                        key={social.platform}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        className="group"
+                      >
+                        <SocialIcon
+                          url={social.url}
+                          target={
+                            social.platform.toLowerCase() === "email"
+                              ? undefined
+                              : "_blank"
+                          }
+                          rel={
+                            social.platform.toLowerCase() === "email"
+                              ? undefined
+                              : "noopener noreferrer"
+                          }
+                          style={{ height: 48, width: 48 }}
+                          bgColor="transparent"
+                          fgColor="currentColor"
+                          className="text-muted hover:text-primary transition-all duration-300 border border-border/30 hover:border-primary/50 rounded-full hover:shadow-lg hover:shadow-primary/10"
+                          aria-label={`Connect on ${social.platform}`}
+                        />
+                      </motion.div>
+                    ))}
                 </motion.div>
               </div>
             </div>

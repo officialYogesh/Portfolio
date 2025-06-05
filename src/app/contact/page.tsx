@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -26,24 +26,48 @@ import { personalInfo } from "../../../config/personal-info";
 interface FormData {
   subject: string;
   message: string;
+  senderEmail: string;
+  senderName: string;
 }
 
 interface FormErrors {
   subject?: string;
   message?: string;
+  senderEmail?: string;
+  senderName?: string;
 }
 
 // Contact form component
 const ContactForm = () => {
+  const [isClient, setIsClient] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     subject: "",
     message: "",
+    senderEmail: "",
+    senderName: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [submitMessage, setSubmitMessage] = useState("");
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Enhanced email validation function with formatting
+  const isValidEmail = (email: string): boolean => {
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    return emailRegex.test(email) && email.length <= 254; // RFC 5321 limit
+  };
+
+  // Email formatting function
+  const formatEmail = (email: string): string => {
+    return email.trim().toLowerCase();
+  };
 
   // Form validation
   const validateForm = (): boolean => {
@@ -61,6 +85,14 @@ const ContactForm = () => {
       newErrors.message = "Message must be at least 10 characters";
     }
 
+    // Email is optional, but if provided, must be valid
+    if (formData.senderEmail.trim()) {
+      const formattedEmail = formatEmail(formData.senderEmail);
+      if (!isValidEmail(formattedEmail)) {
+        newErrors.senderEmail = "Please provide a valid email address";
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -73,24 +105,47 @@ const ContactForm = () => {
 
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    setSubmitMessage("");
 
     try {
-      // Create mailto URL with form data
-      const subject = encodeURIComponent(formData.subject);
-      const body = encodeURIComponent(formData.message);
-      const mailtoUrl = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+          senderEmail: formData.senderEmail.trim()
+            ? formatEmail(formData.senderEmail)
+            : undefined,
+          senderName: formData.senderName.trim() || undefined,
+        }),
+      });
 
-      // Open email client
-      window.location.href = mailtoUrl;
+      const result = await response.json();
 
-      // Simulate submission delay for UX
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      setSubmitStatus("success");
-      setFormData({ subject: "", message: "" });
+      if (response.ok && result.success) {
+        setSubmitStatus("success");
+        setSubmitMessage(result.message || "Message sent successfully!");
+        setFormData({
+          subject: "",
+          message: "",
+          senderEmail: "",
+          senderName: "",
+        });
+      } else {
+        setSubmitStatus("error");
+        setSubmitMessage(
+          result.error || "Failed to send message. Please try again."
+        );
+      }
     } catch (error) {
-      console.error("Error sending email:", error);
+      console.error("Error sending message:", error);
       setSubmitStatus("error");
+      setSubmitMessage(
+        "Failed to send message. Please try again or contact me directly."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -109,6 +164,30 @@ const ContactForm = () => {
     }
   };
 
+  if (!isClient) {
+    return (
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <div className="h-5 w-24 bg-muted rounded animate-pulse"></div>
+          <div className="h-12 bg-muted rounded-xl animate-pulse"></div>
+        </div>
+        <div className="space-y-2">
+          <div className="h-5 w-32 bg-muted rounded animate-pulse"></div>
+          <div className="h-12 bg-muted rounded-xl animate-pulse"></div>
+        </div>
+        <div className="space-y-2">
+          <div className="h-5 w-20 bg-muted rounded animate-pulse"></div>
+          <div className="h-12 bg-muted rounded-xl animate-pulse"></div>
+        </div>
+        <div className="space-y-2">
+          <div className="h-5 w-20 bg-muted rounded animate-pulse"></div>
+          <div className="h-32 bg-muted rounded-xl animate-pulse"></div>
+        </div>
+        <div className="h-12 w-40 bg-muted rounded-full animate-pulse"></div>
+      </div>
+    );
+  }
+
   return (
     <motion.form
       onSubmit={handleSubmit}
@@ -116,9 +195,86 @@ const ContactForm = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
+      suppressHydrationWarning
     >
+      {/* Name Field (Optional) */}
+      <div className="space-y-2" suppressHydrationWarning>
+        <label
+          htmlFor="senderName"
+          className="block text-sm font-medium text-foreground"
+        >
+          Your Name{" "}
+          <span className="text-muted-foreground text-xs">(optional)</span>
+        </label>
+        <motion.input
+          type="text"
+          id="senderName"
+          name="senderName"
+          value={formData.senderName}
+          onChange={handleChange}
+          className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${
+            errors.senderName
+              ? "border-red-500 focus:ring-red-500/50 focus:border-red-500"
+              : "border-border hover:border-primary/50"
+          }`}
+          placeholder="Your name"
+          whileFocus={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          suppressHydrationWarning
+        />
+        {errors.senderName && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-sm text-red-500 flex items-center gap-1"
+          >
+            <AlertCircle className="w-4 h-4" />
+            {errors.senderName}
+          </motion.p>
+        )}
+      </div>
+
+      {/* Email Field (Optional) */}
+      <div className="space-y-2" suppressHydrationWarning>
+        <label
+          htmlFor="senderEmail"
+          className="block text-sm font-medium text-foreground"
+        >
+          Your Email{" "}
+          <span className="text-muted-foreground text-xs">
+            (optional, for replies)
+          </span>
+        </label>
+        <motion.input
+          type="email"
+          id="senderEmail"
+          name="senderEmail"
+          value={formData.senderEmail}
+          onChange={handleChange}
+          className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${
+            errors.senderEmail
+              ? "border-red-500 focus:ring-red-500/50 focus:border-red-500"
+              : "border-border hover:border-primary/50"
+          }`}
+          placeholder="your-email@example.com"
+          whileFocus={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          suppressHydrationWarning
+        />
+        {errors.senderEmail && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-sm text-red-500 flex items-center gap-1"
+          >
+            <AlertCircle className="w-4 h-4" />
+            {errors.senderEmail}
+          </motion.p>
+        )}
+      </div>
+
       {/* Subject Field */}
-      <div className="space-y-2">
+      <div className="space-y-2" suppressHydrationWarning>
         <label
           htmlFor="subject"
           className="block text-sm font-medium text-foreground"
@@ -139,6 +295,7 @@ const ContactForm = () => {
           placeholder="What would you like to discuss?"
           whileFocus={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          suppressHydrationWarning
         />
         {errors.subject && (
           <motion.p
@@ -153,7 +310,7 @@ const ContactForm = () => {
       </div>
 
       {/* Message Field */}
-      <div className="space-y-2">
+      <div className="space-y-2" suppressHydrationWarning>
         <label
           htmlFor="message"
           className="block text-sm font-medium text-foreground"
@@ -174,6 +331,7 @@ const ContactForm = () => {
           placeholder="Tell me about your project, opportunity, or just say hello..."
           whileFocus={{ scale: 1.01 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          suppressHydrationWarning
         />
         {errors.message && (
           <motion.p
@@ -187,27 +345,45 @@ const ContactForm = () => {
         )}
       </div>
 
-      {/* Submit Button */}
+      {/* Submit Button with Enhanced Hover Effects */}
       <motion.button
         type="submit"
         disabled={isSubmitting}
-        className={`w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full font-semibold transition-all duration-300 ${
+        className={`w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full font-semibold transition-all duration-300 relative overflow-hidden group ${
           isSubmitting
             ? "bg-primary/50 cursor-not-allowed"
-            : "bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg"
+            : "bg-primary hover:bg-primary/90 hover:shadow-2xl hover:shadow-primary/25 transform-gpu"
         } text-primary-foreground min-w-[160px]`}
-        whileHover={!isSubmitting ? { scale: 1.05 } : {}}
+        whileHover={
+          !isSubmitting
+            ? {
+                scale: 1.05,
+                boxShadow:
+                  "0 20px 40px rgba(var(--primary-rgb, 79, 70, 229), 0.3)",
+                transition: { duration: 0.2 },
+              }
+            : {}
+        }
         whileTap={!isSubmitting ? { scale: 0.95 } : {}}
       >
+        {/* Shimmer Effect */}
+        {!isSubmitting && (
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+        )}
+
         {isSubmitting ? (
           <>
-            <Loader2 className="w-5 h-5 animate-spin" />
-            <span className="text-sm sm:text-base">Sending...</span>
+            <Loader2 className="w-5 h-5 animate-spin relative z-10" />
+            <span className="text-sm sm:text-base relative z-10">
+              Sending...
+            </span>
           </>
         ) : (
           <>
-            <Send className="w-5 h-5" />
-            <span className="text-sm sm:text-base">Send Message</span>
+            <Send className="w-5 h-5 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
+            <span className="text-sm sm:text-base relative z-10">
+              Send Message
+            </span>
           </>
         )}
       </motion.button>
@@ -220,9 +396,7 @@ const ContactForm = () => {
           className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-600 flex items-center gap-2"
         >
           <CheckCircle className="w-5 h-5" />
-          <span className="text-sm sm:text-base">
-            Your email client should open shortly. Thank you for reaching out!
-          </span>
+          <span className="text-sm sm:text-base">{submitMessage}</span>
         </motion.div>
       )}
 
@@ -233,9 +407,7 @@ const ContactForm = () => {
           className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-600 flex items-center gap-2"
         >
           <AlertCircle className="w-5 h-5" />
-          <span className="text-sm sm:text-base">
-            Something went wrong. Please try emailing me directly.
-          </span>
+          <span className="text-sm sm:text-base">{submitMessage}</span>
         </motion.div>
       )}
     </motion.form>
@@ -260,7 +432,7 @@ const getSocialIcon = (platform: string) => {
 
 export default function ContactPage() {
   return (
-    <>
+    <div suppressHydrationWarning>
       <Container className="py-8 md:py-16">
         {/* Hero Section */}
         <AnimatedContainer delay={0.1} className="text-center mb-16">
@@ -385,7 +557,11 @@ export default function ContactPage() {
                 </div>
                 <StaggerContainer className="grid grid-cols-2 gap-4">
                   {personalInfo.socialLinks
-                    .filter((link) => link.platform.toLowerCase() !== "email")
+                    .filter(
+                      (link) =>
+                        link.platform.toLowerCase() !== "email" &&
+                        link.platform.toLowerCase() !== "portfolio"
+                    )
                     .map((link, index) => {
                       const IconComponent = getSocialIcon(link.platform);
                       return (
@@ -431,6 +607,6 @@ export default function ContactPage() {
           </AnimatedContainer>
         </div>
       </Container>
-    </>
+    </div>
   );
 }

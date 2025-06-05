@@ -3,7 +3,15 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Download, Mail, Linkedin, Github, BookOpen } from "lucide-react";
+import {
+  Download,
+  Mail,
+  Linkedin,
+  Github,
+  BookOpen,
+  ArrowRight,
+} from "lucide-react";
+import Link from "next/link";
 
 // Components
 import { Container } from "@/components/layout/Container";
@@ -253,34 +261,18 @@ const AboutPage: React.FC = () => {
   // Memoized handlers
   const handleDownloadResume = useCallback(() => {
     try {
-      const resumeContent = `${personalInfo.name} - Resume
-      
-${personalInfo.title}
-Email: ${personalInfo.email}
-Location: ${personalInfo.location}
-Experience: ${personalInfo.experience}
-
-${personalInfo.bio}
-
-Professional Summary:
-${aboutPageContent.storyArc.currentState.content.join("\n")}
-
-Current Focus:
-${aboutPageContent.workInfo.description}
-
-Generated on: ${new Date().toLocaleDateString()}`;
-
-      const blob = new Blob([resumeContent], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${personalInfo.name.replace(/\s+/g, "-")}-Resume.txt`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      // Create a link element and trigger download
+      const link = document.createElement("a");
+      link.href = "/documents/Yogesh-Patil-Resume.pdf";
+      link.download = "Yogesh-Patil-Resume.pdf";
+      link.target = "_blank";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error downloading resume:", error);
+      // Fallback: open in new tab
+      window.open("/documents/Yogesh-Patil-Resume.pdf", "_blank");
     }
   }, []);
 
@@ -639,15 +631,13 @@ Generated on: ${new Date().toLocaleDateString()}`;
                     {workInfo.link && (
                       <AnimatedContainer delay={0.6}>
                         <div className="flex flex-col sm:flex-row gap-4">
-                          <a href={workInfo.link}>
-                            <PrimaryButton
-                              icon={<BookOpen size={18} />}
-                              size="lg"
-                              className="w-full sm:w-auto"
-                            >
-                              View Full Resume
-                            </PrimaryButton>
-                          </a>
+                          <Link
+                            href="/resume"
+                            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
+                          >
+                            View Full Resume
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
                         </div>
                       </AnimatedContainer>
                     )}

@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Mail, ExternalLink, Github } from "lucide-react";
+import { Mail } from "lucide-react";
 import { Container } from "@/components/layout";
-import { Button, PrimaryButton, OutlineButton } from "@/components/ui/Button";
 import {
   Card,
   CardContent,
@@ -130,23 +129,31 @@ export default function Home() {
                 </p>
 
                 <div className="flex flex-wrap gap-4 mt-8">
-                  <PrimaryButton
-                    size="lg"
-                    onClick={() => window.open("/resume.pdf", "_blank")}
-                    icon={<Download className="h-5 w-5" />}
+                  <motion.button
+                    onClick={() =>
+                      window.open(
+                        "/documents/Yogesh-Patil-Resume.pdf",
+                        "_blank"
+                      )
+                    }
+                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     View Resume
-                  </PrimaryButton>
+                  </motion.button>
 
-                  <OutlineButton
-                    size="lg"
+                  <motion.button
                     onClick={() =>
                       (window.location.href = `mailto:${personalInfo.email}`)
                     }
-                    icon={<Mail className="h-5 w-5" />}
+                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
                   >
+                    <Mail className="h-5 w-5" />
                     Contact Me
-                  </OutlineButton>
+                  </motion.button>
                 </div>
               </div>
             </AnimatedContainer>
@@ -216,22 +223,15 @@ export default function Home() {
                           {/* Project Links */}
                           <div className="flex gap-2 pt-2">
                             {project.links.map((link) => (
-                              <Button
+                              <motion.button
                                 key={link.type}
-                                variant="outline"
-                                size="sm"
                                 onClick={() => window.open(link.url, "_blank")}
-                                className="flex-1 text-xs"
-                                icon={
-                                  link.type === "github" ? (
-                                    <Github className="h-3 w-3" />
-                                  ) : (
-                                    <ExternalLink className="h-3 w-3" />
-                                  )
-                                }
+                                className="flex-1 text-xs px-3 py-1 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
+                                whileHover={{ scale: 1.02, y: -2 }}
+                                whileTap={{ scale: 0.98 }}
                               >
                                 {link.label}
-                              </Button>
+                              </motion.button>
                             ))}
                           </div>
                         </div>
@@ -244,12 +244,9 @@ export default function Home() {
 
             {/* View All Projects Link */}
             <div className="text-center mt-12">
-              <Button
-                variant="ghost"
-                size="lg"
+              <motion.button
                 onClick={() => (window.location.href = "/projects")}
-                icon={<ArrowRight className="h-5 w-5" />}
-                className="text-primary hover:text-accent group"
+                className="text-primary hover:text-accent group font-medium"
               >
                 See All Projects
                 <motion.span
@@ -258,7 +255,7 @@ export default function Home() {
                 >
                   →
                 </motion.span>
-              </Button>
+              </motion.button>
             </div>
           </AnimatedContainer>
         </section>
@@ -329,15 +326,16 @@ export default function Home() {
                 </StaggerItem>
 
                 <StaggerItem>
-                  <OutlineButton
-                    size="lg"
+                  <motion.button
                     onClick={() =>
                       window.open(personalInfo.socialLinks[1].url, "_blank")
                     }
-                    icon={<ExternalLink className="h-5 w-5" />}
+                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     LinkedIn Profile
-                  </OutlineButton>
+                  </motion.button>
                 </StaggerItem>
               </StaggerContainer>
             </div>

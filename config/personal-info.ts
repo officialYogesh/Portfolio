@@ -23,7 +23,7 @@ export const personalInfo: PersonalInfo = {
   name: "Yogesh Patil",
   title: "Software Development Engineer",
   email: "officialyogeshp@gmail.com",
-  location: "Remote, New York, USA",
+  location: "New York, USA",
   experience: "4+ years",
   availability: "Open to opportunities",
   tagline:

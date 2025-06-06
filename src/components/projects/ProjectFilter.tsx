@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Filter,
   X,
@@ -192,47 +192,91 @@ export const ProjectFilter: React.FC<ProjectFilterProps> = ({
     selectedStatus !== "all" ||
     selectedTech !== "all";
 
-  const filterVariants = {
-    hidden: {
-      opacity: 0,
-      height: 0,
+  // Single coordinated animation system
+  const containerVariants = {
+    collapsed: {
       transition: {
         duration: 0.3,
         ease: [0.4, 0, 0.2, 1],
+        when: "afterChildren",
       },
     },
-    visible: {
-      opacity: 1,
-      height: "auto",
+    expanded: {
       transition: {
         duration: 0.3,
         ease: [0.4, 0, 0.2, 1],
+        staggerChildren: 0.05,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const filterPanelVariants = {
+    collapsed: {
+      height: 0,
+      opacity: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+      marginTop: 0,
+      transition: {
+        duration: 0.3,
+        ease: [0.4, 0, 0.2, 1],
+        opacity: { duration: 0.2, delay: 0 },
+      },
+    },
+    expanded: {
+      height: "auto",
+      opacity: 1,
+      paddingTop: 24,
+      paddingBottom: 24,
+      marginTop: 16,
+      transition: {
+        duration: 0.3,
+        ease: [0.4, 0, 0.2, 1],
+        opacity: { duration: 0.25, delay: 0.1 },
+        staggerChildren: 0.05,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const sectionVariants = {
+    collapsed: {
+      opacity: 0,
+      y: -8,
+      transition: {
+        duration: 0.2,
+        ease: "easeIn",
+      },
+    },
+    expanded: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.25,
+        ease: "easeOut",
       },
     },
   };
 
   const buttonVariants = {
-    inactive: {
-      scale: 1,
-      backgroundColor: "var(--muted)",
-      color: "var(--muted-foreground)",
-    },
-    active: {
-      scale: 1.05,
-      backgroundColor: "var(--primary)",
-      color: "var(--primary-foreground)",
-    },
+    inactive: { scale: 1 },
+    active: { scale: 1 },
     hover: {
       scale: 1.02,
-      transition: {
-        duration: 0.2,
-        ease: [0.4, 0, 0.2, 1],
-      },
+      transition: { duration: 0.1, ease: "easeOut" },
     },
   };
 
   return (
-    <div className="space-y-4">
+    <motion.div
+      layout
+      variants={containerVariants}
+      initial="collapsed"
+      animate={isFilterOpen ? "expanded" : "collapsed"}
+      className="space-y-4"
+      layoutId="filter-container"
+    >
       {/* Filter Toggle and Clear Button */}
       <div className="flex items-center justify-between">
         <motion.button
@@ -266,118 +310,123 @@ export const ProjectFilter: React.FC<ProjectFilterProps> = ({
         )}
       </div>
 
-      {/* Filter Panel */}
-      <AnimatePresence>
-        {isFilterOpen && (
-          <motion.div
-            variants={filterVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="bg-card border border-border rounded-xl p-6 space-y-6"
-          >
-            {/* Category Filter */}
-            <div>
-              <h3 className="text-sm font-semibold text-card-foreground mb-3">
-                Category
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {categoryOptions.map((option) => (
-                  <motion.button
-                    key={option.key}
-                    onClick={() => onCategoryChange(option.key)}
-                    variants={buttonVariants}
-                    initial="inactive"
-                    animate={
-                      selectedCategory === option.key ? "active" : "inactive"
-                    }
-                    whileHover="hover"
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors min-h-[36px]"
-                  >
-                    {option.icon}
-                    <span>{option.label}</span>
-                    {option.count !== undefined && (
-                      <span className="bg-background/20 text-xs px-1.5 py-0.5 rounded">
-                        {option.count}
-                      </span>
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            {/* Status Filter */}
-            <div>
-              <h3 className="text-sm font-semibold text-card-foreground mb-3">
-                Status
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {statusOptions.map((option) => (
-                  <motion.button
-                    key={option.key}
-                    onClick={() => onStatusChange(option.key)}
-                    variants={buttonVariants}
-                    initial="inactive"
-                    animate={
-                      selectedStatus === option.key ? "active" : "inactive"
-                    }
-                    whileHover="hover"
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors min-h-[36px]"
-                  >
-                    {option.icon}
-                    <span>{option.label}</span>
-                    {option.count !== undefined && (
-                      <span className="bg-background/20 text-xs px-1.5 py-0.5 rounded">
-                        {option.count}
-                      </span>
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            {/* Technology Filter */}
-            <div>
-              <h3 className="text-sm font-semibold text-card-foreground mb-3">
-                Popular Technologies
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {techOptions.map((option) => (
-                  <motion.button
-                    key={option.key}
-                    onClick={() => onTechChange(option.key)}
-                    variants={buttonVariants}
-                    initial="inactive"
-                    animate={
-                      selectedTech === option.key ? "active" : "inactive"
-                    }
-                    whileHover="hover"
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors min-h-[36px]"
-                  >
-                    {option.icon}
-                    <span>{option.label}</span>
-                    {option.count !== undefined && (
-                      <span className="bg-background/20 text-xs px-1.5 py-0.5 rounded">
-                        {option.count}
-                      </span>
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-              {allTechnologies.length > 15 && (
-                <p className="text-xs text-muted-foreground mt-2">
-                  Showing top 15 technologies. View individual projects for
-                  complete tech stacks.
-                </p>
-              )}
+      {/* Filter Panel with coordinated animation */}
+      <motion.div
+        variants={filterPanelVariants}
+        className="bg-card border border-border rounded-xl overflow-hidden"
+        style={{
+          paddingLeft: 24,
+          paddingRight: 24,
+        }}
+      >
+        <div className="space-y-6">
+          {/* Category Filter */}
+          <motion.div variants={sectionVariants}>
+            <h3 className="text-sm font-semibold text-card-foreground mb-3">
+              Category
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {categoryOptions.map((option) => (
+                <motion.button
+                  key={option.key}
+                  onClick={() => onCategoryChange(option.key)}
+                  variants={buttonVariants}
+                  initial="inactive"
+                  animate="inactive"
+                  whileHover="hover"
+                  whileTap={{ scale: 0.95 }}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 min-h-[36px] ${
+                    selectedCategory === option.key
+                      ? "bg-primary text-primary-foreground scale-[1.02]"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {option.icon}
+                  <span>{option.label}</span>
+                  {option.count !== undefined && (
+                    <span className="bg-background/20 text-xs px-1.5 py-0.5 rounded">
+                      {option.count}
+                    </span>
+                  )}
+                </motion.button>
+              ))}
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+
+          {/* Status Filter */}
+          <motion.div variants={sectionVariants}>
+            <h3 className="text-sm font-semibold text-card-foreground mb-3">
+              Status
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {statusOptions.map((option) => (
+                <motion.button
+                  key={option.key}
+                  onClick={() => onStatusChange(option.key)}
+                  variants={buttonVariants}
+                  initial="inactive"
+                  animate="inactive"
+                  whileHover="hover"
+                  whileTap={{ scale: 0.95 }}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 min-h-[36px] ${
+                    selectedStatus === option.key
+                      ? "bg-primary text-primary-foreground scale-[1.02]"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {option.icon}
+                  <span>{option.label}</span>
+                  {option.count !== undefined && (
+                    <span className="bg-background/20 text-xs px-1.5 py-0.5 rounded">
+                      {option.count}
+                    </span>
+                  )}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Technology Filter */}
+          <motion.div variants={sectionVariants}>
+            <h3 className="text-sm font-semibold text-card-foreground mb-3">
+              Popular Technologies
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {techOptions.map((option) => (
+                <motion.button
+                  key={option.key}
+                  onClick={() => onTechChange(option.key)}
+                  variants={buttonVariants}
+                  initial="inactive"
+                  animate="inactive"
+                  whileHover="hover"
+                  whileTap={{ scale: 0.95 }}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 min-h-[36px] ${
+                    selectedTech === option.key
+                      ? "bg-primary text-primary-foreground scale-[1.02]"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {option.icon}
+                  <span>{option.label}</span>
+                  {option.count !== undefined && (
+                    <span className="bg-background/20 text-xs px-1.5 py-0.5 rounded">
+                      {option.count}
+                    </span>
+                  )}
+                </motion.button>
+              ))}
+            </div>
+            {allTechnologies.length > 15 && (
+              <p className="text-xs text-muted-foreground mt-2">
+                Showing top 15 technologies. View individual projects for
+                complete tech stacks.
+              </p>
+            )}
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -384,14 +384,12 @@ const ProjectsPage: React.FC = () => {
           </AnimatedContainer>
         )}
 
-        {/* Projects Grid */}
-        <AnimatedContainer delay={0.7}>
-          <ProjectGrid
-            projects={filteredAndSortedProjects}
-            loading={isLoading}
-            className="mb-12"
-          />
-        </AnimatedContainer>
+        {/* Project Grid */}
+        <ProjectGrid
+          projects={filteredAndSortedProjects}
+          loading={isLoading}
+          className="mb-12"
+        />
 
         {/* Additional Information with Enhanced CTAs */}
         {!isLoading && filteredAndSortedProjects.length > 0 && (

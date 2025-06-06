@@ -112,7 +112,7 @@ export default function Home() {
             </AnimatedContainer>
 
             {/* Professional Identity Statement */}
-            <AnimatedContainer variant="fade" delay={0.3}>
+            <AnimatedContainer variant="fade" delay={0.3} className="!mb-8">
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -174,7 +174,12 @@ export default function Home() {
             </AnimatedContainer>
 
             {/* Availability & Location Status */}
-            <AnimatedContainer variant="slide" direction="up" delay={0.6}>
+            <AnimatedContainer
+              variant="slide"
+              direction="up"
+              delay={0.6}
+              className="!mb-8"
+            >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -260,7 +265,7 @@ export default function Home() {
                 </div>
 
                 {/* Primary CTAs for Recruiters */}
-                <div className="flex flex-col sm:flex-row gap-4 items-start">
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
                   <motion.button
                     onClick={() =>
                       window.open(
@@ -268,22 +273,22 @@ export default function Home() {
                         "_blank"
                       )
                     }
-                    className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden"
+                    className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden w-full md:w-auto"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <Download className="h-5 w-5 relative z-10" />
+                    <Download className="h-5 w-5 relative z-10 shrink-0" />
                     <span className="relative z-10">Download Resume</span>
                   </motion.button>
 
                   <motion.button
                     onClick={() => (window.location.href = "/contact")}
-                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5"
+                    className="group inline-flex items-center justify-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full md:w-auto"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <Mail className="h-5 w-5" />
+                    <Mail className="h-5 w-5 shrink-0" />
                     Contact Me
                   </motion.button>
                 </div>
@@ -494,12 +499,12 @@ export default function Home() {
               </p>
 
               {/* Enhanced CTA Layout - Single Row on Desktop */}
-              <div className="flex flex-col lg:flex-row gap-4 justify-center items-center max-w-4xl mx-auto">
+              <div className="flex flex-col md:flex-row gap-4 justify-center items-center max-w-4xl mx-auto">
                 <motion.button
                   onClick={() =>
                     window.open("/documents/Yogesh-Patil-Resume.pdf", "_blank")
                   }
-                  className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden w-full lg:w-auto lg:flex-1 lg:max-w-xs"
+                  className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden w-full md:w-auto md:flex-1 md:max-w-xs"
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -515,7 +520,7 @@ export default function Home() {
                       "_blank"
                     )
                   }
-                  className="group inline-flex items-center justify-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full lg:w-auto lg:flex-1 lg:max-w-xs"
+                  className="group inline-flex items-center justify-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full md:w-auto md:flex-1 md:max-w-xs"
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -527,7 +532,7 @@ export default function Home() {
                   onClick={() =>
                     (window.location.href = `mailto:${personalInfo.email}`)
                   }
-                  className="group inline-flex items-center justify-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full lg:w-auto lg:flex-1 lg:max-w-xs"
+                  className="group inline-flex items-center justify-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full md:w-auto md:flex-1 md:max-w-xs"
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >

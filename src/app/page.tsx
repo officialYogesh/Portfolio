@@ -12,6 +12,7 @@ import {
   MapPin,
   Clock,
 } from "lucide-react";
+import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
 import { Container } from "@/components/layout";
 import {
   Card,
@@ -266,31 +267,23 @@ export default function Home() {
 
                 {/* Primary CTAs for Recruiters */}
                 <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
-                  <motion.button
-                    onClick={() =>
-                      window.open(
-                        "/documents/Yogesh-Patil-Resume.pdf",
-                        "_blank"
-                      )
-                    }
-                    className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden w-full md:w-auto"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                  <PrimaryCTA
+                    href="/documents/Yogesh-Patil-Resume.pdf"
+                    icon={<Download className="h-5 w-5" />}
+                    fullWidth
+                    className="md:w-auto"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <Download className="h-5 w-5 relative z-10 shrink-0" />
-                    <span className="relative z-10">Download Resume</span>
-                  </motion.button>
+                    Download Resume
+                  </PrimaryCTA>
 
-                  <motion.button
-                    onClick={() => (window.location.href = "/contact")}
-                    className="group inline-flex items-center justify-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full md:w-auto"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                  <SecondaryCTA
+                    to="/contact"
+                    icon={<Mail className="h-5 w-5" />}
+                    fullWidth
+                    className="md:w-auto"
                   >
-                    <Mail className="h-5 w-5 shrink-0" />
                     Contact Me
-                  </motion.button>
+                  </SecondaryCTA>
                 </div>
 
                 {/* Response Time Promise */}
@@ -444,19 +437,13 @@ export default function Home() {
                           </div>
 
                           {/* Technical Details CTA */}
-                          <motion.button
-                            onClick={() =>
-                              window.open(
-                                project.links[0]?.url || "#",
-                                "_blank"
-                              )
-                            }
-                            className="w-full text-sm px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors font-medium"
-                            whileHover={{ scale: 1.02, y: -2 }}
-                            whileTap={{ scale: 0.98 }}
+                          <SecondaryCTA
+                            href={project.links[0]?.url || "#"}
+                            size="sm"
+                            fullWidth
                           >
                             View Technical Details →
-                          </motion.button>
+                          </SecondaryCTA>
                         </div>
                       </CardContent>
                     </Card>
@@ -467,19 +454,13 @@ export default function Home() {
 
             {/* Portfolio Link */}
             <div className="text-center mt-12">
-              <motion.button
-                onClick={() => (window.location.href = "/projects")}
-                className="text-primary hover:text-accent group font-semibold text-lg"
-                whileHover={{ scale: 1.02 }}
+              <SecondaryCTA
+                to="/projects"
+                size="lg"
+                className="bg-transparent border-0 text-primary hover:text-accent"
               >
-                See Full Technical Portfolio
-                <motion.span
-                  className="ml-2 group-hover:translate-x-1 transition-transform"
-                  initial={false}
-                >
-                  →
-                </motion.span>
-              </motion.button>
+                See Full Technical Portfolio →
+              </SecondaryCTA>
             </div>
           </AnimatedContainer>
         </section>
@@ -500,45 +481,32 @@ export default function Home() {
 
               {/* Enhanced CTA Layout - Single Row on Desktop */}
               <div className="flex flex-col md:flex-row gap-4 justify-center items-center max-w-4xl mx-auto">
-                <motion.button
-                  onClick={() =>
-                    window.open("/documents/Yogesh-Patil-Resume.pdf", "_blank")
-                  }
-                  className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden w-full md:w-auto md:flex-1 md:max-w-xs"
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                <PrimaryCTA
+                  href="/documents/Yogesh-Patil-Resume.pdf"
+                  icon={<Download className="h-5 w-5" />}
+                  fullWidth
+                  className="md:flex-1 md:max-w-xs"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Download className="h-5 w-5 relative z-10 shrink-0" />
-                  <span className="relative z-10">Download Resume</span>
-                </motion.button>
+                  Download Resume
+                </PrimaryCTA>
 
-                <motion.button
-                  onClick={() =>
-                    window.open(
-                      "https://linkedin.com/in/yogeshpatil28",
-                      "_blank"
-                    )
-                  }
-                  className="group inline-flex items-center justify-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full md:w-auto md:flex-1 md:max-w-xs"
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                <SecondaryCTA
+                  href="https://linkedin.com/in/yogeshpatil28"
+                  icon={<Users className="h-5 w-5" />}
+                  fullWidth
+                  className="md:flex-1 md:max-w-xs"
                 >
-                  <Users className="h-5 w-5 shrink-0" />
                   LinkedIn Profile
-                </motion.button>
+                </SecondaryCTA>
 
-                <motion.button
-                  onClick={() =>
-                    (window.location.href = `mailto:${personalInfo.email}`)
-                  }
-                  className="group inline-flex items-center justify-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full md:w-auto md:flex-1 md:max-w-xs"
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                <SecondaryCTA
+                  href={`mailto:${personalInfo.email}`}
+                  icon={<Mail className="h-5 w-5" />}
+                  fullWidth
+                  className="md:flex-1 md:max-w-xs"
                 >
-                  <Mail className="h-5 w-5 shrink-0" />
                   Email Direct
-                </motion.button>
+                </SecondaryCTA>
               </div>
 
               <p className="text-sm text-foreground/60 mt-6">

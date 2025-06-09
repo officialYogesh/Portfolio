@@ -15,6 +15,7 @@
   --background: #282a36;
   --foreground: #f8f8f2;
   --primary: #bd93f9;
+  --primary-foreground: #282a36;
   --secondary: #ff79c6;
   --accent: #50fa7b;
   --muted: #6272a4;
@@ -88,6 +89,7 @@
   --background: #1e1e1e;
   --foreground: #e6e6e6;
   --primary: #61dafb;
+  --primary-foreground: #1e1e1e;
   --secondary: #f78c6c;
   --accent: #98c379;
   --muted: #4a4a4a;
@@ -104,6 +106,7 @@
   --background: #2e3440;
   --foreground: #eceff4;
   --primary: #88c0d0;
+  --primary-foreground: #2e3440;
   --secondary: #5e81ac;
   --accent: #a3be8c;
   --muted: #6a7489;
@@ -120,6 +123,7 @@
   --background: #282828;
   --foreground: #fbf1c7;
   --primary: #fabd2f;
+  --primary-foreground: #282828;
   --secondary: #fb4934;
   --accent: #b8bb26;
   --muted: #665c54;
@@ -136,6 +140,7 @@
   --background: #002b36;
   --foreground: #fdf6e3;
   --primary: #268bd2;
+  --primary-foreground: #fdf6e3;
   --secondary: #d33682;
   --accent: #859900;
   --muted: #657b83;
@@ -152,6 +157,7 @@
   --background: #1c1e26;
   --foreground: #e5e5e5;
   --primary: #e95678;
+  --primary-foreground: #1c1e26;
   --secondary: #fab795;
   --accent: #27d796;
   --muted: #3e4057;
@@ -168,6 +174,7 @@
   --background: #292d3e;
   --foreground: #bfc7d5;
   --primary: #c792ea;
+  --primary-foreground: #292d3e;
   --secondary: #f78c6c;
   --accent: #c3e88d;
   --muted: #5c6370;
@@ -216,7 +223,7 @@ h6 {
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   letter-spacing: var(--letter-spacing-tight);
-  margin: 0;
+  /* margin: 0; */
   color: var(--foreground);
 }
 
@@ -251,7 +258,7 @@ h6 {
 }
 
 p {
-  margin: 0;
+  /* margin: 0; */
   line-height: var(--line-height-relaxed);
   color: var(--foreground);
 }
@@ -271,7 +278,7 @@ button {
   border: none;
   background: none;
   padding: 0;
-  margin: 0;
+  /* margin: 0; */
 }
 
 a {
@@ -441,6 +448,10 @@ a:focus:not(:focus-visible) {
 .text-warning {
   color: var(--warning);
   font-weight: 500;
+}
+
+.text-primary-foreground {
+  color: var(--primary-foreground);
 }
 
 .border-background {
@@ -631,4 +642,114 @@ textarea {
   .theme-selector {
     display: none !important;
   }
+}
+
+/* Clean Pill-Shaped CTA Button Styles - High Specificity */
+button.cta-primary,
+motion.button.cta-primary,
+.cta-primary {
+  background: var(--primary, #bd93f9) !important;
+  color: var(--primary-foreground, #282a36) !important;
+  border: 1px solid var(--primary, #bd93f9) !important;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px;
+}
+
+button.cta-primary:hover,
+motion.button.cta-primary:hover,
+.cta-primary:hover {
+  background: var(--primary, #bd93f9) !important;
+  border-color: var(--primary, #bd93f9) !important;
+  opacity: 0.9 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(189, 147, 249, 0.3);
+}
+
+button.cta-secondary,
+motion.button.cta-secondary,
+.cta-secondary {
+  background: transparent !important;
+  color: var(--foreground, #f8f8f2) !important;
+  border: 1px solid var(--border, #6272a4) !important;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px;
+}
+
+button.cta-secondary:hover,
+motion.button.cta-secondary:hover,
+.cta-secondary:hover {
+  background: var(--muted, #6272a4) !important;
+  border-color: var(--primary, #bd93f9) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(98, 114, 164, 0.3);
+}
+
+/* Focus states */
+button.cta-primary:focus-visible,
+motion.button.cta-primary:focus-visible,
+.cta-primary:focus-visible,
+button.cta-secondary:focus-visible,
+motion.button.cta-secondary:focus-visible,
+.cta-secondary:focus-visible {
+  outline: 2px solid var(--primary, #bd93f9) !important;
+  outline-offset: 2px;
+}
+
+/* Disabled states */
+button.cta-primary:disabled,
+motion.button.cta-primary:disabled,
+.cta-primary:disabled,
+button.cta-secondary:disabled,
+motion.button.cta-secondary:disabled,
+.cta-secondary:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+button.cta-primary:disabled:hover,
+motion.button.cta-primary:disabled:hover,
+.cta-primary:disabled:hover,
+button.cta-secondary:disabled:hover,
+motion.button.cta-secondary:disabled:hover,
+.cta-secondary:disabled:hover {
+  background: revert;
+  border-color: revert;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Size variants */
+.cta-sm {
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  min-height: 36px !important;
+}
+
+.cta-lg {
+  padding: 16px 32px !important;
+  font-size: 16px !important;
+  min-height: 52px !important;
 }

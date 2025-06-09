@@ -1,6 +1,27 @@
+// Base UI Components
+export { Button, type ButtonProps } from "./Button";
+export { Badge, type BadgeProps } from "./Badge";
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./Card";
+
+// Layout Components
+// ButtonGroup not implemented yet
+
+// CTA Components (New)
+export {
+  CTAButton,
+  PrimaryCTA,
+  SecondaryCTA,
+  type CTAButtonProps,
+} from "./CTAButton";
+
 // Basic UI Components
 export {
-  Button,
   PrimaryButton,
   SecondaryButton,
   AccentButton,
@@ -8,29 +29,12 @@ export {
   GhostButton,
   DestructiveButton,
 } from "./Button";
-export type { ButtonProps } from "./Button";
 
-export {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  ProjectCard,
-} from "./Card";
-export type {
-  CardProps,
-  CardHeaderProps,
-  CardTitleProps,
-  CardDescriptionProps,
-  CardContentProps,
-  CardFooterProps,
-  ProjectCardProps,
-} from "./Card";
+export { CardFooter, ProjectCard } from "./Card";
+export type { CardFooterProps, ProjectCardProps } from "./Card";
 
-export { Badge, TechBadge, StatusBadge } from "./Badge";
-export type { BadgeProps, TechBadgeProps, StatusBadgeProps } from "./Badge";
+export { TechBadge, StatusBadge } from "./Badge";
+export type { TechBadgeProps, StatusBadgeProps } from "./Badge";
 
 export {
   Skeleton,

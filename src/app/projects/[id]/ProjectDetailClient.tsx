@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -26,6 +25,7 @@ import {
 } from "@/components/animations/StaggerContainer";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
 import { Project, ProjectLink } from "../../../../config/projects";
 
 interface ProjectDetailClientProps {
@@ -112,14 +112,9 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
     <div className="min-h-screen">
       {/* Back to Projects Button */}
       <div className="fixed top-4 right-4 md:top-8 md:right-8 z-40">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-lg backdrop-blur-sm"
-          style={{ color: "white" }}
-        >
-          <ArrowLeft className="w-4 h-4" style={{ color: "white" }} />
-          <span style={{ color: "white" }}>All Projects</span>
-        </Link>
+        <SecondaryCTA to="/projects" icon={<ArrowLeft className="w-4 h-4" />}>
+          All Projects
+        </SecondaryCTA>
       </div>
 
       {/* Hero Section - Conditional and uses project.thumbnail */}
@@ -231,30 +226,23 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 </div>
               </div>
 
-              {/* Project Links - Using inline styles for guaranteed text visibility */}
-              <div className="flex flex-wrap gap-3">
-                {project.links.map((link, index) => (
-                  <motion.a
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md hover:shadow-lg"
-                    style={{ color: "white" }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {React.cloneElement(getLinkIcon(link.type), {
-                      className: "w-4 h-4",
-                      style: { color: "white" },
-                    })}
-                    <span style={{ color: "white" }}>{link.label}</span>
-                    <ExternalLink
-                      className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                      style={{ color: "white" }}
-                    />
-                  </motion.a>
-                ))}
+              {/* Project Links */}
+              <div className="flex flex-col md:flex-row w-full gap-3">
+                {project.links.map((link, index) => {
+                  const CtaComponent = index === 0 ? PrimaryCTA : SecondaryCTA;
+                  return (
+                    <CtaComponent
+                      key={index}
+                      href={link.url}
+                      icon={getLinkIcon(link.type)}
+                      size="lg"
+                      className="w-full md:w-auto"
+                      aria-label={link.label}
+                    >
+                      {link.label}
+                    </CtaComponent>
+                  );
+                })}
               </div>
             </div>
           </motion.div>

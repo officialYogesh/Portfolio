@@ -1,5 +1,4 @@
 // Base UI Components
-export { Button, type ButtonProps } from "./Button";
 export { Badge, type BadgeProps } from "./Badge";
 export {
   Card,
@@ -19,16 +18,6 @@ export {
   SecondaryCTA,
   type CTAButtonProps,
 } from "./CTAButton";
-
-// Basic UI Components
-export {
-  PrimaryButton,
-  SecondaryButton,
-  AccentButton,
-  OutlineButton,
-  GhostButton,
-  DestructiveButton,
-} from "./Button";
 
 export { CardFooter, ProjectCard } from "./Card";
 export type { CardFooterProps, ProjectCardProps } from "./Card";

@@ -26,7 +26,7 @@ import {
   SectionNavigation,
   ProgressIndicator,
 } from "@/components/ui/ReadingTimeEstimator";
-import { PrimaryButton, OutlineButton } from "@/components/ui/Button";
+import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
 import { CitySkylinesIllustration } from "@/components/illustrations/AboutPageIllustrations";
 
 // Data
@@ -374,31 +374,27 @@ const AboutPage: React.FC = () => {
 
                     {/* CTA Buttons */}
                     <div className="flex flex-col lg:flex-row gap-4 justify-start">
-                      <button
+                      <PrimaryCTA
+                        aria-label="Download Resume"
                         onClick={handleDownloadResume}
-                        className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+                        icon={<Download size={18} />}
+                        size="lg"
+                        fullWidth
+                        className="md:w-auto"
                       >
-                        <Download size={18} className="inline mr-2" />
                         Download Resume
-                      </button>
+                      </PrimaryCTA>
 
-                      {/* Mobile & Tablet: Read Story button */}
-                      <button
+                      <SecondaryCTA
+                        aria-label="Read My Story"
                         onClick={() => scrollToSection("story-intro")}
-                        className="block md:hidden px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
+                        icon={<BookOpen size={18} />}
+                        size="lg"
+                        fullWidth
+                        className="md:w-auto"
                       >
-                        <BookOpen size={18} className="inline mr-2" />
                         Read My Story
-                      </button>
-
-                      {/* Desktop: Read My Story button */}
-                      <button
-                        onClick={() => scrollToSection("story-intro")}
-                        className="hidden md:block px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium"
-                      >
-                        <BookOpen size={18} className="inline mr-2" />
-                        Read My Story
-                      </button>
+                      </SecondaryCTA>
                     </div>
                   </AnimatedContainer>
 
@@ -675,14 +671,14 @@ const AboutPage: React.FC = () => {
 
                     <AnimatedContainer delay={0.4}>
                       <div className="flex flex-col sm:flex-row gap-4">
-                        <a href={projectsInfo.link}>
-                          <PrimaryButton
+                        <a href={projectsInfo.link} rel="noopener noreferrer">
+                          <PrimaryCTA
                             icon={<Github size={18} />}
                             size="lg"
                             className="w-full sm:w-auto"
                           >
                             Explore Projects
-                          </PrimaryButton>
+                          </PrimaryCTA>
                         </a>
                       </div>
                     </AnimatedContainer>
@@ -825,42 +821,46 @@ const AboutPage: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-10">
-                    <a href={`mailto:${personalInfo.email}`}>
-                      <PrimaryButton icon={<Mail size={18} />} size="lg">
-                        Send Email
-                      </PrimaryButton>
-                    </a>
+                  <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-10 w-full md:w-auto">
+                    <PrimaryCTA
+                      href={`mailto:${personalInfo.email}`}
+                      icon={<Mail size={18} />}
+                      size="lg"
+                      fullWidth
+                      className="md:w-auto"
+                    >
+                      Send Email
+                    </PrimaryCTA>
 
-                    <a
+                    <SecondaryCTA
                       href={
                         personalInfo.socialLinks.find(
                           (link: { platform: string; url: string }) =>
                             link.platform === "LinkedIn"
                         )?.url
                       }
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      icon={<Linkedin size={18} />}
+                      size="lg"
+                      fullWidth
+                      className="md:w-auto"
                     >
-                      <OutlineButton icon={<Linkedin size={18} />} size="lg">
-                        Connect on LinkedIn
-                      </OutlineButton>
-                    </a>
+                      Connect on LinkedIn
+                    </SecondaryCTA>
 
-                    <a
+                    <SecondaryCTA
                       href={
                         personalInfo.socialLinks.find(
                           (link: { platform: string; url: string }) =>
                             link.platform === "GitHub"
                         )?.url
                       }
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      icon={<Github size={18} />}
+                      size="lg"
+                      fullWidth
+                      className="md:w-auto"
                     >
-                      <OutlineButton icon={<Github size={18} />} size="lg">
-                        View GitHub
-                      </OutlineButton>
-                    </a>
+                      View GitHub
+                    </SecondaryCTA>
                   </div>
                 </AnimatedContainer>
               </Container>

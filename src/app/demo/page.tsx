@@ -6,7 +6,6 @@ import {
   type TechStackBubbleProps,
 } from "@/components/ui/BubbleUI";
 import { Container } from "@/components/layout";
-import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { CTAButton, PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
@@ -96,7 +95,10 @@ export default function DemoPage() {
                 <PrimaryCTA icon={<Star className="h-4 w-4" />}>
                   PrimaryCTA
                 </PrimaryCTA>
-                <SecondaryCTA rightIcon={<ExternalLink className="h-4 w-4" />}>
+                <SecondaryCTA
+                  size="sm"
+                  rightIcon={<ExternalLink className="h-4 w-4" />}
+                >
                   SecondaryCTA
                 </SecondaryCTA>
               </div>
@@ -200,13 +202,13 @@ export default function DemoPage() {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span>Interaction Log</span>
-                  <Button
-                    variant="outline"
+                  <SecondaryCTA
                     size="sm"
+                    rightIcon={<ExternalLink className="h-4 w-4" />}
                     onClick={() => setInteractionLog([])}
                   >
                     Clear
-                  </Button>
+                  </SecondaryCTA>
                 </CardTitle>
               </CardHeader>
               <CardContent>

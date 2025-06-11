@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { SocialIcon } from "react-social-icons";
 import { Mail, ArrowUpRight } from "lucide-react";
+import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
 import { AiFillHeart } from "react-icons/ai";
 import { personalInfo } from "../../../config/personal-info";
 import { cn } from "@/lib/utils";
@@ -80,31 +81,24 @@ const Footer: React.FC = () => {
               <div className="lg:flex-shrink-0 lg:w-auto xl:w-auto min-w-[320px]">
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row lg:flex-row items-center justify-center lg:justify-start gap-4 mb-8 mt-8 lg:mt-0">
-                  <motion.a
+                  <PrimaryCTA
                     href={`mailto:${personalInfo.email}`}
-                    className="group inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-background font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/25 w-full sm:w-auto lg:w-auto min-w-[160px] whitespace-nowrap justify-center"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                    icon={<Mail className="h-5 w-5" />}
+                    rightIcon={<ArrowUpRight className="h-5 w-5" />}
+                    fullWidth
+                    className="sm:w-auto lg:w-auto"
                   >
-                    <Mail className="w-5 h-5 flex-shrink-0" />
-                    <span>Get In Touch</span>
-                    <ArrowUpRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
-                  </motion.a>
+                    Get In Touch
+                  </PrimaryCTA>
 
-                  <motion.button
-                    onClick={() =>
-                      window.open(
-                        "/documents/Yogesh-Patil-Resume.pdf",
-                        "_blank"
-                      )
-                    }
-                    className="group inline-flex items-center gap-3 border border-border hover:border-primary text-foreground hover:text-primary font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-primary/5 w-full sm:w-auto lg:w-auto min-w-[140px] whitespace-nowrap justify-center"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                  <SecondaryCTA
+                    href="/documents/Yogesh-Patil-Resume.pdf"
+                    rightIcon={<ArrowUpRight className="h-5 w-5" />}
+                    fullWidth
+                    className="sm:w-auto lg:w-auto"
                   >
-                    <span>View Resume</span>
-                    <ArrowUpRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
-                  </motion.button>
+                    View Resume
+                  </SecondaryCTA>
                 </div>
 
                 {/* Social Links with enhanced styling */}

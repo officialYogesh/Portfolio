@@ -29,6 +29,7 @@ import {
 } from "@/components/animations/StaggerContainer";
 import { personalInfo } from "../../../config/personal-info";
 import { education, achievements } from "../../../config/education";
+import { PrimaryCTA } from "@/components/ui/CTAButton";
 
 // Download functionality
 const downloadResumePDF = () => {
@@ -37,6 +38,7 @@ const downloadResumePDF = () => {
     link.href = "/documents/Yogesh-Patil-Resume.pdf";
     link.download = "Yogesh-Patil-Resume.pdf";
     link.target = "_blank";
+    link.rel = "noopener";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -215,31 +217,30 @@ export default function ResumePage() {
             </p>
 
             {/* Quick Contact & Download */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center my-8">
-              <motion.button
+            <div className="flex flex-col md:flex-row flex-wrap gap-4 md:gap-6 justify-center items-center my-8">
+              <PrimaryCTA
                 onClick={downloadResumePDF}
-                className="group inline-flex items-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                icon={<Download className="h-5 w-5" />}
+                size="lg"
+                fullWidth
+                className="md:w-auto"
               >
-                <Download className="w-5 h-5" />
                 Download Resume
-              </motion.button>
+              </PrimaryCTA>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>New York, USA</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  <a
-                    href={`mailto:${personalInfo.email}`}
-                    className="hover:text-primary transition-colors"
-                  >
-                    {personalInfo.email}
-                  </a>
-                </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <MapPin className="w-4 h-4" />
+                <span>New York, USA</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Mail className="w-4 h-4" />
+                <a
+                  href={`mailto:${personalInfo.email}`}
+                  className="hover:text-primary transition-colors break-all !min-h-0 leading-none"
+                >
+                  {personalInfo.email}
+                </a>
               </div>
             </div>
           </motion.div>

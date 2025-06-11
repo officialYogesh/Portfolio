@@ -85,10 +85,10 @@ export default function Home() {
 
       <Container className="relative">
         {/* Hero Section - Recruiter-Focused */}
-        <section className="py-20 md:py-32">
+        <section className="py-12">
           <div className="max-w-5xl">
             {/* Recruiter Hook */}
-            <AnimatedContainer variant="fade" delay={0.1}>
+            <AnimatedContainer variant="slide" direction="up" delay={0.1}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -113,11 +113,16 @@ export default function Home() {
             </AnimatedContainer>
 
             {/* Professional Identity Statement */}
-            <AnimatedContainer variant="fade" delay={0.3} className="!mb-8">
+            <AnimatedContainer
+              variant="slide"
+              direction="up"
+              delay={0.3}
+              className="!mb-8"
+            >
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-8 leading-tight"
               >
                 <span className="text-primary font-extrabold">Senior SDE</span>{" "}
@@ -298,14 +303,14 @@ export default function Home() {
 
         {/* Recent Achievement - Technical Credibility */}
         <section className="py-12">
-          <AnimatedContainer variant="fade">
-            <motion.div
-              className="bg-card/50 backdrop-blur border border-border rounded-2xl p-6 md:p-8 mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
+          {/* Use slide animation directly on the container to avoid nested intersection observers */}
+          <AnimatedContainer
+            variant="slide"
+            direction="up"
+            threshold={0.2}
+            duration={0.6}
+          >
+            <div className="bg-card/50 backdrop-blur border border-border rounded-2xl p-6 md:p-8 mb-16">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
                 <div className="flex items-center gap-3">
                   <motion.div
@@ -342,13 +347,13 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </AnimatedContainer>
         </section>
 
         {/* Technical Projects - Proof of Delivery */}
-        <section className="py-16">
-          <AnimatedContainer variant="fade">
+        <section className="py-12">
+          <AnimatedContainer variant="slide" direction="up">
             <div className="mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 Production Systems I&apos;ve Built
@@ -466,8 +471,8 @@ export default function Home() {
         </section>
 
         {/* Recruiter-Focused Contact Section */}
-        <section className="py-16">
-          <AnimatedContainer variant="fade">
+        <section className="py-12">
+          <AnimatedContainer variant="slide" direction="up">
             <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-3xl p-8 md:p-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
                 Ready to schedule a technical interview?

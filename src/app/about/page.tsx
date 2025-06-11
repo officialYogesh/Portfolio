@@ -12,6 +12,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
 
 // Components
 import { Container } from "@/components/layout/Container";
@@ -71,44 +72,6 @@ import {
   useThemeAwareAnimations,
   useReadingTime,
 } from "../../hooks/useScrollEffects";
-
-// Simplified Error Boundary Component
-const ErrorBoundary: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    const errorHandler = (event: ErrorEvent) => {
-      console.error("Error caught by boundary:", event.error);
-      setHasError(true);
-    };
-
-    window.addEventListener("error", errorHandler);
-    return () => window.removeEventListener("error", errorHandler);
-  }, []);
-
-  if (hasError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-foreground">
-            Something went wrong
-          </h2>
-          <p className="text-muted">Please refresh the page and try again.</p>
-          <button
-            onClick={() => setHasError(false)}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return <>{children}</>;
-};
 
 // Optimized content preparation with memoization
 const prepareContentForReading = (content: typeof aboutPageContent) => {

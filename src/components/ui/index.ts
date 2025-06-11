@@ -66,6 +66,9 @@ export { ThemeSelector } from "./ThemeSelector";
 // Bubble UI Components
 export { BubbleUI, TechStackBubble } from "./BubbleUI";
 
+// Social Links
+export { SocialLinks, getSocialIcon } from "./SocialLinks";
+
 // Type exports
 export type {
   BubbleData,

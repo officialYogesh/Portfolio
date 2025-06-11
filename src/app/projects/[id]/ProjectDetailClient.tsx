@@ -110,8 +110,8 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
 
   return (
     <div className="min-h-screen">
-      {/* Back to Projects Button */}
-      <div className="fixed top-4 right-4 md:top-8 md:right-8 z-40">
+      {/* Back to Projects Button - sticky for easier navigation */}
+      <div className="sticky top-[72px] flex justify-end z-30 px-4 md:px-8">
         <SecondaryCTA to="/projects" icon={<ArrowLeft className="w-4 h-4" />}>
           All Projects
         </SecondaryCTA>

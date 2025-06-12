@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -20,84 +20,45 @@ import {
 import { personalInfo } from "../../../config/personal-info";
 import ClientOnly from "@/components/layout/ClientOnly";
 import { Skeleton, getSocialIcon } from "@/components/ui";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-// Form validation interface
-interface FormData {
-  subject: string;
-  message: string;
-  senderEmail: string;
-  senderName: string;
-}
+const ContactSchema = z.object({
+  subject: z.string().min(3, "Subject must be at least 3 characters"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+  senderEmail: z
+    .string()
+    .email("Please provide a valid email address")
+    .optional()
+    .or(z.literal("")),
+  senderName: z.string().optional().or(z.literal("")),
+});
 
-interface FormErrors {
-  subject?: string;
-  message?: string;
-  senderEmail?: string;
-  senderName?: string;
-}
+type FormData = z.infer<typeof ContactSchema>;
 
-// Contact form component
 const ContactForm = () => {
-  const [formData, setFormData] = useState<FormData>({
-    subject: "",
-    message: "",
-    senderEmail: "",
-    senderName: "",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(ContactSchema),
+    defaultValues: {
+      subject: "",
+      message: "",
+      senderEmail: "",
+      senderName: "",
+    },
   });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
+  const [submitStatus, setSubmitStatus] = React.useState<
     "idle" | "success" | "error"
   >("idle");
-  const [submitMessage, setSubmitMessage] = useState("");
-
-  // Enhanced email validation function with formatting
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return emailRegex.test(email) && email.length <= 254; // RFC 5321 limit
-  };
-
-  // Email formatting function
-  const formatEmail = (email: string): string => {
-    return email.trim().toLowerCase();
-  };
-
-  // Form validation
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.subject.trim()) {
-      newErrors.subject = "Subject is required";
-    } else if (formData.subject.trim().length < 3) {
-      newErrors.subject = "Subject must be at least 3 characters";
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters";
-    }
-
-    // Email is optional, but if provided, must be valid
-    if (formData.senderEmail.trim()) {
-      const formattedEmail = formatEmail(formData.senderEmail);
-      if (!isValidEmail(formattedEmail)) {
-        newErrors.senderEmail = "Please provide a valid email address";
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const [submitMessage, setSubmitMessage] = React.useState("");
 
   // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setIsSubmitting(true);
+  const onSubmit = async (data: FormData) => {
     setSubmitStatus("idle");
     setSubmitMessage("");
 
@@ -108,12 +69,10 @@ const ContactForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          subject: formData.subject.trim(),
-          message: formData.message.trim(),
-          senderEmail: formData.senderEmail.trim()
-            ? formatEmail(formData.senderEmail)
-            : undefined,
-          senderName: formData.senderName.trim() || undefined,
+          subject: data.subject.trim(),
+          message: data.message.trim(),
+          senderEmail: data.senderEmail?.trim() || undefined,
+          senderName: data.senderName?.trim() || undefined,
         }),
       });
 
@@ -122,12 +81,7 @@ const ContactForm = () => {
       if (response.ok && result.success) {
         setSubmitStatus("success");
         setSubmitMessage(result.message || "Message sent successfully!");
-        setFormData({
-          subject: "",
-          message: "",
-          senderEmail: "",
-          senderName: "",
-        });
+        reset();
       } else {
         setSubmitStatus("error");
         setSubmitMessage(
@@ -140,21 +94,6 @@ const ContactForm = () => {
       setSubmitMessage(
         "Failed to send message. Please try again or contact me directly."
       );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Handle input changes
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    // Clear errors on change
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
@@ -184,7 +123,7 @@ const ContactForm = () => {
   return (
     <ClientOnly fallback={<ContactFormSkeleton />}>
       <motion.form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="space-y-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -203,13 +142,10 @@ const ContactForm = () => {
           <motion.input
             type="text"
             id="senderName"
-            name="senderName"
-            value={formData.senderName}
-            onChange={handleChange}
+            {...register("senderName")}
             className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${
-              errors.senderName
-                ? "border-red-500 focus:ring-red-500/50 focus:border-red-500"
-                : "border-border hover:border-primary/50"
+              errors.senderName &&
+              "border-red-500 focus:ring-red-500/50 focus:border-red-500"
             }`}
             placeholder="Your name"
             whileFocus={{ scale: 1.02 }}
@@ -223,7 +159,7 @@ const ContactForm = () => {
               className="text-sm text-red-500 flex items-center gap-1"
             >
               <AlertCircle className="w-4 h-4" />
-              {errors.senderName}
+              {errors.senderName.message}
             </motion.p>
           )}
         </div>
@@ -242,13 +178,10 @@ const ContactForm = () => {
           <motion.input
             type="email"
             id="senderEmail"
-            name="senderEmail"
-            value={formData.senderEmail}
-            onChange={handleChange}
+            {...register("senderEmail")}
             className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${
-              errors.senderEmail
-                ? "border-red-500 focus:ring-red-500/50 focus:border-red-500"
-                : "border-border hover:border-primary/50"
+              errors.senderEmail &&
+              "border-red-500 focus:ring-red-500/50 focus:border-red-500"
             }`}
             placeholder="your-email@example.com"
             whileFocus={{ scale: 1.02 }}
@@ -262,7 +195,7 @@ const ContactForm = () => {
               className="text-sm text-red-500 flex items-center gap-1"
             >
               <AlertCircle className="w-4 h-4" />
-              {errors.senderEmail}
+              {errors.senderEmail.message}
             </motion.p>
           )}
         </div>
@@ -278,13 +211,10 @@ const ContactForm = () => {
           <motion.input
             type="text"
             id="subject"
-            name="subject"
-            value={formData.subject}
-            onChange={handleChange}
+            {...register("subject")}
             className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${
-              errors.subject
-                ? "border-red-500 focus:ring-red-500/50 focus:border-red-500"
-                : "border-border hover:border-primary/50"
+              errors.subject &&
+              "border-red-500 focus:ring-red-500/50 focus:border-red-500"
             }`}
             placeholder="What would you like to discuss?"
             whileFocus={{ scale: 1.02 }}
@@ -298,7 +228,7 @@ const ContactForm = () => {
               className="text-sm text-red-500 flex items-center gap-1"
             >
               <AlertCircle className="w-4 h-4" />
-              {errors.subject}
+              {errors.subject.message}
             </motion.p>
           )}
         </div>
@@ -313,14 +243,11 @@ const ContactForm = () => {
           </label>
           <motion.textarea
             id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
+            {...register("message")}
             rows={6}
             className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none ${
-              errors.message
-                ? "border-red-500 focus:ring-red-500/50 focus:border-red-500"
-                : "border-border hover:border-primary/50"
+              errors.message &&
+              "border-red-500 focus:ring-red-500/50 focus:border-red-500"
             }`}
             placeholder="Tell me about your project, opportunity, or just say hello..."
             whileFocus={{ scale: 1.01 }}
@@ -334,7 +261,7 @@ const ContactForm = () => {
               className="text-sm text-red-500 flex items-center gap-1"
             >
               <AlertCircle className="w-4 h-4" />
-              {errors.message}
+              {errors.message.message}
             </motion.p>
           )}
         </div>

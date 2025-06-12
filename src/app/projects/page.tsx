@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Search, X, ChevronDown } from "lucide-react";
 import { Container } from "@/components/layout/Container";
@@ -8,14 +8,11 @@ import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import { ProjectFilter } from "@/components/projects/ProjectFilter";
 import { projects } from "../../../config/projects";
-
-// Sort options
-type SortOption = "newest" | "oldest" | "featured" | "title" | "status";
-
-interface SortConfig {
-  option: SortOption;
-  direction: "asc" | "desc";
-}
+import {
+  useProjectFilter,
+  SortConfig,
+  SortOption,
+} from "@/hooks/useProjectFilter";
 
 const ProjectsPage: React.FC = () => {
   // Filter states
@@ -43,110 +40,15 @@ const ProjectsPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Filter and sort projects - memoized for performance
-  const filteredAndSortedProjects = useMemo(() => {
-    let filtered = [...projects];
-
-    // Apply category filter
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter(
-        (project) => project.category === selectedCategory
-      );
-    }
-
-    // Apply status filter
-    if (selectedStatus !== "all") {
-      filtered = filtered.filter(
-        (project) => project.status === selectedStatus
-      );
-    }
-
-    // Apply technology filter
-    if (selectedTech !== "all") {
-      filtered = filtered.filter((project) =>
-        project.technologies.some((tech) => tech.name === selectedTech)
-      );
-    }
-
-    // Apply search filter
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim();
-      filtered = filtered.filter(
-        (project) =>
-          project.title.toLowerCase().includes(query) ||
-          project.shortDescription.toLowerCase().includes(query) ||
-          project.fullDescription.toLowerCase().includes(query) ||
-          project.technologies.some((tech) =>
-            tech.name.toLowerCase().includes(query)
-          ) ||
-          project.role.toLowerCase().includes(query)
-      );
-    }
-
-    // Apply sorting with explicit direction handling
-    filtered.sort((a, b) => {
-      let comparison = 0;
-      // Define dates for consistent use in multiple cases
-      const aDate = new Date(a.endDate || a.startDate).getTime();
-      const bDate = new Date(b.endDate || b.startDate).getTime();
-      const aStartDate = new Date(a.startDate).getTime();
-      const bStartDate = new Date(b.startDate).getTime();
-
-      switch (sortConfig.option) {
-        case "newest": // Base comparison: older date first (ascending)
-          comparison = aDate - bDate;
-          break;
-        case "oldest": // Base comparison: older start date first (ascending)
-          comparison = aStartDate - bStartDate;
-          break;
-        case "featured": // Base comparison: non-featured first, then older date first
-          if (a.featured !== b.featured) {
-            comparison = (a.featured ? 1 : 0) - (b.featured ? 1 : 0); // (0 - 1 = -1 for a=non-feat, b=feat)
-          } else {
-            comparison = aDate - bDate; // Ascending date order for ties
-          }
-          break;
-        case "title": // Base comparison: alphabetical ascending
-          comparison = a.title.localeCompare(b.title);
-          break;
-        case "status": // Base comparison: logical ascending order of status importance
-          const statusOrder = {
-            // Lower number = less active/important for ASC sort
-            archived: 1,
-            planned: 2,
-            completed: 3,
-            "in-progress": 4,
-          };
-          comparison = statusOrder[a.status] - statusOrder[b.status];
-          break;
-        default:
-          comparison = 0;
-      }
-      // Apply direction: if 'desc', invert the ascending comparison
-      return sortConfig.direction === "asc" ? comparison : -comparison;
+  // Project filtering hook
+  const { filteredProjects: filteredAndSortedProjects, stats: projectStats } =
+    useProjectFilter(projects, {
+      selectedCategory,
+      selectedStatus,
+      selectedTech,
+      searchQuery,
+      sortConfig,
     });
-
-    return filtered;
-  }, [selectedCategory, selectedStatus, selectedTech, searchQuery, sortConfig]);
-
-  // Get project statistics - memoized for performance
-  const projectStats = useMemo(() => {
-    const totalProjects = projects.length;
-    const completedProjects = projects.filter(
-      (p) => p.status === "completed"
-    ).length;
-    const inProgressProjects = projects.filter(
-      (p) => p.status === "in-progress"
-    ).length;
-    const featuredProjects = projects.filter((p) => p.featured).length;
-
-    return {
-      total: totalProjects,
-      completed: completedProjects,
-      inProgress: inProgressProjects,
-      featured: featuredProjects,
-    };
-  }, []);
 
   // Memoized handler functions to prevent unnecessary re-renders
   const handleSortChange = useCallback(

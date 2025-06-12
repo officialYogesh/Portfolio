@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  TechStackBubble,
-  type TechStackBubbleProps,
-} from "@/components/ui/BubbleUI";
+import { TechStackBubble, type TechStackBubbleProps } from "@/components/ui";
 import { Container } from "@/components/layout";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";

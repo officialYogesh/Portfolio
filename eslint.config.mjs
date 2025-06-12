@@ -14,9 +14,10 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     plugins: {
-      import: pluginImport,
+      import: require("eslint-plugin-import"),
     },
     rules: {
+      "import/no-unresolved": ["error", { ignore: ["^@/"] }],
       "import/order": [
         "warn",
         {
@@ -27,6 +28,7 @@ const eslintConfig = [
             "parent",
             "sibling",
             "index",
+            "object",
           ],
           pathGroups: [
             {
@@ -34,7 +36,9 @@ const eslintConfig = [
               group: "internal",
             },
           ],
+          pathGroupsExcludedImportTypes: ["builtin"],
           alphabetize: { order: "asc", caseInsensitive: true },
+          "newlines-between": "always",
         },
       ],
     },

@@ -1,9 +1,9 @@
-import { useMemo } from "react";
-import type { Project } from "../../config/projects";
+import { useState, useMemo, useCallback } from "react";
+import { projects as defaultProjects } from "../../config/projects";
 
 export type SortOption = "newest" | "oldest" | "featured" | "title" | "status";
 
-export interface SortConfig {
+interface SortConfig {
   option: SortOption;
   direction: "asc" | "desc";
 }
@@ -16,50 +16,84 @@ export interface ProjectFilterState {
   sortConfig: SortConfig;
 }
 
+interface UseProjectFilterReturn {
+  filters: ProjectFilterState;
+  setSelectedCategory: (category: string) => void;
+  setSelectedStatus: (status: string) => void;
+  setSelectedTech: (tech: string) => void;
+  setSearchQuery: (query: string) => void;
+  setSortConfig: (config: SortConfig) => void;
+  clearFilters: () => void;
+  filteredProjects: typeof defaultProjects;
+  hasActiveFilters: boolean;
+}
+
 export const useProjectFilter = (
-  projects: Project[],
-  {
-    selectedCategory,
-    selectedStatus,
-    selectedTech,
-    searchQuery,
-    sortConfig,
-  }: ProjectFilterState
-) => {
-  // Filter + sort projects
+  initialProjects: typeof defaultProjects = defaultProjects
+): UseProjectFilterReturn => {
+  const [filters, setFilters] = useState<ProjectFilterState>({
+    selectedCategory: "all",
+    selectedStatus: "all",
+    selectedTech: "all",
+    searchQuery: "",
+    sortConfig: { option: "newest", direction: "desc" },
+  });
+
+  const setSelectedCategory = (category: string) =>
+    setFilters((prev) => ({ ...prev, selectedCategory: category }));
+  const setSelectedStatus = (status: string) =>
+    setFilters((prev) => ({ ...prev, selectedStatus: status }));
+  const setSelectedTech = (tech: string) =>
+    setFilters((prev) => ({ ...prev, selectedTech: tech }));
+  const setSearchQuery = (query: string) =>
+    setFilters((prev) => ({ ...prev, searchQuery: query }));
+  const setSortConfig = (config: SortConfig) =>
+    setFilters((prev) => ({ ...prev, sortConfig: config }));
+
+  const clearFilters = () =>
+    setFilters({
+      selectedCategory: "all",
+      selectedStatus: "all",
+      selectedTech: "all",
+      searchQuery: "",
+      sortConfig: { option: "newest", direction: "desc" },
+    });
+
   const filteredProjects = useMemo(() => {
-    let filtered = [...projects];
+    const {
+      selectedCategory,
+      selectedStatus,
+      selectedTech,
+      searchQuery,
+      sortConfig,
+    } = filters;
+    let data = [...initialProjects];
 
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((p) => p.category === selectedCategory);
+      data = data.filter((p) => p.category === selectedCategory);
     }
-
     if (selectedStatus !== "all") {
-      filtered = filtered.filter((p) => p.status === selectedStatus);
+      data = data.filter((p) => p.status === selectedStatus);
     }
-
     if (selectedTech !== "all") {
-      filtered = filtered.filter((p) =>
-        p.technologies.some((tech) => tech.name === selectedTech)
+      data = data.filter((p) =>
+        p.technologies.some((t) => t.name === selectedTech)
       );
     }
-
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim();
-
-      filtered = filtered.filter(
+      const q = searchQuery.toLowerCase().trim();
+      data = data.filter(
         (p) =>
-          p.title.toLowerCase().includes(query) ||
-          p.shortDescription.toLowerCase().includes(query) ||
-          p.fullDescription.toLowerCase().includes(query) ||
-          p.role.toLowerCase().includes(query) ||
-          p.technologies.some((t) => t.name.toLowerCase().includes(query))
+          p.title.toLowerCase().includes(q) ||
+          p.shortDescription.toLowerCase().includes(q) ||
+          p.fullDescription.toLowerCase().includes(q) ||
+          p.technologies.some((t) => t.name.toLowerCase().includes(q)) ||
+          p.role.toLowerCase().includes(q)
       );
     }
 
-    // Sort
-    filtered.sort((a, b) => {
-      let comparison = 0;
+    data.sort((a, b) => {
+      let comp = 0;
       const aDate = new Date(a.endDate || a.startDate).getTime();
       const bDate = new Date(b.endDate || b.startDate).getTime();
       const aStart = new Date(a.startDate).getTime();
@@ -67,56 +101,56 @@ export const useProjectFilter = (
 
       switch (sortConfig.option) {
         case "newest":
-          comparison = aDate - bDate;
+          comp = aDate - bDate;
           break;
         case "oldest":
-          comparison = aStart - bStart;
+          comp = aStart - bStart;
           break;
         case "featured":
-          if (a.featured !== b.featured) {
-            comparison = (a.featured ? 1 : 0) - (b.featured ? 1 : 0);
-          } else {
-            comparison = aDate - bDate;
-          }
+          comp = (a.featured ? 1 : 0) - (b.featured ? 1 : 0);
+          if (comp === 0) comp = aDate - bDate;
           break;
         case "title":
-          comparison = a.title.localeCompare(b.title);
+          comp = a.title.localeCompare(b.title);
           break;
         case "status":
-          const order = {
+          const order: Record<string, number> = {
             archived: 1,
             planned: 2,
             completed: 3,
             "in-progress": 4,
-          } as const;
-          comparison = order[a.status] - order[b.status];
+          };
+          comp = order[a.status] - order[b.status];
           break;
         default:
-          comparison = 0;
+          comp = 0;
       }
-
-      return sortConfig.direction === "asc" ? comparison : -comparison;
+      return sortConfig.direction === "asc" ? comp : -comp;
     });
 
-    return filtered;
-  }, [
-    projects,
-    selectedCategory,
-    selectedStatus,
-    selectedTech,
-    searchQuery,
-    sortConfig,
-  ]);
+    return data;
+  }, [filters, initialProjects]);
 
-  // Stats
-  const stats = useMemo(() => {
-    return {
-      total: projects.length,
-      completed: projects.filter((p) => p.status === "completed").length,
-      inProgress: projects.filter((p) => p.status === "in-progress").length,
-      featured: projects.filter((p) => p.featured).length,
-    };
-  }, [projects]);
+  const hasActiveFilters = useMemo(() => {
+    const { selectedCategory, selectedStatus, selectedTech, searchQuery } =
+      filters;
+    return (
+      selectedCategory !== "all" ||
+      selectedStatus !== "all" ||
+      selectedTech !== "all" ||
+      searchQuery.trim() !== ""
+    );
+  }, [filters]);
 
-  return { filteredProjects, stats } as const;
+  return {
+    filters,
+    setSelectedCategory,
+    setSelectedStatus,
+    setSelectedTech,
+    setSearchQuery,
+    setSortConfig,
+    clearFilters,
+    filteredProjects,
+    hasActiveFilters,
+  };
 };

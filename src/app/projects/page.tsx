@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Search, X, ChevronDown } from "lucide-react";
 import { Container } from "@/components/layout/Container";
@@ -8,109 +8,75 @@ import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import { ProjectFilter } from "@/components/projects/ProjectFilter";
 import { projects } from "../../../config/projects";
-import {
-  useProjectFilter,
-  SortConfig,
-  SortOption,
-} from "@/hooks/useProjectFilter";
+import { useProjectFilter } from "@/hooks/useProjectFilter";
 
 const ProjectsPage: React.FC = () => {
-  // Filter states
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedStatus, setSelectedStatus] = useState<string>("all");
-  const [selectedTech, setSelectedTech] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-
-  // Sort and view states
-  const [sortConfig, setSortConfig] = useState<SortConfig>({
-    option: "newest",
-    direction: "desc",
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isMounted, setIsMounted] = useState<boolean>(false);
-
-  // Prevent hydration mismatch by ensuring client-side rendering
-  useEffect(() => {
-    setIsMounted(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Project filtering hook
-  const { filteredProjects: filteredAndSortedProjects, stats: projectStats } =
-    useProjectFilter(projects, {
+  const {
+    filters: {
       selectedCategory,
       selectedStatus,
       selectedTech,
       searchQuery,
       sortConfig,
-    });
+    },
+    setSelectedCategory,
+    setSelectedStatus,
+    setSelectedTech,
+    setSearchQuery,
+    setSortConfig,
+    clearFilters,
+    filteredProjects,
+    hasActiveFilters,
+  } = useProjectFilter(projects);
 
-  // Memoized handler functions to prevent unnecessary re-renders
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isLoading] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const projectStats = {
+    total: projects.length,
+    completed: projects.filter((p) => p.status === "completed").length,
+    inProgress: projects.filter((p) => p.status === "in-progress").length,
+    featured: projects.filter((p) => p.featured).length,
+  };
+
   const handleSortChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const value = e.target.value;
-      let option: SortOption;
-      let direction: "asc" | "desc";
-
-      if (value.includes("-")) {
-        [option, direction] = value.split("-") as [SortOption, "asc" | "desc"];
-      } else {
-        option = value as SortOption;
-        // Set default directions for options that don't specify it
-        if (
-          option === "newest" ||
-          option === "featured" ||
-          option === "status"
-        ) {
-          direction = "desc";
-        } else {
-          direction = "asc"; // oldest, title A-Z default to asc
-        }
-      }
-      setSortConfig({ option, direction });
+      const [option, dir] = value.includes("-")
+        ? (value.split("-") as [
+            typeof sortConfig.option,
+            typeof sortConfig.direction
+          ])
+        : [value as typeof sortConfig.option, undefined];
+      setSortConfig({
+        option,
+        direction:
+          dir ??
+          (option === "newest" || option === "featured" || option === "status"
+            ? "desc"
+            : "asc"),
+      });
     },
     []
   );
 
-  const handleClearFilters = useCallback(() => {
-    setSelectedCategory("all");
-    setSelectedStatus("all");
-    setSelectedTech("all");
-    setSearchQuery("");
-    setSortConfig({ option: "newest", direction: "desc" });
-  }, []);
+  const handleClearFilters = clearFilters;
 
   const toggleFilter = useCallback(() => {
     setIsFilterOpen((prev) => !prev);
   }, []);
 
-  // Check if any filters are active - memoized
-  const hasActiveFilters = useMemo(() => {
-    return (
-      selectedCategory !== "all" ||
-      selectedStatus !== "all" ||
-      selectedTech !== "all" ||
-      searchQuery.trim() !== ""
-    );
-  }, [selectedCategory, selectedStatus, selectedTech, searchQuery]);
-
-  // Enhanced Search and Sort Controls
   const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(e.target.value);
-    },
+    (e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value),
     []
   );
 
-  // Don't render content until mounted to prevent hydration mismatch
-  if (!isMounted) {
-    return null;
-  }
+  if (!isMounted) return null;
 
   return (
     <div className="min-h-screen py-16 lg:py-20">
@@ -267,17 +233,17 @@ const ProjectsPage: React.FC = () => {
                 <>
                   Found{" "}
                   <span className="font-medium text-foreground">
-                    {filteredAndSortedProjects.length}
+                    {filteredProjects.length}
                   </span>{" "}
                   project
-                  {filteredAndSortedProjects.length !== 1 ? "s" : ""} matching
-                  your criteria
+                  {filteredProjects.length !== 1 ? "s" : ""} matching your
+                  criteria
                 </>
               ) : (
                 <>
                   Showing all{" "}
                   <span className="font-medium text-foreground">
-                    {filteredAndSortedProjects.length}
+                    {filteredProjects.length}
                   </span>{" "}
                   projects
                 </>
@@ -288,13 +254,13 @@ const ProjectsPage: React.FC = () => {
 
         {/* Project Grid */}
         <ProjectGrid
-          projects={filteredAndSortedProjects}
+          projects={filteredProjects}
           loading={isLoading}
           className="mb-12"
         />
 
         {/* Additional Information with Enhanced CTAs */}
-        {!isLoading && filteredAndSortedProjects.length > 0 && (
+        {!isLoading && filteredProjects.length > 0 && (
           <AnimatedContainer delay={0.8} className="text-center mt-12 mb-8">
             <div className="bg-card border border-border rounded-xl p-6 md:p-8 max-w-3xl mx-auto">
               <h3 className="text-xl md:text-2xl font-semibold text-card-foreground mb-3 md:mb-4">
@@ -310,7 +276,7 @@ const ProjectsPage: React.FC = () => {
         )}
 
         {/* Enhanced Empty State for No Results */}
-        {!isLoading && filteredAndSortedProjects.length === 0 && (
+        {!isLoading && filteredProjects.length === 0 && (
           <AnimatedContainer delay={0.6} className="text-center py-12 md:py-16">
             <div className="max-w-md mx-auto">
               <div className="w-20 h-20 md:w-24 md:h-24 bg-muted rounded-full flex items-center justify-center mx-auto mb-5 md:mb-6">

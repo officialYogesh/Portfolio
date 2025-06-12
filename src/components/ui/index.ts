@@ -64,14 +64,6 @@ export { SkipLink } from "./SkipLink";
 export { ThemeSelector } from "./ThemeSelector";
 
 // Bubble UI Components
-export { BubbleUI, TechStackBubble } from "./AsyncBubbleUI";
 
 // Social Links
 export { SocialLinks, getSocialIcon } from "./SocialLinks";
-
-// Type exports
-export type {
-  BubbleData,
-  BubbleUIProps,
-  TechStackBubbleProps,
-} from "./AsyncBubbleUI";

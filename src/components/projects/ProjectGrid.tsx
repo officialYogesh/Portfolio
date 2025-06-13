@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useMemo, memo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import React, { useMemo, memo, useState, useEffect } from "react";
+
 import { Project } from "../../../config/projects";
+
 import { ProjectCard } from "./ProjectCard";
 
 interface ProjectGridProps {

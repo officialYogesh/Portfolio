@@ -1,9 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
 import {
   ExternalLink,
   Github,
@@ -15,6 +12,10 @@ import {
   Archive,
   FileImage,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState, useCallback, useEffect } from "react";
+
 import { Project, ProjectTechnology } from "../../../config/projects";
 
 interface ProjectCardProps {

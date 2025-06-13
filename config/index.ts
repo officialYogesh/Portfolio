@@ -1,9 +1,67 @@
 // Configuration Index
 // This file exports all configuration files and types for easy importing
 
+// Content Configuration
+export {
+  contentConfig,
+  getTagline,
+  getCTA,
+  getProfessionalMessage,
+  getAvailabilityInfo,
+  getResponseTimePromise,
+  getErrorMessage,
+  getSectionTitle,
+  getProfessionalTitles,
+} from "./content-config";
+export type {
+  ContentConfig,
+  TaglineVariations,
+  CallToActionConfig,
+  MessagingConfig,
+  AvailabilityConfig,
+  ErrorMessagesConfig,
+  SectionTitlesConfig,
+} from "./content-config";
+
+// Site Configuration
+export {
+  siteConfig,
+  getNavigationItems,
+  getFooterConfig,
+  getFeatureFlags,
+  isFeatureEnabled,
+  getAnalyticsConfig,
+  getContactConfig,
+  generatePageTitle,
+  generatePageDescription,
+  generatePageUrl,
+} from "./site-config";
+export type {
+  SiteConfig,
+  NavigationItem,
+  FooterConfig,
+  FooterLinkGroup,
+  FeatureFlags,
+  AnalyticsConfig,
+  ContactConfig,
+} from "./site-config";
+
 // Personal Information
-export { personalInfo } from "./personal-info";
-export type { PersonalInfo, SocialLink } from "./personal-info";
+export {
+  personalInfo,
+  getResumeUrl,
+  getResumeDownloadName,
+  getProfileImageAlt,
+  getSocialLinkByPlatform,
+} from "./personal-info";
+export type {
+  PersonalInfo,
+  SocialLink,
+  SEOInfo,
+  ResumeFileInfo,
+  ImageInfo,
+  ContactInfo,
+} from "./personal-info";
 
 // Skills and Technologies
 export {
@@ -80,16 +138,16 @@ export {
 export type { ValidationError, ValidationResult } from "./validation";
 
 // Import for default export
-import { personalInfo } from "./personal-info";
-import { skills, skillCategories } from "./skills";
-import { themes } from "./themes";
-import { projects, projectCategories } from "./projects";
 import {
   education,
   certifications,
   achievements,
   onlineCourses,
 } from "./education";
+import { personalInfo } from "./personal-info";
+import { projects, projectCategories } from "./projects";
+import { skills, skillCategories } from "./skills";
+import { themes } from "./themes";
 
 // Re-export default configurations for backwards compatibility
 export default {

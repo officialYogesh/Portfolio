@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Search, X, ChevronDown } from "lucide-react";
-import { Container } from "@/components/layout/Container";
+import React, { useEffect, useState, useCallback } from "react";
+
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
-import { ProjectGrid } from "@/components/projects/ProjectGrid";
+import { Container } from "@/components/layout/Container";
 import { ProjectFilter } from "@/components/projects/ProjectFilter";
-import { projects } from "../../../config/projects";
+import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import { useProjectFilter } from "@/hooks/useProjectFilter";
+
+import { projects } from "../../../config/projects";
 
 const ProjectsPage: React.FC = () => {
   const {
@@ -62,7 +64,7 @@ const ProjectsPage: React.FC = () => {
             : "asc"),
       });
     },
-    []
+    [setSortConfig, sortConfig]
   );
 
   const handleClearFilters = clearFilters;
@@ -73,7 +75,7 @@ const ProjectsPage: React.FC = () => {
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value),
-    []
+    [setSearchQuery]
   );
 
   if (!isMounted) return null;

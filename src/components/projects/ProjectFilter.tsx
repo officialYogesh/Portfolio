@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Filter,
@@ -16,6 +15,8 @@ import {
   AlertCircle,
   Archive,
 } from "lucide-react";
+import React, { useMemo } from "react";
+
 import { Project, projectCategories } from "../../../config/projects";
 
 interface FilterOption {

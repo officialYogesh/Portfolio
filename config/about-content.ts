@@ -1,6 +1,9 @@
 // About Page Content Configuration
 // This file contains all content for the About page narrative
 
+// Import for data integration
+import { personalInfo } from "./personal-info";
+
 export interface StorySection {
   id: string;
   title: string;
@@ -93,21 +96,20 @@ export interface AboutPageContent {
 // Main About Page Content
 export const aboutPageContent: AboutPageContent = {
   hero: {
-    greeting: "Hello, my name is Yogesh",
-    introduction:
-      "I'm a Software Development Engineer specializing in GenAI solutions, cloud architecture, and full-stack development.",
+    greeting: `Hello, my name is ${personalInfo.name.split(" ")[0]}`,
+    introduction: `I'm a ${personalInfo.title} specializing in GenAI solutions, cloud architecture, and full-stack development.`,
     tagline: "Crafting digital experiences that matter",
     personalTouch:
       "When I'm not coding, you'll find me exploring new technologies, contributing to open source, or sharing knowledge with the developer community.",
     professionalImage: {
-      src: "/images/profile/profile.jpg",
-      alt: "Yogesh Patil - Software Development Engineer",
-      description: "Professional headshot of Yogesh Patil",
+      src: personalInfo.images.profileImage.src,
+      alt: personalInfo.images.profileImage.alt,
+      description: personalInfo.images.profileImage.description,
     },
     quickStats: [
       {
         label: "Experience",
-        value: "4+ years",
+        value: personalInfo.experience,
         description: "Building scalable systems and AI solutions",
       },
       {
@@ -117,8 +119,8 @@ export const aboutPageContent: AboutPageContent = {
       },
       {
         label: "Location",
-        value: "Remote, NY",
-        description: "Available for remote opportunities",
+        value: personalInfo.location,
+        description: personalInfo.availability,
       },
     ],
   },

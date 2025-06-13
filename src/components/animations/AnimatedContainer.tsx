@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useMemo } from "react";
 import { motion, Variants, Transition } from "framer-motion";
+import React, { useMemo } from "react";
+
 import {
   useScrollAnimation,
   useReducedMotion,

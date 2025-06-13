@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
 import { Mail, Linkedin, Github, Globe } from "lucide-react";
+import React from "react";
+
 import { type SocialLink } from "../../../config/personal-info";
 
 // Map supported platform names to Lucide icons

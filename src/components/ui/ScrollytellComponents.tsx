@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ChevronRight, Clock, Heart } from "lucide-react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 
 // Optimized Reading Progress Indicator
 interface ReadingProgressProps {

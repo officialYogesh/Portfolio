@@ -1,22 +1,12 @@
 // Build-time Validation for Configuration Files
 // This file validates all configuration data at build time to ensure data integrity
 
+import { education, certifications } from "./education";
+import type { EducationDegree, Certification } from "./education";
 import { personalInfo, type PersonalInfo } from "./personal-info";
+import { projects, type Project } from "./projects";
 import { skills, skillCategories, type Skill } from "./skills";
 import { themes, type ThemeColors } from "./themes";
-import { projects, type Project } from "./projects";
-import {
-  education,
-  certifications,
-  achievements,
-  onlineCourses,
-} from "./education";
-import type {
-  EducationDegree,
-  Certification,
-  Achievement,
-  OnlineCourse,
-} from "./education";
 
 // Validation error types
 export interface ValidationError {

@@ -1,26 +1,30 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { ThemeSelector } from "../ui/ThemeSelector";
-import { SkipLink } from "../ui/SkipLink";
-import { personalInfo } from "../../../config/personal-info";
+import React, { useState, useEffect } from "react";
+
 import { cn } from "@/lib/utils";
+
+import { personalInfo } from "../../../config/personal-info";
+import { getNavigationItems } from "../../../config/site-config";
+import { SkipLink } from "../ui/SkipLink";
+import { ThemeSelector } from "../ui/ThemeSelector";
+
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
-  const navigationItems = [
-    { href: "/", label: "Home", ariaLabel: "Go to home page" },
-    { href: "/about", label: "About", ariaLabel: "Learn more about me" },
-    { href: "/projects", label: "Projects", ariaLabel: "View my projects" },
-    { href: "/resume", label: "Resume", ariaLabel: "View my resume" },
-    { href: "/contact", label: "Contact", ariaLabel: "Get in touch" },
-  ];
+  // Get navigation items from centralized config
+  const siteNavigation = getNavigationItems();
+  const navigationItems = siteNavigation.map((item) => ({
+    href: item.href,
+    label: item.name,
+    ariaLabel: `${item.description || `Go to ${item.name.toLowerCase()} page`}`,
+  }));
 
   // Scroll effect
   useEffect(() => {

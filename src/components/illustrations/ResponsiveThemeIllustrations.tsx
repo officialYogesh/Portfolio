@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useMemo, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import React, { useMemo, useEffect, useState } from "react";
+
 import { useTheme } from "../../contexts/ThemeContext";
 
 // Task 5.3.5: Create responsive illustration scaling

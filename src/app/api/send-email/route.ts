@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
+import { getErrorMessage } from "../../../../config/content-config";
+import { personalInfo } from "../../../../config/personal-info";
+
 // Initialize Resend lazily to avoid build errors
 function getResendClient() {
   const apiKey = process.env.RESEND_API_KEY;
@@ -60,7 +63,7 @@ export async function POST(request: NextRequest) {
 
     // Prepare email content
     const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
-    const toEmail = process.env.RECIPIENT_EMAIL || "officialyogeshp@gmail.com";
+    const toEmail = process.env.RECIPIENT_EMAIL || personalInfo.email;
 
     // Create email HTML content
     const htmlContent = `
@@ -148,8 +151,7 @@ Received on: ${new Date().toLocaleString()}
       return NextResponse.json(
         {
           success: false,
-          error:
-            "Failed to send email. Please try again or contact me directly.",
+          error: getErrorMessage("contactForm", "tryAgain"),
         },
         { status: 500 }
       );
@@ -165,7 +167,7 @@ Received on: ${new Date().toLocaleString()}
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to send email. Please try again or contact me directly.",
+        error: getErrorMessage("contactForm", "tryAgain"),
       },
       { status: 500 }
     );

@@ -1,7 +1,9 @@
 import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+
 import { PageTransition } from "../animations/PageTransition";
+
+import Footer from "./Footer";
+import Header from "./Header";
 
 interface LayoutProps {
   children: React.ReactNode;

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -11,18 +11,26 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
-import { Container } from "@/components/layout/Container";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/animations/StaggerContainer";
-import { personalInfo } from "../../../config/personal-info";
 import ClientOnly from "@/components/layout/ClientOnly";
+import { Container } from "@/components/layout/Container";
 import { Skeleton, getSocialIcon } from "@/components/ui";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  getSectionTitle,
+  getErrorMessage,
+  contentConfig,
+} from "../../../config/content-config";
+import { personalInfo } from "../../../config/personal-info";
+
 
 const ContactSchema = z.object({
   subject: z.string().min(3, "Subject must be at least 3 characters"),
@@ -91,9 +99,7 @@ const ContactForm = () => {
     } catch (error) {
       console.error("Error sending message:", error);
       setSubmitStatus("error");
-      setSubmitMessage(
-        "Failed to send message. Please try again or contact me directly."
-      );
+      setSubmitMessage(getErrorMessage("contactForm", "tryAgain"));
     }
   };
 
@@ -383,7 +389,7 @@ export default function ContactPage() {
               <div>
                 <div className="mb-4">
                   <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                    Get in Touch
+                    {getSectionTitle("pages", "contact")}
                   </h2>
                 </div>
 
@@ -505,8 +511,11 @@ export default function ContactPage() {
                   {personalInfo.availability}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Interested in full-time opportunities, and collaborations.
-                  Let&apos;s discuss how we can work together!
+                  {contentConfig.messaging.recruiting.interestAreas
+                    .slice(0, 2)
+                    .join(", ")}{" "}
+                  and collaborations. Let&apos;s discuss how we can work
+                  together!
                 </p>
               </div>
             </div>

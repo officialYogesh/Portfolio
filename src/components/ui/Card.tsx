@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
 import Image from "next/image";
+import React from "react";
+
 import { cn } from "@/lib/utils";
 
 export interface CardProps extends Omit<HTMLMotionProps<"div">, "children"> {

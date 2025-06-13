@@ -1,14 +1,17 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { SocialIcon } from "react-social-icons";
 import { Mail, ArrowUpRight } from "lucide-react";
-import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
+import Link from "next/link";
+import React from "react";
 import { AiFillHeart } from "react-icons/ai";
-import { personalInfo } from "../../../config/personal-info";
+import { SocialIcon } from "react-social-icons";
+
+import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
 import { cn } from "@/lib/utils";
+
+import { getCTA } from "../../../config/content-config";
+import { personalInfo } from "../../../config/personal-info";
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -88,16 +91,16 @@ const Footer: React.FC = () => {
                     fullWidth
                     className="sm:w-auto lg:w-auto"
                   >
-                    Get In Touch
+                    {getCTA("primary", "getInTouch")}
                   </PrimaryCTA>
 
                   <SecondaryCTA
-                    href="/documents/Yogesh-Patil-Resume.pdf"
+                    href={personalInfo.resumeFile.path}
                     rightIcon={<ArrowUpRight className="h-5 w-5" />}
                     fullWidth
                     className="sm:w-auto lg:w-auto"
                   >
-                    View Resume
+                    View {personalInfo.resumeFile.displayName}
                   </SecondaryCTA>
                 </div>
 

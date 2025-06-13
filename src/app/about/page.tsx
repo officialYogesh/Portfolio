@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import {
   Download,
   Mail,
@@ -11,24 +9,26 @@ import {
   BookOpen,
   ArrowRight,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import ErrorBoundary from "@/components/ui/ErrorBoundary";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 
 // Components
-import { Container } from "@/components/layout/Container";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
-import {
-  ReadingProgress,
-  StorySection,
-  SectionDivider,
-} from "@/components/ui/ScrollytellComponents";
+import { CitySkylinesIllustration } from "@/components/illustrations/AboutPageIllustrations";
+import { Container } from "@/components/layout/Container";
+import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import {
   ReadingTimeEstimator,
   SectionNavigation,
   ProgressIndicator,
 } from "@/components/ui/ReadingTimeEstimator";
-import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
-import { CitySkylinesIllustration } from "@/components/illustrations/AboutPageIllustrations";
+import {
+  ReadingProgress,
+  StorySection,
+  SectionDivider,
+} from "@/components/ui/ScrollytellComponents";
 
 // Data
 import {
@@ -36,6 +36,7 @@ import {
   projectsInfo,
   workInfo,
 } from "../../../config/about-content";
+import { getCTA } from "../../../config/content-config";
 import { personalInfo } from "../../../config/personal-info";
 
 // Types
@@ -226,8 +227,8 @@ const AboutPage: React.FC = () => {
     try {
       // Create a link element and trigger download
       const link = document.createElement("a");
-      link.href = "/documents/Yogesh-Patil-Resume.pdf";
-      link.download = "Yogesh-Patil-Resume.pdf";
+      link.href = personalInfo.resumeFile.path;
+      link.download = personalInfo.resumeFile.downloadName;
       link.target = "_blank";
       document.body.appendChild(link);
       link.click();
@@ -235,7 +236,7 @@ const AboutPage: React.FC = () => {
     } catch (error) {
       console.error("Error downloading resume:", error);
       // Fallback: open in new tab
-      window.open("/documents/Yogesh-Patil-Resume.pdf", "_blank");
+      window.open(personalInfo.resumeFile.path, "_blank");
     }
   }, []);
 
@@ -345,7 +346,7 @@ const AboutPage: React.FC = () => {
                         fullWidth
                         className="md:w-auto"
                       >
-                        Download Resume
+                        {getCTA("primary", "downloadResume")}
                       </PrimaryCTA>
 
                       <SecondaryCTA
@@ -356,7 +357,7 @@ const AboutPage: React.FC = () => {
                         fullWidth
                         className="md:w-auto"
                       >
-                        Read My Story
+                        {getCTA("primary", "readStory")}
                       </SecondaryCTA>
                     </div>
                   </AnimatedContainer>
@@ -370,8 +371,8 @@ const AboutPage: React.FC = () => {
                       {/* Mobile & Tablet: Smaller image */}
                       <div className="block lg:hidden">
                         <Image
-                          src="/images/profile/profile.jpg"
-                          alt="Yogesh Patil - Software Developer"
+                          src={personalInfo.images.profileImage.src}
+                          alt={personalInfo.images.profileImage.alt}
                           width={200}
                           height={200}
                           className="rounded-full object-cover shadow-2xl"
@@ -392,8 +393,8 @@ const AboutPage: React.FC = () => {
                       {/* Desktop: Larger image */}
                       <div className="hidden lg:block">
                         <Image
-                          src="/images/profile/profile.jpg"
-                          alt="Yogesh Patil - Software Developer"
+                          src={personalInfo.images.profileImage.src}
+                          alt={personalInfo.images.profileImage.alt}
                           width={400}
                           height={400}
                           className="rounded-full object-cover shadow-2xl"

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -12,8 +11,15 @@ import {
   MapPin,
   Clock,
 } from "lucide-react";
-import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
+import { useState, useEffect } from "react";
+
+import {
+  AnimatedContainer,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations";
 import { Container } from "@/components/layout";
+import { Badge } from "@/components/ui/Badge";
 import {
   Card,
   CardContent,
@@ -21,12 +27,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
+
 import {
-  AnimatedContainer,
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/animations";
+  getCTA,
+  getResponseTimePromise,
+  contentConfig,
+} from "../../config/content-config";
 import { personalInfo } from "../../config/personal-info";
 import { getFeaturedProjects } from "../../config/projects";
 
@@ -212,7 +219,9 @@ export default function Home() {
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-primary" />
-                    <span className="text-foreground/70">New York, USA</span>
+                    <span className="text-foreground/70">
+                      {personalInfo.location}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-primary" />
@@ -273,12 +282,12 @@ export default function Home() {
                 {/* Primary CTAs for Recruiters */}
                 <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
                   <PrimaryCTA
-                    href="/documents/Yogesh-Patil-Resume.pdf"
+                    href={personalInfo.resumeFile.path}
                     icon={<Download className="h-5 w-5" />}
                     fullWidth
                     className="md:w-auto"
                   >
-                    Download Resume
+                    Download {personalInfo.resumeFile.displayName}
                   </PrimaryCTA>
 
                   <SecondaryCTA
@@ -287,14 +296,13 @@ export default function Home() {
                     fullWidth
                     className="md:w-auto"
                   >
-                    Contact Me
+                    {getCTA("primary", "contact")}
                   </SecondaryCTA>
                 </div>
 
                 {/* Response Time Promise */}
                 <p className="text-sm text-foreground/60 mt-4">
-                  📞 Available for calls • ⚡ Responds within 4 hours • 🚀 Can
-                  start immediately
+                  {getResponseTimePromise()}
                 </p>
               </div>
             </AnimatedContainer>
@@ -480,28 +488,31 @@ export default function Home() {
               <p className="text-lg text-foreground/80 max-w-2xl mx-auto mb-8">
                 I&apos;m actively interviewing for{" "}
                 <strong className="text-foreground">Senior SDE</strong>{" "}
-                positions. Available for technical screens, system design
-                discussions, or quick culture fit calls.
+                positions. {contentConfig.messaging.recruiting.availability}
               </p>
 
               {/* Enhanced CTA Layout - Single Row on Desktop */}
               <div className="flex flex-col md:flex-row gap-4 justify-center items-center max-w-4xl mx-auto">
                 <PrimaryCTA
-                  href="/documents/Yogesh-Patil-Resume.pdf"
+                  href={personalInfo.resumeFile.path}
                   icon={<Download className="h-5 w-5" />}
                   fullWidth
                   className="md:flex-1 md:max-w-xs"
                 >
-                  Download Resume
+                  Download {personalInfo.resumeFile.displayName}
                 </PrimaryCTA>
 
                 <SecondaryCTA
-                  href="https://linkedin.com/in/yogeshpatil28"
+                  href={
+                    personalInfo.socialLinks.find(
+                      (link) => link.platform === "LinkedIn"
+                    )?.url
+                  }
                   icon={<Users className="h-5 w-5" />}
                   fullWidth
                   className="md:flex-1 md:max-w-xs"
                 >
-                  LinkedIn Profile
+                  {getCTA("secondary", "viewProfile")}
                 </SecondaryCTA>
 
                 <SecondaryCTA
@@ -510,13 +521,12 @@ export default function Home() {
                   fullWidth
                   className="md:flex-1 md:max-w-xs"
                 >
-                  Email Direct
+                  {getCTA("secondary", "emailDirect")}
                 </SecondaryCTA>
               </div>
 
               <p className="text-sm text-foreground/60 mt-6">
-                📱 Available for calls • ⚡ Responds within 4 hours • 📄
-                References available on request
+                {getResponseTimePromise()} • 📄 References available on request
               </p>
             </div>
           </AnimatedContainer>

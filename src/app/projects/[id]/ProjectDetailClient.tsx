@@ -1,7 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar,
@@ -17,15 +15,19 @@ import {
   ChevronRight,
   ArrowLeft,
 } from "lucide-react";
-import { Container } from "@/components/layout/Container";
+import Image from "next/image";
+import React, { useState } from "react";
+
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/animations/StaggerContainer";
+import { Container } from "@/components/layout/Container";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
+
 import { Project, ProjectLink } from "../../../../config/projects";
 
 interface ProjectDetailClientProps {

@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useMemo, useCallback } from "react";
 import {
   motion,
   useReducedMotion,
@@ -8,6 +7,7 @@ import {
   domAnimation,
 } from "framer-motion";
 import { useInView } from "framer-motion";
+import React, { useMemo, useCallback } from "react";
 
 // Task 5.3.3: Add page-specific graphic elements
 // Task 5.3.4: Optimize illustrations for performance and accessibility

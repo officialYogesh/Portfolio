@@ -193,7 +193,7 @@ export function getSystemPreference(): "dark" | "light" {
 }
 
 export function getThemeForSystemPreference(): string {
-  const preference = getSystemPreference();
+  // const preference = getSystemPreference();
   // All our themes are dark themes, so we'll always return dracula for now
   // In the future, we could add light theme variants
   return defaultTheme;
@@ -220,7 +220,7 @@ export function setupSystemPreferenceListener(
   try {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-    const handleChange = (e: MediaQueryListEvent) => {
+    const handleChange = () => {
       // Only auto-switch if user hasn't manually selected a theme
       const hasStoredTheme = localStorage.getItem("portfolio-theme");
       if (!hasStoredTheme) {

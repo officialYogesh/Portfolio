@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { Clock } from "lucide-react";
+import React from "react";
 
 interface ReadingTimeEstimatorProps {
   content: string;

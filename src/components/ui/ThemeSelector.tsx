@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { useTheme } from "../../contexts/ThemeContext";
+import React, { useState } from "react";
+
 import { themeDescriptions } from "../../../config/themes";
+import { useTheme } from "../../contexts/ThemeContext";
 
 export const ThemeSelector: React.FC = () => {
   const { currentTheme, setTheme, themes, isLoading } = useTheme();

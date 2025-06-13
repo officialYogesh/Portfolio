@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
 import { useInView, useAnimation, useMotionValue } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+
 import { useTheme } from "../../contexts/ThemeContext";
 
 /**

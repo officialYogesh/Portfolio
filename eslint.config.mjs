@@ -1,5 +1,6 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+
 import { FlatCompat } from "@eslint/eslintrc";
 import pluginImport from "eslint-plugin-import";
 
@@ -11,10 +12,13 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: [".next/*", "node_modules/*", "dist/*", "build/*"],
+  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     plugins: {
-      import: require("eslint-plugin-import"),
+      import: pluginImport,
     },
     rules: {
       "import/no-unresolved": ["error", { ignore: ["^@/"] }],

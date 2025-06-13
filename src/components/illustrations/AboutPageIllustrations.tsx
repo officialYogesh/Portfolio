@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
 
 // Task 5.3.1: Create SVG illustrations for about page
 

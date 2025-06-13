@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import {
   Download,
@@ -21,22 +20,30 @@ import {
   Server,
   Workflow,
 } from "lucide-react";
-import { Container } from "@/components/layout/Container";
+import React from "react";
+
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/animations/StaggerContainer";
-import { personalInfo } from "../../../config/personal-info";
-import { education, achievements } from "../../../config/education";
+import { Container } from "@/components/layout/Container";
 import { PrimaryCTA } from "@/components/ui/CTAButton";
+
+import {
+  getCTA,
+  getProfessionalTitles,
+  getSectionTitle,
+} from "../../../config/content-config";
+import { education, achievements } from "../../../config/education";
+import { personalInfo } from "../../../config/personal-info";
 
 // Download functionality
 const downloadResumePDF = () => {
   try {
     const link = document.createElement("a");
-    link.href = "/documents/Yogesh-Patil-Resume.pdf";
-    link.download = "Yogesh-Patil-Resume.pdf";
+    link.href = personalInfo.resumeFile.path;
+    link.download = personalInfo.resumeFile.downloadName;
     link.target = "_blank";
     link.rel = "noopener";
     document.body.appendChild(link);
@@ -44,7 +51,7 @@ const downloadResumePDF = () => {
     document.body.removeChild(link);
   } catch (error) {
     console.error("Error downloading resume:", error);
-    window.open("/documents/Yogesh-Patil-Resume.pdf", "_blank");
+    window.open(personalInfo.resumeFile.path, "_blank");
   }
 };
 
@@ -213,7 +220,7 @@ export default function ResumePage() {
               {personalInfo.name}
             </h1>
             <p className="text-xl md:text-2xl text-primary font-medium mb-4">
-              AI Solutions Engineer & Full Stack Developer
+              {getProfessionalTitles().contextual.resume}
             </p>
 
             {/* Quick Contact & Download */}
@@ -225,12 +232,12 @@ export default function ResumePage() {
                 fullWidth
                 className="md:w-auto"
               >
-                Download Resume
+                {getCTA("primary", "downloadResume")}
               </PrimaryCTA>
 
               <div className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="w-4 h-4" />
-                <span>New York, USA</span>
+                <span>{personalInfo.location}</span>
               </div>
 
               <div className="flex items-center gap-2 text-muted-foreground">
@@ -295,7 +302,7 @@ export default function ResumePage() {
         <AnimatedContainer delay={0.3} className="mb-20">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              What I Do Best
+              {getSectionTitle("subsections", "strengths")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Beyond the code—the mindset and approach that drives results

@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
+
 import { projects as defaultProjects } from "../../config/projects";
 
 export type SortOption = "newest" | "oldest" | "featured" | "title" | "status";

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+
 import { cn } from "@/lib/utils";
 
 export interface ModalProps {

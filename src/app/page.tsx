@@ -19,14 +19,8 @@ import {
   StaggerItem,
 } from "@/components/animations";
 import { Container } from "@/components/layout";
+import { ProjectCard } from "@/components/projects/ProjectCard";
 import { Badge } from "@/components/ui/Badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
 import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
 
 import {
@@ -73,7 +67,7 @@ const useTypingAnimation = (texts: string[], speed = 80, delay = 4000) => {
 };
 
 export default function Home() {
-  const featuredProjects = getFeaturedProjects().slice(0, 3);
+  const featuredProjects = getFeaturedProjects();
 
   // Recruiter-focused pain point statements
   const recruiterHooks = [
@@ -376,90 +370,7 @@ export default function Home() {
               {featuredProjects.map((project, index) => (
                 <StaggerItem key={project.id}>
                   <div className="h-full group">
-                    <Card className="h-full bg-card border-border hover:shadow-xl transition-all duration-300 overflow-hidden">
-                      {/* Technical Impact Header */}
-                      <div className="h-48 bg-gradient-to-br from-primary/20 to-accent/20 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-
-                        {/* Technical Metrics */}
-                        <div className="absolute top-4 left-4">
-                          <Badge className="bg-green-500/90 text-white text-xs font-semibold backdrop-blur-sm">
-                            {index === 0
-                              ? "PRODUCTION SCALE"
-                              : index === 1
-                              ? "REVENUE IMPACT"
-                              : "USER GROWTH"}
-                          </Badge>
-                        </div>
-
-                        <div className="absolute top-4 right-4">
-                          <Badge
-                            variant="outline"
-                            className="text-xs bg-background/80 backdrop-blur-sm"
-                          >
-                            {project.category.replace("-", " ").toUpperCase()}
-                          </Badge>
-                        </div>
-
-                        {/* Technical Achievement */}
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <p className="text-white text-sm font-bold">
-                            {index === 0
-                              ? "Automated 3 FTE worth of manual work"
-                              : index === 1
-                              ? "Enabled $100K+ ARR for startup"
-                              : "4x user adoption in first month"}
-                          </p>
-                          <p className="text-white/80 text-xs mt-1">
-                            {index === 0
-                              ? "Handles 1000+ documents/day"
-                              : index === 1
-                              ? "99.9% uptime, <100ms response"
-                              : "Scales to 400+ concurrent users"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <CardHeader className="pb-4">
-                        <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
-                          {/* Technical titles */}
-                          {index === 0
-                            ? "AI Document Processing Pipeline"
-                            : index === 1
-                            ? "Real-time Analytics Platform"
-                            : project.title}
-                        </CardTitle>
-                        <CardDescription className="text-sm line-clamp-3">
-                          {project.shortDescription}
-                        </CardDescription>
-                      </CardHeader>
-
-                      <CardContent className="pt-0">
-                        <div className="space-y-4">
-                          {/* Core Technologies */}
-                          <div className="flex flex-wrap gap-2">
-                            {project.technologies.slice(0, 4).map((tech) => (
-                              <Badge
-                                key={tech.name}
-                                variant="secondary"
-                                className="text-xs"
-                              >
-                                {tech.name}
-                              </Badge>
-                            ))}
-                          </div>
-
-                          {/* Technical Details CTA */}
-                          <SecondaryCTA
-                            href={project.links[0]?.url || "#"}
-                            size="sm"
-                            fullWidth
-                          >
-                            View Technical Details →
-                          </SecondaryCTA>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <ProjectCard project={project} index={index} />
                   </div>
                 </StaggerItem>
               ))}

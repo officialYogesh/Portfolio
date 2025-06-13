@@ -38,6 +38,13 @@ import {
 } from "../../../config/about-content";
 import { getCTA } from "../../../config/content-config";
 import { personalInfo } from "../../../config/personal-info";
+import {
+  useScrollProgress,
+  useSectionTracking,
+  useSmoothScroll,
+  useThemeAwareAnimations,
+  useReadingTime,
+} from "../../hooks/useScrollEffects";
 
 // Types
 interface StoryItem {
@@ -66,13 +73,6 @@ interface InterestItem {
 }
 
 // Optimized Hooks - Import only what's needed
-import {
-  useScrollProgress,
-  useSectionTracking,
-  useSmoothScroll,
-  useThemeAwareAnimations,
-  useReadingTime,
-} from "../../hooks/useScrollEffects";
 
 // Optimized content preparation with memoization
 const prepareContentForReading = (content: typeof aboutPageContent) => {

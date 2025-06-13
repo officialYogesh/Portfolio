@@ -1,13 +1,12 @@
 import { useState, useMemo } from "react";
 
-import { projects as defaultProjects } from "../../config/projects";
-
-export type SortOption = "newest" | "oldest" | "featured" | "title" | "status";
-
-interface SortConfig {
-  option: SortOption;
-  direction: "asc" | "desc";
-}
+import {
+  projects as defaultProjects,
+  sortProjects,
+  SortConfig,
+  SortOption,
+  SortDirection,
+} from "../../config/projects";
 
 export interface ProjectFilterState {
   selectedCategory: string;
@@ -70,6 +69,7 @@ export const useProjectFilter = (
     } = filters;
     let data = [...initialProjects];
 
+    // Apply filters
     if (selectedCategory !== "all") {
       data = data.filter((p) => p.category === selectedCategory);
     }
@@ -93,43 +93,8 @@ export const useProjectFilter = (
       );
     }
 
-    data.sort((a, b) => {
-      let comp = 0;
-      const aDate = new Date(a.endDate || a.startDate).getTime();
-      const bDate = new Date(b.endDate || b.startDate).getTime();
-      const aStart = new Date(a.startDate).getTime();
-      const bStart = new Date(b.startDate).getTime();
-
-      switch (sortConfig.option) {
-        case "newest":
-          comp = aDate - bDate;
-          break;
-        case "oldest":
-          comp = aStart - bStart;
-          break;
-        case "featured":
-          comp = (a.featured ? 1 : 0) - (b.featured ? 1 : 0);
-          if (comp === 0) comp = aDate - bDate;
-          break;
-        case "title":
-          comp = a.title.localeCompare(b.title);
-          break;
-        case "status":
-          const order: Record<string, number> = {
-            archived: 1,
-            planned: 2,
-            completed: 3,
-            "in-progress": 4,
-          };
-          comp = order[a.status] - order[b.status];
-          break;
-        default:
-          comp = 0;
-      }
-      return sortConfig.direction === "asc" ? comp : -comp;
-    });
-
-    return data;
+    // Apply sorting using shared utility
+    return sortProjects(data, sortConfig);
   }, [filters, initialProjects]);
 
   const hasActiveFilters = useMemo(() => {
@@ -155,3 +120,6 @@ export const useProjectFilter = (
     hasActiveFilters,
   };
 };
+
+// Re-export types for convenience
+export type { SortOption, SortDirection, SortConfig };

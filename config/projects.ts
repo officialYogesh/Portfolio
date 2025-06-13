@@ -285,7 +285,11 @@ export function getProjectsByCategory(category: string): Project[] {
 }
 
 export function getFeaturedProjects(): Project[] {
-  return projects.filter((project) => project.featured);
+  const featuredProjects = projects.filter((project) => project.featured);
+  return sortProjects(featuredProjects, {
+    option: "newest",
+    direction: "desc",
+  });
 }
 
 export function getProjectsByStatus(status: Project["status"]): Project[] {
@@ -304,6 +308,57 @@ export function getProjectTechnologies(): string[] {
     });
   });
   return Array.from(allTechnologies).sort();
+}
+
+// Shared sorting utility for consistent sorting across pages
+export type SortOption = "featured" | "newest" | "oldest" | "title" | "status";
+export type SortDirection = "asc" | "desc";
+
+export interface SortConfig {
+  option: SortOption;
+  direction: SortDirection;
+}
+
+export function sortProjects(
+  projects: Project[],
+  sortConfig: SortConfig
+): Project[] {
+  return [...projects].sort((a, b) => {
+    const { option, direction } = sortConfig;
+
+    switch (option) {
+      case "featured":
+        const featuredComparison = (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+        return direction === "desc" ? featuredComparison : -featuredComparison;
+
+      case "newest":
+        const newestComparison =
+          new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+        return direction === "desc" ? newestComparison : -newestComparison;
+
+      case "oldest":
+        const oldestComparison =
+          new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+        return direction === "asc" ? oldestComparison : -oldestComparison;
+
+      case "title":
+        const titleComparison = a.title.localeCompare(b.title);
+        return direction === "asc" ? titleComparison : -titleComparison;
+
+      case "status":
+        const statusOrder = {
+          "in-progress": 0,
+          completed: 1,
+          planned: 2,
+          archived: 3,
+        };
+        const statusComparison = statusOrder[a.status] - statusOrder[b.status];
+        return direction === "asc" ? statusComparison : -statusComparison;
+
+      default:
+        return 0;
+    }
+  });
 }
 
 export default projects;

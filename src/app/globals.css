@@ -131,6 +131,11 @@
   background-color: #484848;
 }
 
+/* Fix description text visibility in Nord theme only */
+[data-theme="nord"] .text-muted {
+  color: #94a3b8;
+}
+
 /* Nord Theme */
 [data-theme="nord"] {
   --theme-name: "nord";

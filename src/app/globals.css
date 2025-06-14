@@ -151,6 +151,11 @@
   color: #959dcb;
 }
 
+/* Fix description text visibility in Dracula theme only */
+[data-theme="dracula"] .text-muted {
+  color: #8b92c7;
+}
+
 /* Nord Theme */
 [data-theme="nord"] {
   --theme-name: "nord";

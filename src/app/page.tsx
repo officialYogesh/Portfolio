@@ -1,16 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Mail,
-  TrendingUp,
-  Zap,
-  Users,
-  Download,
-  Briefcase,
-  MapPin,
-  Clock,
-} from "lucide-react";
+import { Mail, Users, Download, Briefcase, MapPin, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import {
@@ -28,6 +19,17 @@ import {
   getResponseTimePromise,
   contentConfig,
 } from "../../config/content-config";
+import {
+  getRecruiterHooks,
+  getProfessionalTitle,
+  getHeroStats,
+  getHeroDescription,
+  getTechnologies,
+  getTypingAnimationConfig,
+  getAchievementSection,
+  getProjectsSection,
+  getContactSection,
+} from "../../config/home-config";
 import { personalInfo } from "../../config/personal-info";
 import { getFeaturedProjects } from "../../config/projects";
 
@@ -68,14 +70,13 @@ const useTypingAnimation = (texts: string[], speed = 80, delay = 4000) => {
 
 export default function Home() {
   const featuredProjects = getFeaturedProjects();
-
-  // Recruiter-focused pain point statements
-  const recruiterHooks = [
-    "Looking for a Senior SDE who can actually deliver on AI promises?",
-    "Need a developer who ships production-ready systems, not just demos?",
-    "Want an engineer who's proven they can scale systems under pressure?",
-  ];
-  const currentHook = useTypingAnimation(recruiterHooks, 60, 5000);
+  const recruiterHooks = getRecruiterHooks();
+  const typingConfig = getTypingAnimationConfig();
+  const currentHook = useTypingAnimation(
+    recruiterHooks,
+    typingConfig.speed,
+    typingConfig.delay
+  );
 
   return (
     <>
@@ -126,10 +127,12 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-8 leading-tight"
               >
-                <span className="text-primary font-extrabold">Senior SDE</span>{" "}
-                specializing in{" "}
+                <span className="text-primary font-extrabold">
+                  {getProfessionalTitle().prefix}
+                </span>{" "}
+                {getProfessionalTitle().main}{" "}
                 <span className="text-accent font-extrabold">
-                  Production AI Systems
+                  {getProfessionalTitle().specialization}
                 </span>
               </motion.h1>
             </AnimatedContainer>
@@ -150,7 +153,9 @@ export default function Home() {
                   >
                     <Briefcase className="h-5 w-5 text-blue-500" />
                     <span>
-                      <strong className="text-foreground">4+ years</strong>{" "}
+                      <strong className="text-foreground">
+                        {getHeroStats().experience}
+                      </strong>{" "}
                       experience
                     </span>
                   </motion.div>
@@ -159,42 +164,6 @@ export default function Home() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    <TrendingUp className="h-5 w-5 text-green-500" />
-                    <span>
-                      <strong className="text-foreground">$500K+</strong>{" "}
-                      business impact
-                    </span>
-                  </motion.div>
-                  <motion.div
-                    className="flex items-center gap-2"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    <Zap className="h-5 w-5 text-yellow-500" />
-                    <span>
-                      <strong className="text-foreground">70%</strong>{" "}
-                      automation delivered
-                    </span>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </AnimatedContainer>
-
-            {/* Availability & Location Status */}
-            <AnimatedContainer
-              variant="slide"
-              direction="up"
-              delay={0.6}
-              className="!mb-8"
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="mb-8"
-              >
-                <div className="flex flex-wrap items-center gap-6 text-sm md:text-base">
-                  <div className="flex items-center gap-2">
                     <motion.div
                       className="w-3 h-3 bg-green-500 rounded-full"
                       animate={{
@@ -208,21 +177,29 @@ export default function Home() {
                       }}
                     />
                     <span className="text-green-500 font-semibold">
-                      ACTIVELY LOOKING
+                      {getHeroStats().availabilityStatus}
                     </span>
-                  </div>
-                  <div className="flex items-center gap-2">
+                  </motion.div>
+                  <motion.div
+                    className="flex items-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
                     <MapPin className="h-4 w-4 text-primary" />
                     <span className="text-foreground/70">
                       {personalInfo.location}
                     </span>
-                  </div>
-                  <div className="flex items-center gap-2">
+                  </motion.div>
+                  <motion.div
+                    className="flex items-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
                     <Clock className="h-4 w-4 text-primary" />
                     <span className="text-foreground/70">
-                      Available: Immediate start
+                      {getHeroStats().availabilityMessage}
                     </span>
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
             </AnimatedContainer>
@@ -232,37 +209,32 @@ export default function Home() {
               <div className="mb-8">
                 <p className="text-lg md:text-xl text-foreground/90 leading-relaxed mb-6">
                   <strong className="text-foreground">
-                    Master&apos;s in Computer Science (Syracuse University)
+                    {getHeroDescription().education}
                   </strong>{" "}
-                  + proven track record building scalable{" "}
-                  <span className="text-primary font-semibold">
-                    GenAI applications
-                  </span>
-                  ,{" "}
-                  <span className="text-accent font-semibold">
-                    cloud microservices
-                  </span>
-                  , and{" "}
-                  <span className="text-secondary font-semibold">
-                    high-performance APIs
-                  </span>{" "}
-                  that real users depend on.
+                  {getHeroDescription().trackRecord.text}{" "}
+                  {getHeroDescription().trackRecord.highlights.map(
+                    (highlight, index) => (
+                      <span key={index}>
+                        <span
+                          className={`text-${highlight.type} font-semibold`}
+                        >
+                          {highlight.text}
+                        </span>
+                        {index <
+                          getHeroDescription().trackRecord.highlights.length -
+                            1 && ", "}
+                        {index ===
+                          getHeroDescription().trackRecord.highlights.length -
+                            2 && "and "}
+                      </span>
+                    )
+                  )}{" "}
+                  {getHeroDescription().conclusion}
                 </p>
 
                 {/* Key Technologies */}
                 <div className="flex flex-wrap gap-2 mb-8">
-                  {[
-                    "Python",
-                    "TypeScript",
-                    "React",
-                    "AWS",
-                    "Node.js",
-                    "PostgreSQL",
-                    "Docker",
-                    "LangChain",
-                    "FastAPI",
-                    "GraphQL",
-                  ].map((tech) => (
+                  {getTechnologies().map((tech) => (
                     <Badge
                       key={tech}
                       variant="secondary"
@@ -328,24 +300,27 @@ export default function Home() {
                     }}
                   />
                   <span className="text-sm font-medium text-primary">
-                    LATEST WIN
+                    {getAchievementSection().label}
                   </span>
                 </div>
                 <div className="flex-1">
                   <p className="text-lg font-semibold text-foreground">
-                    🏆 Our team was{" "}
-                    <strong className="text-accent">
-                      top performers at IBM TechXchange Hackathon
-                    </strong>{" "}
-                    building AI compliance system that{" "}
+                    {
+                      getAchievementSection().title.split(
+                        getAchievementSection().details
+                      )[0]
+                    }
                     <span className="text-green-500 font-bold">
-                      reduced manual review by 70%
-                    </span>{" "}
-                    for financial services
+                      {getAchievementSection().details}
+                    </span>
+                    {
+                      getAchievementSection().title.split(
+                        getAchievementSection().details
+                      )[1]
+                    }
                   </p>
                   <p className="text-sm text-foreground/60 mt-1">
-                    December 2024 • Used IBM Granite models + custom RAG
-                    pipeline • Production-ready code
+                    {getAchievementSection().description}
                   </p>
                 </div>
               </div>
@@ -358,11 +333,10 @@ export default function Home() {
           <AnimatedContainer variant="slide" direction="up">
             <div className="mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Production Systems I&apos;ve Built
+                {getProjectsSection().title}
               </h2>
               <p className="text-lg text-foreground/80 max-w-2xl">
-                Real applications serving real users. Not side projects or
-                tutorials—actual systems that companies depend on.
+                {getProjectsSection().description}
               </p>
             </div>
 
@@ -383,7 +357,7 @@ export default function Home() {
                 size="lg"
                 className="bg-transparent border-0 text-primary hover:text-accent"
               >
-                See Full Technical Portfolio →
+                {getProjectsSection().linkText}
               </SecondaryCTA>
             </div>
           </AnimatedContainer>
@@ -394,12 +368,11 @@ export default function Home() {
           <AnimatedContainer variant="slide" direction="up">
             <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-3xl p-8 md:p-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Ready to schedule a technical interview?
+                {getContactSection().title}
               </h2>
               <p className="text-lg text-foreground/80 max-w-2xl mx-auto mb-8">
-                I&apos;m actively interviewing for{" "}
-                <strong className="text-foreground">Senior SDE</strong>{" "}
-                positions. {contentConfig.messaging.recruiting.availability}
+                {getContactSection().description}{" "}
+                {contentConfig.messaging.recruiting.availability}
               </p>
 
               {/* Enhanced CTA Layout - Single Row on Desktop */}
@@ -437,7 +410,7 @@ export default function Home() {
               </div>
 
               <p className="text-sm text-foreground/60 mt-6">
-                {getResponseTimePromise()} • 📄 References available on request
+                {getResponseTimePromise()} • {getContactSection().footer}
               </p>
             </div>
           </AnimatedContainer>

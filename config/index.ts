@@ -130,6 +130,21 @@ export type {
   OnlineCourse,
 } from "./education";
 
+// Home Page Configuration
+export {
+  homeConfig,
+  getRecruiterHooks,
+  getProfessionalTitle,
+  getHeroStats,
+  getHeroDescription,
+  getTechnologies,
+  getTypingAnimationConfig,
+  getAchievementSection,
+  getProjectsSection,
+  getContactSection,
+} from "./home-config";
+export type { HomePageConfig } from "./home-config";
+
 // Validation System
 export {
   validateAllConfigurations,

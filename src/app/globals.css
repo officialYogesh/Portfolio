@@ -141,6 +141,11 @@
   color: #a89984;
 }
 
+/* Fix description text visibility in Horizon theme only */
+[data-theme="horizon"] .text-muted {
+  color: #6c7293;
+}
+
 /* Nord Theme */
 [data-theme="nord"] {
   --theme-name: "nord";

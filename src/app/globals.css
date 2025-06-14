@@ -87,17 +87,48 @@
 [data-theme="one-dark"] {
   --theme-name: "one-dark";
   --background: #1e1e1e;
-  --foreground: #e6e6e6;
+  --foreground: #e4e4e4;
   --primary: #61dafb;
   --primary-foreground: #1e1e1e;
   --secondary: #f78c6c;
   --accent: #98c379;
-  --muted: #4a4a4a;
+  --muted: #a6a6a6;
   --border: #4e4e4e;
   --card: #2d2d2d;
   --destructive: #e06c75;
   --warning: #e5c07b;
   --info: #61dafb;
+}
+
+/* One Dark specific overrides for better text visibility */
+[data-theme="one-dark"] .text-muted {
+  color: #b3b3b3;
+}
+
+[data-theme="one-dark"] .text-muted-foreground {
+  color: #b3b3b3;
+}
+
+[data-theme="one-dark"] .text-foreground\/80 {
+  color: #d4d4d4;
+}
+
+[data-theme="one-dark"] .text-foreground\/70 {
+  color: #c9c9c9;
+}
+
+/* Improve filter button visibility in One Dark theme - specific to filter buttons only */
+[data-theme="one-dark"] button.bg-muted {
+  background-color: #3c3c3c;
+}
+
+[data-theme="one-dark"] button.bg-muted .text-muted-foreground,
+[data-theme="one-dark"] button .text-muted-foreground {
+  color: #cccccc;
+}
+
+[data-theme="one-dark"] button.bg-muted:hover {
+  background-color: #484848;
 }
 
 /* Nord Theme */

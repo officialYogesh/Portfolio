@@ -11,7 +11,6 @@ import {
   Database,
   Cloud,
   Container as ContainerIcon,
-  Cpu,
   Globe,
   Brain,
   Terminal,
@@ -30,11 +29,7 @@ import {
 import { Container } from "@/components/layout/Container";
 import { PrimaryCTA } from "@/components/ui/CTAButton";
 
-import {
-  getCTA,
-  getProfessionalTitles,
-  getSectionTitle,
-} from "../../../config/content-config";
+import { getCTA } from "../../../config/content-config";
 import { education, achievements } from "../../../config/education";
 import { personalInfo } from "../../../config/personal-info";
 
@@ -55,52 +50,52 @@ const downloadResumePDF = () => {
   }
 };
 
-// Key metrics for impact storytelling
+// Key metrics for impact storytelling - Updated based on achievements
 const impactMetrics = [
   {
     metric: "70%",
-    description: "Workflow Automation Improvement",
-    story: "Transformed manual processes into intelligent systems",
+    description: "Dealership Workflow Automation",
+    story: "LangChain-powered GenAI pipeline at Impel AI",
   },
   {
     metric: "4x",
     description: "Platform Adoption Growth",
-    story: "Built solutions people actually want to use",
+    story: "RBAC admin console with Okta integration at Vonage",
   },
   {
-    metric: "$100K+",
-    description: "Revenue Impact Enabled",
-    story: "Code that directly drives business results",
+    metric: "80%",
+    description: "Scheduling Time Reduction",
+    story: "Service appointment workflow optimization",
   },
   {
     metric: "42%",
     description: "API Performance Enhancement",
-    story: "Obsessed with making things faster and better",
+    story: "RESTful backend services optimization",
   },
 ];
 
-// Enhanced skills with icons and proper categorization
+// Enhanced skills with icons and proper categorization - Updated based on current expertise
 const technicalSkills = [
   // Frontend Technologies
   {
     name: "React/Next.js",
     icon: Code,
     level: 9,
-    context: "5+ projects, production scale",
+    context: "Production-scale applications, modern hooks",
     category: "Frontend",
   },
   {
     name: "TypeScript",
     icon: Terminal,
     level: 9,
-    context: "Type-safe development advocate",
+    context: "Strict typing, enterprise applications",
     category: "Frontend",
   },
   {
     name: "JavaScript",
     icon: Globe,
     level: 9,
-    context: "Modern ES6+ development",
+    context: "ES6+, async/await, modern patterns",
     category: "Frontend",
   },
 
@@ -109,98 +104,105 @@ const technicalSkills = [
     name: "Python/FastAPI",
     icon: Server,
     level: 9,
-    context: "AI/ML and API development",
+    context: "GenAI pipelines, high-performance APIs",
     category: "Backend",
   },
   {
     name: "Node.js/Express",
     icon: Settings,
-    level: 9,
-    context: "Backend architecture expert",
+    level: 8,
+    context: "RESTful services, microservices",
     category: "Backend",
   },
   {
     name: "GraphQL",
     icon: Layers,
-    level: 8,
-    context: "Modern API development",
+    level: 7,
+    context: "Schema design, Apollo Server",
     category: "Backend",
   },
 
   // Cloud & DevOps
   {
-    name: "AWS/Cloud",
+    name: "AWS",
     icon: Cloud,
     level: 8,
-    context: "Certified, production deployments",
+    context: "Certified Cloud Practitioner, EC2, S3, Lambda",
     category: "Cloud",
   },
   {
     name: "Docker",
     icon: ContainerIcon,
     level: 8,
-    context: "Containerization expert",
+    context: "Multi-stage builds, production deployments",
     category: "DevOps",
   },
   {
-    name: "Kubernetes",
+    name: "CI/CD",
     icon: Workflow,
     level: 7,
-    context: "Container orchestration",
+    context: "GitHub Actions, automated deployments",
     category: "DevOps",
   },
 
   // Database
   {
-    name: "PostgreSQL/MongoDB",
+    name: "PostgreSQL",
     icon: Database,
     level: 8,
-    context: "Database design & optimization",
+    context: "Complex queries, performance optimization",
     category: "Database",
   },
   {
-    name: "Redis",
-    icon: Cpu,
+    name: "MongoDB",
+    icon: Database,
     level: 7,
-    context: "Caching and session management",
+    context: "Document modeling, aggregation pipelines",
     category: "Database",
   },
 
-  // AI/LLM
+  // AI/ML & LLM
   {
-    name: "LangChain/RAG",
+    name: "LangChain",
     icon: Brain,
-    level: 8,
-    context: "LLM integration specialist",
+    level: 9,
+    context: "RAG systems, agent workflows, production LLM apps",
+    category: "AI/ML",
+  },
+  {
+    name: "IBM watsonx.ai",
+    icon: Brain,
+    level: 7,
+    context: "Granite models, compliance automation",
     category: "AI/ML",
   },
 ];
 
-// What makes me unique - Human-centered approach
+// FAANG-Aligned Core Strengths - Optimized for technical recruiters and hiring managers
 const coreStrengths = [
   {
     icon: "🧠",
-    title: "Problem Solver",
+    title: "Systems Thinking & Scale",
     description:
-      "I see complex challenges as puzzles to solve. Whether it's a 20-hour manual process or a slow API, I find the elegant solution.",
+      "Proven ability to design and implement systems that handle complexity at scale. Built GenAI pipelines processing thousands of dealership workflows daily, demonstrating the architectural mindset FAANG values for distributed systems.",
   },
   {
-    icon: "🤝",
-    title: "Bridge Builder",
+    icon: "📊",
+    title: "Data-Driven Problem Solving",
     description:
-      "I translate between business needs and technical reality. My code doesn't just work—it solves real human problems.",
+      "Quantifiable impact through systematic optimization: 42% API performance improvement, 70% workflow automation, 4x platform adoption. I approach problems with metrics, hypotheses, and measurable outcomes - the scientific rigor FAANG expects.",
   },
   {
-    icon: "📈",
-    title: "Growth Driver",
+    icon: "🚀",
+    title: "Innovation & Technical Leadership",
     description:
-      "My solutions don't just meet requirements—they enable 4x growth, $100K+ revenue, and transform how teams work.",
+      "Led cutting-edge AI implementations using LangChain, RAG systems, and IBM watsonx.ai. Won competitive hackathons by combining technical depth with creative problem-solving - the innovation DNA that drives FAANG forward.",
   },
   {
-    icon: "🎯",
-    title: "Impact Focused",
+    icon: "⚡",
+    title: "Ownership & Execution Excellence",
     description:
-      "Every line of code serves a purpose. If it doesn't make someone's life better or business more successful, I question it.",
+      "End-to-end ownership from conception to production deployment. Master's in CS + 4+ years building production systems with zero-downtime deployments. I don't just write code - I deliver business-critical solutions that scale.",
   },
 ];
 
@@ -220,7 +222,8 @@ export default function ResumePage() {
               {personalInfo.name}
             </h1>
             <p className="text-xl md:text-2xl text-primary font-medium mb-4">
-              {getProfessionalTitles().contextual.resume}
+              Senior Software Development Engineer • AI/ML Systems • Full-Stack
+              Architecture
             </p>
 
             {/* Quick Contact & Download */}
@@ -257,10 +260,11 @@ export default function ResumePage() {
         <AnimatedContainer delay={0.2} className="mb-20">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Technical Expertise
+              Technical Stack & Proficiency
             </h2>
             <p className="text-muted-foreground">
-              Technologies I use to build solutions that matter
+              Production-grade technologies with demonstrated expertise in
+              high-scale environments
             </p>
           </div>
 
@@ -302,10 +306,11 @@ export default function ResumePage() {
         <AnimatedContainer delay={0.3} className="mb-20">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              {getSectionTitle("subsections", "strengths")}
+              Core Competencies
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Beyond the code—the mindset and approach that drives results
+              The leadership principles and technical excellence that FAANG
+              companies value most
             </p>
           </div>
 
@@ -339,10 +344,11 @@ export default function ResumePage() {
         <AnimatedContainer delay={0.4} className="mb-20">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Measurable Impact
+              Quantifiable Business Impact
             </h2>
             <p className="text-muted-foreground">
-              Real results from real projects
+              Data-driven results that demonstrate scalable engineering
+              excellence
             </p>
           </div>
 

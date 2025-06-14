@@ -136,6 +136,11 @@
   color: #94a3b8;
 }
 
+/* Fix description text visibility in Gruvbox theme only */
+[data-theme="gruvbox"] .text-muted {
+  color: #a89984;
+}
+
 /* Nord Theme */
 [data-theme="nord"] {
   --theme-name: "nord";

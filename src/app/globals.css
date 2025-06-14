@@ -146,6 +146,11 @@
   color: #6c7293;
 }
 
+/* Fix description text visibility in Palenight theme only */
+[data-theme="palenight"] .text-muted {
+  color: #959dcb;
+}
+
 /* Nord Theme */
 [data-theme="nord"] {
   --theme-name: "nord";

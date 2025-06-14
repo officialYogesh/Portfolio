@@ -265,7 +265,7 @@ const AboutPage: React.FC = () => {
           </aside>
 
           {/* Main Content */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 xl:px-12 2xl:px-16">
             {/* Hero Section */}
             <section
               id="hero"
@@ -716,9 +716,9 @@ const AboutPage: React.FC = () => {
                   </div>
 
                   {/* Desktop Illustrations Side - Hidden on mobile */}
-                  <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:items-center lg:justify-start lg:pl-12">
+                  <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:items-center lg:justify-start lg:pl-8 xl:pl-12">
                     <AnimatedContainer delay={0.3} className="mt-16">
-                      <div className="relative w-full max-w-lg">
+                      <div className="relative w-full max-w-lg xl:max-w-xl">
                         {/* Background decoration for better theme integration - more subtle */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-primary/5 via-transparent to-accent/5 rounded-full blur-2xl scale-90 opacity-70" />
                         <div className="relative flex justify-center items-center">

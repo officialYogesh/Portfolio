@@ -215,7 +215,7 @@ export default function ResumePage() {
               {personalInfo.name}
             </h1>
             <p className="text-xl md:text-2xl text-primary font-medium mb-4">
-              Senior Software Development Engineer • AI/ML Systems • Full-Stack
+              Software Development Engineer • AI/ML Systems • Full-Stack
               Architecture
             </p>
 

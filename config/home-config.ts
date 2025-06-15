@@ -115,7 +115,7 @@ export const homeConfig: HomePageConfig = {
       title: "Let's Start a Conversation?",
       description:
         "I'm seeking my next challenge where I can help build high-impact AI and cloud systems. Whether you have a specific role in mind, want to discuss system design, or just think we'd be a good fit, my inbox is open.",
-      footer: "📄 References available on request",
+      footer: "",
     },
   },
 };

@@ -410,7 +410,7 @@ export default function Home() {
               </div>
 
               <p className="text-sm text-foreground/60 mt-6">
-                {getResponseTimePromise()} • {getContactSection().footer}
+                {getResponseTimePromise()}
               </p>
             </div>
           </AnimatedContainer>

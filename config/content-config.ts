@@ -178,8 +178,7 @@ export const contentConfig: ContentConfig = {
         "Full Stack Development",
         "Technical Leadership",
       ],
-      availability:
-        "Available for technical screens, system design discussions, or quick culture fit calls",
+      availability: "",
     },
   },
 

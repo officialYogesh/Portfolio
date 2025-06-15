@@ -95,13 +95,14 @@ export const useParallax = (speed: number = 0.5) => {
   return offset;
 };
 
-// Optimized hook for section tracking with reduced frequency
+// Optimized hook for section tracking with fast scroll handling
 export const useSectionTracking = (sectionIds: string[]) => {
   const [activeSection, setActiveSection] = useState("");
   const [completedSections, setCompletedSections] = useState<Set<string>>(
     new Set()
   );
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
     // Cleanup previous observer
@@ -111,31 +112,78 @@ export const useSectionTracking = (sectionIds: string[]) => {
 
     const observerOptions = {
       root: null,
-      rootMargin: "-10% 0px -70% 0px", // Reduced sensitivity for better performance
-      threshold: [0, 0.25], // Reduced threshold points
+      rootMargin: "-10% 0px -60% 0px", // Better sensitivity for fast scrolling
+      threshold: [0, 0.1, 0.3, 0.5, 0.7, 1], // More threshold points for accuracy
     };
 
-    // Debounced handler to prevent excessive state updates
-    const handleIntersection = debounce(
-      (entries: IntersectionObserverEntry[]) => {
+    // Fast scroll handler with RAF for smooth updates
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+
+      rafId.current = requestAnimationFrame(() => {
+        let currentActive = "";
+        const newCompleted = new Set(completedSections);
+
+        // Process all entries to find the most visible section
         entries.forEach((entry) => {
           const sectionId = entry.target.id;
+          const rect = entry.boundingClientRect;
 
-          if (entry.isIntersecting && entry.intersectionRatio > 0.25) {
-            setActiveSection(sectionId);
+          // Mark as active if it's the most visible section
+          if (entry.isIntersecting) {
+            // For fast scrolling, prioritize sections that are most in view
+            const visibilityRatio = entry.intersectionRatio;
+            if (visibilityRatio > 0.1) {
+              currentActive = sectionId;
+            }
           }
 
-          // Mark section as completed when user scrolls past it
-          if (
-            entry.boundingClientRect.top < 0 &&
-            entry.boundingClientRect.bottom < window.innerHeight / 2
-          ) {
-            setCompletedSections((prev) => new Set(prev).add(sectionId));
+          // Mark section as completed if user has scrolled past it
+          if (rect.bottom < window.innerHeight * 0.3) {
+            newCompleted.add(sectionId);
           }
         });
-      },
-      100
-    ); // 100ms debounce
+
+        // Additional check for fast scrolling - find the section closest to viewport center
+        if (!currentActive) {
+          const viewportCenter = window.innerHeight / 2;
+          let closestSection = "";
+          let closestDistance = Infinity;
+
+          sectionIds.forEach((id) => {
+            const element = document.getElementById(id);
+            if (element) {
+              const rect = element.getBoundingClientRect();
+              const sectionCenter = rect.top + rect.height / 2;
+              const distance = Math.abs(sectionCenter - viewportCenter);
+
+              if (
+                distance < closestDistance &&
+                rect.top < viewportCenter &&
+                rect.bottom > 0
+              ) {
+                closestDistance = distance;
+                closestSection = id;
+              }
+            }
+          });
+
+          if (closestSection) {
+            currentActive = closestSection;
+          }
+        }
+
+        if (currentActive) {
+          setActiveSection(currentActive);
+        }
+
+        if (newCompleted.size !== completedSections.size) {
+          setCompletedSections(newCompleted);
+        }
+      });
+    };
 
     observerRef.current = new IntersectionObserver(
       handleIntersection,
@@ -154,8 +202,11 @@ export const useSectionTracking = (sectionIds: string[]) => {
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
     };
-  }, [sectionIds]);
+  }, [sectionIds, completedSections]);
 
   return { activeSection, completedSections };
 };

@@ -55,7 +55,7 @@ const impactMetrics = [
   {
     metric: "70%",
     description: "Dealership Workflow Automation",
-    story: "LangChain-powered GenAI pipeline at Impel AI",
+    story: "LangChain-powered GenAI pipeline for Conversational Service AI",
   },
   {
     metric: "4x",
@@ -184,25 +184,25 @@ const coreStrengths = [
     icon: "🧠",
     title: "Systems Thinking & Scale",
     description:
-      "Proven ability to design and implement systems that handle complexity at scale. Built GenAI pipelines processing thousands of dealership workflows daily, demonstrating the architectural mindset FAANG values for distributed systems.",
+      "I design and build resilient, scalable systems engineered for high performance. My experience includes architecting event-driven microservices and robust GenAI pipelines that process thousands of daily workflows. I excel at creating infrastructure that not only handles complexity but also enhances throughput and ensures reliability in high-concurrency environments.",
   },
   {
     icon: "📊",
     title: "Data-Driven Problem Solving",
     description:
-      "Quantifiable impact through systematic optimization: 42% API performance improvement, 70% workflow automation, 4x platform adoption. I approach problems with metrics, hypotheses, and measurable outcomes - the scientific rigor FAANG expects.",
+      "I deliver quantifiable impact by treating software development as a science. I leverage metrics, A/B testing, and data-backed hypotheses to drive significant API performance gains, automate complex workflows, and boost platform adoption. I approach every challenge with the scientific rigor needed to achieve measurable and meaningful outcomes.",
   },
   {
     icon: "🚀",
     title: "Innovation & Technical Leadership",
     description:
-      "Led cutting-edge AI implementations using LangChain, RAG systems, and IBM watsonx.ai. Won competitive hackathons by combining technical depth with creative problem-solving - the innovation DNA that drives FAANG forward.",
+      "I thrive on building with a forward-thinking vision. I have led the implementation of cutting-edge AI solutions using LangChain and RAG and have architected greenfield microservices that unify complex data streams to unlock new revenue opportunities. My passion lies in combining technical depth with creative problem-solving to drive the innovation that moves business forward.",
   },
   {
     icon: "⚡",
     title: "Ownership & Execution Excellence",
     description:
-      "End-to-end ownership from conception to production deployment. Master's in CS + 4+ years building production systems with zero-downtime deployments. I don't just write code - I deliver business-critical solutions that scale.",
+      "I take complete ownership of the entire development lifecycle, from initial concept to zero-downtime production deployment. With a Master’s in Computer Science and deep experience in CI/CD automation, I don't just write code—I deliver robust, business-critical solutions that scale. My focus is on execution, reliability, and delivering lasting value efficiently.",
   },
 ];
 
@@ -309,8 +309,8 @@ export default function ResumePage() {
               Core Competencies
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              The leadership principles and technical excellence that FAANG
-              companies value most
+              The leadership principles and technical excellence I use to build
+              impactful technology.
             </p>
           </div>
 
@@ -437,7 +437,7 @@ export default function ResumePage() {
                   </div>
 
                   <div className="space-y-4">
-                    {achievements.slice(0, 3).map((achievement, index) => (
+                    {achievements.map((achievement, index) => (
                       <div
                         key={index}
                         className="border-l-2 border-primary/20 pl-4"

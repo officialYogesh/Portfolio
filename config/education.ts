@@ -159,44 +159,6 @@ export const achievements: Achievement[] = [
     url: "https://www.linkedin.com/pulse/excited-share-our-achievement-ibm-techxchange-watsonx-yogesh-patil-tly3e/",
   },
   {
-    id: "teknack-game-hackathon-winner",
-    title: "1st Place - Teknack Game Development Hackathon 2019",
-    description:
-      "Won first place with 'Upside Down' - an endless runner game inspired by Stranger Things where players swipe between parallel worlds collecting coins and dodging enemies. Achieved 1,000+ downloads on Google Play Store and Apple App Store",
-    date: "2019-03-01",
-    category: "competition",
-    organization: "ACM DBIT Student Chapter - Teknack Gaming Studio",
-    location: "Mumbai, India",
-    url: "https://teknack.in/hall-of-fame/",
-  },
-  {
-    id: "impel-ai-workflow-automation",
-    title: "Automated 70% of Dealership Workflows",
-    description:
-      "Developed LangChain-powered GenAI pipeline that automated service appointment workflows, reducing scheduling time by 80% and improving customer experience for automotive dealerships",
-    date: "2025-03-01",
-    category: "recognition",
-    organization: "Impel AI",
-  },
-  {
-    id: "api-performance-improvement",
-    title: "42% API Performance Improvement",
-    description:
-      "Optimized RESTful backend services resulting in significant response time improvements and enhanced system reliability for high-traffic applications",
-    date: "2024-08-01",
-    category: "recognition",
-    organization: "Impel AI",
-  },
-  {
-    id: "platform-adoption-growth",
-    title: "4x Platform Adoption Growth",
-    description:
-      "Led development of RBAC admin console with Okta integration that accelerated Vonage enterprise platform adoption by 400% while maintaining zero security incidents",
-    date: "2023-07-01",
-    category: "recognition",
-    organization: "Tech Prescient - Vonage Project",
-  },
-  {
     id: "revenue-enablement",
     title: "Enabled $100K+ Projected Revenue",
     description:
@@ -206,22 +168,15 @@ export const achievements: Achievement[] = [
     organization: "Tech Prescient - Maxar Project",
   },
   {
-    id: "hr-automation-impact",
-    title: "Automated HR Processes for 3000+ Employees",
+    id: "teknack-game-hackathon-winner",
+    title: "1st Place - Teknack Game Development Hackathon 2019",
     description:
-      "Developed comprehensive payroll and leave management system that saved 20+ engineering hours per week and significantly improved operational efficiency",
-    date: "2022-01-01",
-    category: "recognition",
-    organization: "Xoriant Solutions",
-  },
-  {
-    id: "messaging-latency-improvement",
-    title: "66% Communication Latency Reduction",
-    description:
-      "Implemented asynchronous messaging architecture with Amazon SQS and DLQ across SMS and email channels, directly improving customer experience and system reliability",
-    date: "2025-02-01",
-    category: "recognition",
-    organization: "Impel AI",
+      "Won first place with 'Upside Down' - an endless runner game inspired by Stranger Things where players swipe between parallel worlds collecting coins and dodging enemies. Achieved 1,000+ downloads on Google Play Store and Apple App Store",
+    date: "2019-03-01",
+    category: "competition",
+    organization: "ACM DBIT Student Chapter - Teknack Gaming Studio",
+    location: "Mumbai, India",
+    url: "https://teknack.in/hall-of-fame/",
   },
 ];
 

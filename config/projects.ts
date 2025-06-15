@@ -193,64 +193,68 @@ export const projects: Project[] = [
   },
   {
     id: "jobfit-ai",
-    title: "JobFit AI",
-    shortDescription:
-      "LangChain-powered career platform that matches job seekers with opportunities using advanced AI",
+    title: "JobFitAI",
+    shortDescription: "Demonstrating AI-powered resume analysis. Experience instant, evidence-grounded feedback on resume-job fit with actionable insights, keyword gap analysis, and rewrite suggestions.",
     fullDescription:
-      "An intelligent career platform that leverages LangChain and advanced language models to analyze resumes, job descriptions, and career goals to provide personalized job recommendations. The system uses RAG (Retrieval-Augmented Generation) to match candidates with opportunities based on skills, experience, and career aspirations, while providing actionable feedback for improving job application success rates.",
+      "JobFitAI is a hobby project demonstrating a privacy-first web tool designed to help job seekers optimize their resumes. Built with cutting-edge AI technology, it showcases instant, evidence-grounded feedback powered by Retrieval-Augmented Generation (RAG). This project demonstrates the use of advanced language models to analyze compatibility between resumes and job descriptions, showcasing modern web development skills and AI integration capabilities.",
     status: "in-progress",
     category: "web-app",
     featured: true,
     thumbnail: "/images/projects/JobFitAI.png",
     screenshots: [],
     technologies: [
-      { name: "LangChain", category: "backend", proficiency: 9 },
-      { name: "Python", category: "backend", proficiency: 9 },
-      { name: "FastAPI", category: "backend", proficiency: 8 },
-      { name: "React", category: "frontend", proficiency: 9 },
-      { name: "TypeScript", category: "frontend", proficiency: 9 },
+      { name: "Next.js", category: "frontend", proficiency: 8 },
+      { name: "Tailwind CSS", category: "frontend", proficiency: 8 },
+      { name: "TypeScript", category: "frontend", proficiency: 8 },
+      { name: "Vercel", category: "cloud", proficiency: 8 },
+      { name: "Node.js", category: "backend", proficiency: 9 },
+      { name: "Firebase", category: "cloud", proficiency: 8 },
+      { name: "Supabase", category: "cloud", proficiency: 8 },
       { name: "PostgreSQL", category: "database", proficiency: 8 },
-      { name: "Redis", category: "database", proficiency: 8 },
-      { name: "AWS Lambda", category: "cloud", proficiency: 8 },
-      { name: "OpenAI GPT", category: "backend", proficiency: 8 },
+      { name: "LangChain", category: "backend", proficiency: 8 },
+      { name: "Gemini 2.0 Flash", category: "backend", proficiency: 9 },
+      { name: "OpenAI", category: "backend", proficiency: 9 },
+      { name: "Claude", category: "backend", proficiency: 9 },
     ],
     features: [
       {
-        title: "AI-Powered Job Matching",
+        title: "AI-Powered Resume Analysis",
         description:
-          "Uses LangChain and vector embeddings to match candidates with relevant job opportunities",
+          "Uses Gemini 2.0 Flash (Default) | BYOK (Bring Your Own Key) model to extract key skills, experiences, education, and achievements from resume text with high accuracy",
         icon: "target",
-      },
-      {
-        title: "Resume Analysis & Optimization",
-        description:
-          "Provides detailed feedback and suggestions for improving resume effectiveness",
-        icon: "file-text",
       },
       {
         title: "Career Path Recommendations",
         description:
           "Suggests career progression paths based on skills and market demand",
-        icon: "trending-up",
+        icon: "file-text",
       },
       {
-        title: "Real-time Market Insights",
+        title: "Job Description Matching",
         description:
-          "Delivers up-to-date salary data and skill demand analytics",
+          "Compares resumes against job descriptions and provides match percentage with detailed skill gap analysis",
         icon: "bar-chart",
+      },
+      {
+        title: "Interactive Web Interface",
+        description:
+          "Built with Next.js and Tailwind CSS for seamless user experience with real-time analysis and JSON-formatted results",
+        icon: "smartphone",
       },
     ],
     challenges: [
       "Ensuring accurate job-candidate matching with complex skill requirements",
-      "Processing and analyzing large volumes of job posting data in real-time",
+      "Balancing AI model accuracy with response time for real-time analysis",
       "Creating interpretable AI recommendations that users can understand and act upon",
       "Maintaining data privacy while providing personalized recommendations",
+      "Integrating multiple AI services (DeepInfra, Whisper) into a cohesive pipeline"
     ],
     solutions: [
       "Implemented semantic search using vector embeddings and cosine similarity for nuanced matching",
       "Built efficient data pipeline with Redis caching and background job processing",
       "Developed explainable AI features that show reasoning behind recommendations",
       "Implemented privacy-first architecture with data anonymization and user consent management",
+
     ],
     links: [
       {
@@ -264,15 +268,15 @@ export const projects: Project[] = [
         label: "Source Code",
       },
     ],
-    startDate: "2025-01-15",
-    endDate: "2025-05-30",
+    startDate: "2025-01-01",
+    endDate: "2025-01-31",
     teamSize: 1,
     role: "Full-Stack Developer & AI Engineer",
     metrics: [
-      { label: "Accuracy", value: "87%" },
-      { label: "User Satisfaction", value: "4.6/5" },
-      { label: "Job Matches", value: "10K+" },
-      { label: "Processing Speed", value: "<3s" },
+      { label: "Analysis Accuracy", value: "90%+" },
+      { label: "Analysis Speed", value: "<8s" },
+      { label: "Supported Formats", value: "PDF + Audio" },
+      { label: "AI Model", value: "Gemini 2.0 Flash" },
     ],
   },
 ];

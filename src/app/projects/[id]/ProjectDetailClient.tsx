@@ -14,6 +14,15 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowLeft,
+  Github,
+  BookOpen,
+  FileText,
+  TrendingUp,
+  BarChart,
+  Layers,
+  Zap,
+  Film,
+  Smartphone,
 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -40,16 +49,39 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
   // Gallery functionality
   const currentImageIndex = selectedImage ?? 0;
 
+  const getFeatureIcon = (iconName?: string) => {
+    switch (iconName) {
+      case "target":
+        return <Target className="w-6 h-6 text-primary" />;
+      case "file-text":
+        return <FileText className="w-6 h-6 text-primary" />;
+      case "trending-up":
+        return <TrendingUp className="w-6 h-6 text-primary" />;
+      case "bar-chart":
+        return <BarChart className="w-6 h-6 text-primary" />;
+      case "layers":
+        return <Layers className="w-6 h-6 text-primary" />;
+      case "zap":
+        return <Zap className="w-6 h-6 text-primary" />;
+      case "film":
+        return <Film className="w-6 h-6 text-primary" />;
+      case "smartphone":
+        return <Smartphone className="w-6 h-6 text-primary" />;
+      default:
+        return <Target className="w-6 h-6 text-primary" />;
+    }
+  };
+
   const getLinkIcon = (type: ProjectLink["type"]) => {
     switch (type) {
       case "demo":
         return <ExternalLink className="w-4 h-4" />;
       case "github":
-        return <ExternalLink className="w-4 h-4" />;
+        return <Github className="w-4 h-4" />;
       case "case-study":
-        return <ExternalLink className="w-4 h-4" />;
+        return <BookOpen className="w-4 h-4" />;
       case "documentation":
-        return <ExternalLink className="w-4 h-4" />;
+        return <FileText className="w-4 h-4" />;
       default:
         return <ExternalLink className="w-4 h-4" />;
     }
@@ -337,9 +369,9 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
               {project.features.map((feature, index) => (
                 <StaggerItem key={index}>
                   <Card className="p-6 h-full hover:shadow-lg transition-shadow">
-                    <div className="flex items-start gap-4">
+                    <div className="flex gap-4">
                       <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Target className="w-6 h-6 text-primary" />
+                        {getFeatureIcon(feature.icon)}
                       </div>
                       <div>
                         <h3 className="text-xl font-semibold text-foreground mb-3">

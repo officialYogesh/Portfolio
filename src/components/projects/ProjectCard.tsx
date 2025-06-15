@@ -189,97 +189,91 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       {...cardMotionProps}
       className="group relative bg-card border border-border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col"
     >
-      <div className="relative min-h-[200px] max-h-[300px] flex items-center justify-center overflow-hidden bg-muted rounded-t-xl">
-        <div className="w-full h-full flex items-center justify-center">
-          {imageError || !project.thumbnail ? (
-            <ImagePlaceholder title={project.title} />
-          ) : (
-            <>
-              {imageLoading && (
-                <div className="absolute inset-0 bg-muted animate-pulse" />
-              )}
-              <Image
-                src={project.thumbnail}
-                alt={`${project.title} thumbnail`}
-                width={0}
-                height={0}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className={`w-full h-auto object-contain max-h-[300px] transition-opacity duration-300 ${
-                  imageLoading ? "opacity-0" : "opacity-100"
-                }`}
-                onError={handleImageError}
-                onLoad={handleImageLoad}
-                priority={index < 2} // Prioritize first few images
-                style={{
-                  filter: "contrast(1.1) saturate(1.05) brightness(0.95)",
-                }}
-              />
-            </>
-          )}
-        </div>
-
-        {project.featured && (
-          <div className="absolute top-3 left-3 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-2xl border-2 border-white/50 z-10">
-            ⭐ Featured
+      <Link href={`/projects/${project.id}`} className="block">
+        <div className="relative min-h-[200px] max-h-[300px] flex items-center justify-center overflow-hidden bg-muted rounded-t-xl cursor-pointer">
+          <div className="w-full h-full flex items-center justify-center">
+            {imageError || !project.thumbnail ? (
+              <ImagePlaceholder title={project.title} />
+            ) : (
+              <>
+                {imageLoading && (
+                  <div className="absolute inset-0 bg-muted animate-pulse" />
+                )}
+                <Image
+                  src={project.thumbnail}
+                  alt={`${project.title} thumbnail`}
+                  width={0}
+                  height={0}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className={`w-full h-auto object-contain max-h-[300px] transition-opacity duration-300 ${
+                    imageLoading ? "opacity-0" : "opacity-100"
+                  }`}
+                  onError={handleImageError}
+                  onLoad={handleImageLoad}
+                  priority={index < 2} // Prioritize first few images
+                  style={{
+                    filter: "contrast(1.1) saturate(1.05) brightness(0.95)",
+                  }}
+                />
+              </>
+            )}
           </div>
-        )}
-        <div className="absolute top-3 right-3 z-10">
-          <StatusIndicator status={project.status} />
-        </div>
 
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          {demoLink && (
-            <motion.a
-              href={demoLink.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-primary text-primary-foreground p-2 rounded-full hover:bg-primary/90 transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="View live demo"
-            >
-              <ExternalLink size={16} />
-            </motion.a>
+          {project.featured && (
+            <div className="absolute top-3 left-3 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-2xl border-2 border-white/50 z-10">
+              ⭐ Featured
+            </div>
           )}
-          {githubLink && (
-            <motion.a
-              href={githubLink.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-foreground text-background p-2 rounded-full hover:bg-foreground/90 transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="View source code"
-            >
-              <Github size={16} />
-            </motion.a>
-          )}
-          <Link href={`/projects/${project.id}`}>
-            <motion.div
-              className="bg-accent text-accent-foreground p-2 rounded-full hover:bg-accent/90 transition-colors cursor-pointer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="View project details"
-            >
-              <ExternalLink size={16} />
-            </motion.div>
-          </Link>
+          <div className="absolute top-3 right-3 z-10">
+            <StatusIndicator status={project.status} />
+          </div>
         </div>
-      </div>
+      </Link>
 
       <div className="p-6 flex flex-col flex-grow">
         <div className="mb-4">
-          <Link
-            href={`/projects/${project.id}`}
-            className="block group-hover:text-primary transition-colors"
-          >
-            <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary transition-colors cursor-pointer line-clamp-2">
-              {project.title}
-            </h3>
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <Link href={`/projects/${project.id}`} className="flex-grow">
+              <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary transition-colors cursor-pointer line-clamp-2">
+                {project.title}
+              </h3>
+            </Link>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {demoLink && (
+                <motion.a
+                  href={demoLink.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-primary text-primary-foreground p-2 rounded-lg hover:bg-primary/90 transition-colors shadow-sm opacity-80 hover:opacity-100"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label={`View live demo of ${project.title}`}
+                  title="View Live Demo"
+                >
+                  <ExternalLink size={16} />
+                </motion.a>
+              )}
+              {githubLink && (
+                <motion.a
+                  href={githubLink.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-secondary text-secondary-foreground p-2 rounded-lg hover:bg-secondary/90 transition-colors shadow-sm opacity-80 hover:opacity-100"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label={`View source code of ${project.title}`}
+                  title="View Source Code"
+                >
+                  <Github size={16} />
+                </motion.a>
+              )}
+            </div>
+          </div>
+          <Link href={`/projects/${project.id}`}>
+            <p className="text-muted-foreground mt-2 line-clamp-3 text-sm leading-relaxed flex-grow cursor-pointer">
+              {project.shortDescription}
+            </p>
           </Link>
-          <p className="text-muted-foreground mt-2 line-clamp-3 text-sm leading-relaxed flex-grow">
-            {project.shortDescription}
-          </p>
         </div>
 
         <div className="mb-4">
@@ -320,19 +314,21 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         )}
 
-        <div className="mt-auto flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1">
-              <Calendar size={12} />
-              <span>{new Date(project.startDate).getFullYear()}</span>
+        <Link href={`/projects/${project.id}`} className="mt-auto">
+          <div className="flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border cursor-pointer">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <Calendar size={12} />
+                <span>{new Date(project.startDate).getFullYear()}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Users size={12} />
+                <span>{project.teamSize}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <Users size={12} />
-              <span>{project.teamSize}</span>
-            </div>
+            <div className="text-primary font-medium">{project.role}</div>
           </div>
-          <div className="text-primary font-medium">{project.role}</div>
-        </div>
+        </Link>
       </div>
     </motion.div>
   );

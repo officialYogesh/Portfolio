@@ -106,14 +106,15 @@ export const homeConfig: HomePageConfig = {
       icon: "🏆",
     },
     projects: {
-      title: "Production Systems I've Built",
+      title: "Innovation in Action",
       description:
-        "Real applications serving real users. Not side projects or tutorials—actual systems that companies depend on.",
+        "A showcase of my award-winning hackathon builds and personal projects. This is where I experiment with cutting-edge tech, build rapid prototypes, and bring ambitious ideas to life from the ground up.",
       linkText: "See Full Technical Portfolio →",
     },
     contact: {
-      title: "Ready to schedule a technical interview?",
-      description: "I'm actively interviewing for Senior SDE positions.",
+      title: "Let's Start a Conversation?",
+      description:
+        "I'm seeking my next challenge where I can help build high-impact AI and cloud systems. Whether you have a specific role in mind, want to discuss system design, or just think we'd be a good fit, my inbox is open.",
       footer: "📄 References available on request",
     },
   },

@@ -92,9 +92,18 @@ const useTypingAnimation = (texts: string[], speed = 80, delay = 4000) => {
 };
 
 export default function Home() {
+  const [isMounted, setIsMounted] = useState(false);
   const featuredProjects = getFeaturedProjects();
   const recruiterHooks = getRecruiterHooks();
   const typingConfig = getTypingAnimationConfig();
+
+  // Wait for component to mount before starting animations
+  useEffect(() => {
+    // Add a small delay to ensure full hydration
+    const timer = setTimeout(() => setIsMounted(true), 150);
+    return () => clearTimeout(timer);
+  }, []);
+
   const currentHook = useTypingAnimation(
     recruiterHooks,
     typingConfig.speed,
@@ -121,18 +130,20 @@ export default function Home() {
                 className="mb-6"
               >
                 <p className="text-lg md:text-xl text-foreground/80 font-medium">
-                  {currentHook}
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{
-                      duration: 0.8,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                    }}
-                    className="text-accent ml-1"
-                  >
-                    |
-                  </motion.span>
+                  {isMounted ? currentHook : recruiterHooks[0]}
+                  {isMounted && (
+                    <motion.span
+                      animate={{ opacity: [1, 0] }}
+                      transition={{
+                        duration: 0.8,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                      }}
+                      className="text-accent ml-1"
+                    >
+                      |
+                    </motion.span>
+                  )}
                 </p>
               </motion.div>
             </AnimatedContainer>

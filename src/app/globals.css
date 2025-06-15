@@ -131,6 +131,13 @@
   background-color: #484848;
 }
 
+/* Fix extra features chip visibility in One Dark theme only */
+[data-theme="one-dark"] .bg-muted.text-muted-foreground {
+  background-color: #4a4a4a;
+  color: #e0e0e0;
+  border: 1px solid #5a5a5a;
+}
+
 /* Fix description text visibility in Nord theme only */
 [data-theme="nord"] .text-muted {
   color: #94a3b8;

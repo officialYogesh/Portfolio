@@ -35,18 +35,17 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize theme on mount
+    // Initialize theme on mount - skip initial apply since it's done in HTML
     const initializeTheme = () => {
       try {
         const initialTheme = initializeThemeWithSystemPreference();
         setCurrentTheme(initialTheme as ThemeName);
-        applyTheme(initialTheme);
+        // Don't apply theme here - it's already applied in the blocking script
         setIsLoading(false);
       } catch (error) {
         console.error("Error initializing theme:", error);
         // Fallback to default theme
         setCurrentTheme(defaultTheme);
-        applyTheme(defaultTheme);
         setIsLoading(false);
       }
     };

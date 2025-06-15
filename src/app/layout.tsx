@@ -66,6 +66,24 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+
+        {/* Blocking script to prevent theme flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const storedTheme = localStorage.getItem('portfolio-theme') || 'dracula';
+                  document.documentElement.setAttribute('data-theme', storedTheme);
+                  document.documentElement.style.colorScheme = 'dark';
+                } catch (e) {
+                  document.documentElement.setAttribute('data-theme', 'dracula');
+                  document.documentElement.style.colorScheme = 'dark';
+                }
+              })();
+            `,
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}

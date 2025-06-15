@@ -512,7 +512,7 @@ export default function ContactPage() {
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {contentConfig.messaging.recruiting.interestAreas
-                    .slice(0, 2)
+                    .slice(0, 3)
                     .join(", ")}{" "}
                   and collaborations. Let&apos;s discuss how we can work
                   together!

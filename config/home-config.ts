@@ -57,9 +57,9 @@ export const homeConfig: HomePageConfig = {
       "Want an engineer who's proven they can scale systems under pressure?",
     ],
     professionalTitle: {
-      prefix: "Senior SDE",
+      prefix: "SDE",
       main: "specializing in",
-      specialization: "Production AI Systems",
+      specialization: "Production AI & Cloud Systems",
     },
     stats: {
       experience: "4+ years",

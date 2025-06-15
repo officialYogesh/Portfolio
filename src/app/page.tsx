@@ -88,7 +88,7 @@ export default function Home() {
       <Container className="relative">
         {/* Hero Section - Recruiter-Focused */}
         <section className="py-12">
-          <div className="max-w-5xl">
+          <div className="max-w-6xl">
             {/* Recruiter Hook */}
             <AnimatedContainer variant="slide" direction="up" delay={0.1}>
               <motion.div

@@ -120,7 +120,7 @@ export const contentConfig: ContentConfig = {
     professional: `${personalInfo.title} specializing in GenAI solutions, cloud architecture, and full-stack development`,
     technical:
       "Building scalable AI-powered solutions with modern web technologies",
-    recruiting: "Senior SDE specializing in Production AI Systems",
+    recruiting: "SDE specializing in Production AI Systems",
     alternatives: [
       "Transforming ideas into intelligent digital solutions",
       "Where AI meets exceptional user experience",
@@ -173,8 +173,8 @@ export const contentConfig: ContentConfig = {
     recruiting: {
       status: personalInfo.availability,
       interestAreas: [
-        "Senior SDE positions",
-        "AI/ML Engineering roles",
+        "SDE positions",
+        "AI Engineering roles",
         "Full Stack Development",
         "Technical Leadership",
       ],

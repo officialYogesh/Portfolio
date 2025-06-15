@@ -169,13 +169,6 @@ const technicalSkills = [
     context: "RAG systems, agent workflows, production LLM apps",
     category: "AI/ML",
   },
-  {
-    name: "IBM watsonx.ai",
-    icon: Brain,
-    level: 7,
-    context: "Granite models, compliance automation",
-    category: "AI/ML",
-  },
 ];
 
 // FAANG-Aligned Core Strengths - Optimized for technical recruiters and hiring managers

@@ -264,8 +264,6 @@ const ProjectsPage: React.FC = () => {
         {/* Additional Information with Enhanced CTAs */}
         {!isLoading && filteredProjects.length > 0 && (
           <AnimatedContainer
-            delay={0.3}
-            threshold={0.3}
             className="text-center mt-12 mb-8"
           >
             <div className="bg-card border border-border rounded-xl p-6 md:p-8 max-w-3xl mx-auto">

@@ -99,14 +99,23 @@ const prepareContentForReading = (content: typeof aboutPageContent) => {
 };
 
 const AboutPage: React.FC = () => {
-  // Hooks
+  // Hooks with performance optimization
   const scrollProgress = useScrollProgress();
   const { theme, getThemeAnimations } = useThemeAwareAnimations();
   const { scrollToSection } = useSmoothScroll();
 
   const [hasMounted, setHasMounted] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+
   useEffect(() => {
-    setHasMounted(true);
+    // Delay mounting to avoid hydration mismatches
+    const timer = setTimeout(() => {
+      setHasMounted(true);
+      // Additional delay for full hydration
+      setTimeout(() => setIsHydrated(true), 200);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Reduced section IDs for better performance
@@ -198,29 +207,45 @@ const AboutPage: React.FC = () => {
     [completedSections]
   );
 
-  // Optimized Animation variants with reduced complexity
+  // Optimized Animation variants with reduced complexity and hydration handling
   const optimizedTextVariants = useMemo(() => {
+    if (!isHydrated) {
+      // Return static state during hydration
+      return {
+        initial: { opacity: 1, y: 0 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0 },
+      };
+    }
+
     if (hasMounted && theme) {
       return getThemeAnimations();
     }
     return {
-      initial: { opacity: 0, y: 5 }, // Reduced movement
+      initial: { opacity: 0, y: 3 }, // Reduced movement
       animate: { opacity: 1, y: 0 },
-      transition: { type: "tween", duration: 0.3, ease: "easeOut" },
+      transition: { type: "tween", duration: 0.2, ease: "easeOut" }, // Faster
     };
-  }, [getThemeAnimations, hasMounted, theme]);
+  }, [getThemeAnimations, hasMounted, theme, isHydrated]);
 
-  const heroImageVariants = useMemo(
-    () => ({
-      initial: { scale: 1.02, opacity: 0 }, // Reduced scale
+  const heroImageVariants = useMemo(() => {
+    if (!isHydrated) {
+      return {
+        initial: { scale: 1, opacity: 1 },
+        animate: { scale: 1, opacity: 1 },
+        transition: { duration: 0 },
+      };
+    }
+
+    return {
+      initial: { scale: 1.01, opacity: 0 }, // Reduced scale
       animate: {
         scale: 1,
         opacity: 1,
-        transition: { duration: 0.5, ease: "easeOut" }, // Shortened duration
+        transition: { duration: 0.3, ease: "easeOut" }, // Shortened duration
       },
-    }),
-    []
-  );
+    };
+  }, [isHydrated]);
 
   // Memoized handlers
   const handleDownloadResume = useCallback(() => {

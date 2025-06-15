@@ -33,39 +33,62 @@ import {
 import { personalInfo } from "../../config/personal-info";
 import { getFeaturedProjects } from "../../config/projects";
 
-// Typing animation hook - focused on recruiter pain points
+// Optimized typing animation hook with reduced CPU usage
 const useTypingAnimation = (texts: string[], speed = 80, delay = 4000) => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
+  // Wait for client hydration before starting animations
+  useEffect(() => {
+    const timer = setTimeout(() => setIsClient(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
+    if (!isClient) return;
+
     let timeout: NodeJS.Timeout;
+    let rafId: number;
 
-    if (isTyping) {
-      const fullText = texts[currentTextIndex];
-      if (currentText.length < fullText.length) {
-        timeout = setTimeout(() => {
-          setCurrentText(fullText.slice(0, currentText.length + 1));
-        }, speed);
+    const updateText = () => {
+      if (isTyping) {
+        const fullText = texts[currentTextIndex];
+        if (currentText.length < fullText.length) {
+          rafId = requestAnimationFrame(() => {
+            timeout = setTimeout(() => {
+              setCurrentText(fullText.slice(0, currentText.length + 1));
+            }, speed);
+          });
+        } else {
+          timeout = setTimeout(() => setIsTyping(false), delay);
+        }
       } else {
-        setTimeout(() => setIsTyping(false), delay);
+        if (currentText.length > 0) {
+          rafId = requestAnimationFrame(() => {
+            timeout = setTimeout(() => {
+              setCurrentText(currentText.slice(0, -1));
+            }, speed / 3); // Faster deletion
+          });
+        } else {
+          timeout = setTimeout(() => {
+            setCurrentTextIndex((prev) => (prev + 1) % texts.length);
+            setIsTyping(true);
+          }, 500);
+        }
       }
-    } else {
-      if (currentText.length > 0) {
-        timeout = setTimeout(() => {
-          setCurrentText(currentText.slice(0, -1));
-        }, speed / 2);
-      } else {
-        setCurrentTextIndex((prev) => (prev + 1) % texts.length);
-        setIsTyping(true);
-      }
-    }
+    };
 
-    return () => clearTimeout(timeout);
-  }, [currentText, currentTextIndex, isTyping, texts, speed, delay]);
+    updateText();
 
-  return currentText;
+    return () => {
+      clearTimeout(timeout);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [currentText, currentTextIndex, isTyping, texts, speed, delay, isClient]);
+
+  return isClient ? currentText : texts[0]; // Fallback to first text during SSR
 };
 
 export default function Home() {

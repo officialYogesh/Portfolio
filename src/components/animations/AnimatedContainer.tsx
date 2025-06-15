@@ -1,7 +1,7 @@
 "use client";
 
+import React, { useMemo, useState, useEffect } from "react";
 import { motion, Variants, Transition } from "framer-motion";
-import React, { useMemo } from "react";
 
 import {
   useScrollAnimation,
@@ -30,46 +30,57 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
   variant = "fade",
   direction = "up",
   delay = 0,
-  duration = 0.6, // Unified duration across Home page for consistent feel
-  threshold = 0.1,
+  duration = 0.4, // Reduced default duration for better performance
+  threshold = 0.05, // Lower threshold for earlier triggering
   triggerOnce = true,
   as: InnerComponent = "div",
 }) => {
   const { ref, controls } = useScrollAnimation(threshold, triggerOnce);
   const { prefersReducedMotion, getDuration } = useReducedMotion();
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Wait for hydration before starting animations
+  useEffect(() => {
+    const timer = setTimeout(() => setIsHydrated(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Memoize animation variants to prevent unnecessary recalculations
   const animationVariants = useMemo((): Variants => {
+    if (!isHydrated || prefersReducedMotion) {
+      // Return static variants during hydration or for reduced motion
+      return {
+        hidden: { opacity: 1, y: 0, x: 0, scale: 1 },
+        visible: { opacity: 1, y: 0, x: 0, scale: 1 },
+      };
+    }
+
     const baseDuration = getDuration(duration);
 
     // Optimized transition with better performance settings
     const baseTransition: Transition = {
       type: "tween", // Use tween instead of spring for better performance
       duration: baseDuration,
-      delay,
+      delay: delay * 0.5, // Reduce delay by half for faster sequence
       ease: [0.25, 0.46, 0.45, 0.94], // Optimized easing curve
     };
 
     // Reduced movement for better performance
-    const optimizedMovement = 10; // Reduced from default values
+    const optimizedMovement = 5; // Further reduced from 10
+
+    const directionStyles: Record<string, { x?: number; y?: number }> = {
+      up: { y: optimizedMovement },
+      down: { y: -optimizedMovement },
+      left: { x: optimizedMovement },
+      right: { x: -optimizedMovement },
+    };
 
     switch (variant) {
       case "slide":
         return {
           hidden: {
             opacity: 0,
-            y:
-              direction === "up"
-                ? optimizedMovement
-                : direction === "down"
-                ? -optimizedMovement
-                : 0,
-            x:
-              direction === "left"
-                ? optimizedMovement
-                : direction === "right"
-                ? -optimizedMovement
-                : 0,
+            ...directionStyles[direction],
           },
           visible: {
             opacity: 1,
@@ -78,11 +89,12 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
             transition: baseTransition,
           },
         };
+
       case "scale":
         return {
           hidden: {
             opacity: 0,
-            scale: 0.95, // Minimal scale change for performance
+            scale: 0.98, // Reduced scale change
           },
           visible: {
             opacity: 1,
@@ -90,19 +102,26 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
             transition: baseTransition,
           },
         };
+
       case "fade":
       default:
         return {
-          hidden: {
-            opacity: 0,
-          },
+          hidden: { opacity: 0 },
           visible: {
             opacity: 1,
             transition: baseTransition,
           },
         };
     }
-  }, [variant, direction, getDuration, duration, delay]);
+  }, [
+    variant,
+    direction,
+    delay,
+    duration,
+    getDuration,
+    prefersReducedMotion,
+    isHydrated,
+  ]);
 
   // Early return for reduced motion
   if (prefersReducedMotion) {

@@ -55,21 +55,6 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
     }
   };
 
-  const getStatusColor = (status: Project["status"]) => {
-    switch (status) {
-      case "completed":
-        return "text-success border-success/20 bg-success/10";
-      case "in-progress":
-        return "text-info border-info/20 bg-info/10";
-      case "planned":
-        return "text-warning border-warning/20 bg-warning/10";
-      case "archived":
-        return "text-muted border-muted/20 bg-muted/10";
-      default:
-        return "text-muted border-muted/20 bg-muted/10";
-    }
-  };
-
   const openGallery = (imageIndex: number) => {
     setSelectedImage(imageIndex);
   };
@@ -134,7 +119,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="mb-8 aspect-video rounded-2xl overflow-hidden bg-muted/20 relative group cursor-pointer"
+                className="mb-8 rounded-2xl overflow-hidden bg-muted/20 relative group cursor-pointer flex items-center justify-center min-h-[300px] max-h-[600px]"
                 onClick={() =>
                   project.screenshots && project.screenshots.length > 0
                     ? openGallery(0)
@@ -144,44 +129,46 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 <Image
                   src={project.thumbnail}
                   alt={`${project.title} thumbnail`}
-                  fill
-                  className="object-cover"
+                  width={0}
+                  height={0}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  className="w-full h-auto object-contain max-h-[600px] rounded-2xl"
                   onError={(e) => {
                     // Hide the image on error and show a placeholder instead
                     const target = e.target as HTMLImageElement;
                     target.style.display = "none";
                   }}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  style={{
+                    filter: "contrast(1.1) saturate(1.05) brightness(0.95)",
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 rounded-2xl" />
                 {project.screenshots && project.screenshots.length > 0 && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <PlayCircle className="w-16 h-16 text-white/80 group-hover:scale-110 transition-transform" />
                   </div>
                 )}
-                <div className="absolute top-6 left-6">
+                <div className="absolute top-6 left-6 z-10">
                   <Badge
-                    variant="outline"
-                    className="bg-background/80 backdrop-blur-sm"
+                    variant="default"
+                    className="bg-primary text-primary-foreground font-bold shadow-2xl border-2 border-white/30 text-sm px-4 py-2"
                   >
                     {categoryInfo.displayName}
                   </Badge>
                 </div>
-                <div className="absolute top-6 right-6 flex gap-2">
+                <div className="absolute top-6 right-6 flex gap-2 z-10">
                   <Badge
-                    variant="outline"
-                    className={`bg-background/80 backdrop-blur-sm ${getStatusColor(
-                      project.status
-                    )}`}
+                    variant="default"
+                    className="bg-accent text-accent-foreground font-bold shadow-2xl border-2 border-white/30 text-sm px-4 py-2"
                   >
                     {project.status.replace("-", " ").toUpperCase()}
                   </Badge>
                   {project.featured && (
                     <Badge
-                      variant="outline"
-                      className="bg-warning/20 text-warning backdrop-blur-sm"
+                      variant="default"
+                      className="bg-yellow-500 text-black font-bold shadow-2xl border-2 border-white/30 text-sm px-4 py-2"
                     >
-                      Featured
+                      ⭐ Featured
                     </Badge>
                   )}
                 </div>

@@ -65,25 +65,25 @@ const StatusIndicator: React.FC<{ status: Project["status"] }> = ({
       icon: CheckCircle,
       text: "Completed",
       className:
-        "text-green-600 bg-green-100 dark:bg-green-900/30 dark:text-green-400",
+        "text-white bg-green-600 shadow-2xl border-2 border-white/30 font-bold",
     },
     "in-progress": {
       icon: Clock,
       text: "In Progress",
       className:
-        "text-blue-600 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400",
+        "text-white bg-blue-600 shadow-2xl border-2 border-white/30 font-bold",
     },
     planned: {
       icon: AlertCircle,
       text: "Planned",
       className:
-        "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400",
+        "text-black bg-yellow-400 shadow-2xl border-2 border-white/30 font-bold",
     },
     archived: {
       icon: Archive,
       text: "Archived",
       className:
-        "text-gray-600 bg-gray-100 dark:bg-gray-900/30 dark:text-gray-400",
+        "text-white bg-gray-600 shadow-2xl border-2 border-white/30 font-bold",
     },
   };
 
@@ -92,7 +92,7 @@ const StatusIndicator: React.FC<{ status: Project["status"] }> = ({
 
   return (
     <div
-      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.className}`}
+      className={`inline-flex items-center px-3 py-1 rounded-full text-xs ${config.className}`}
     >
       <IconComponent size={12} className="mr-1" />
       {config.text}
@@ -189,8 +189,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       {...cardMotionProps}
       className="group relative bg-card border border-border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col"
     >
-      <div className="relative aspect-video overflow-hidden bg-muted">
-        <div className="w-full h-full">
+      <div className="relative min-h-[200px] max-h-[300px] flex items-center justify-center overflow-hidden bg-muted rounded-t-xl">
+        <div className="w-full h-full flex items-center justify-center">
           {imageError || !project.thumbnail ? (
             <ImagePlaceholder title={project.title} />
           ) : (
@@ -201,25 +201,29 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               <Image
                 src={project.thumbnail}
                 alt={`${project.title} thumbnail`}
-                fill
-                className={`object-cover transition-opacity duration-300 ${
+                width={0}
+                height={0}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className={`w-full h-auto object-contain max-h-[300px] transition-opacity duration-300 ${
                   imageLoading ? "opacity-0" : "opacity-100"
                 }`}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 onError={handleImageError}
                 onLoad={handleImageLoad}
                 priority={index < 2} // Prioritize first few images
+                style={{
+                  filter: "contrast(1.1) saturate(1.05) brightness(0.95)",
+                }}
               />
             </>
           )}
         </div>
 
         {project.featured && (
-          <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium shadow-md">
-            Featured
+          <div className="absolute top-3 left-3 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-2xl border-2 border-white/50 z-10">
+            ⭐ Featured
           </div>
         )}
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-3 right-3 z-10">
           <StatusIndicator status={project.status} />
         </div>
 

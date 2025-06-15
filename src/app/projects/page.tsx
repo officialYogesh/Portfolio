@@ -263,7 +263,11 @@ const ProjectsPage: React.FC = () => {
 
         {/* Additional Information with Enhanced CTAs */}
         {!isLoading && filteredProjects.length > 0 && (
-          <AnimatedContainer delay={0.8} className="text-center mt-12 mb-8">
+          <AnimatedContainer
+            delay={0.3}
+            threshold={0.3}
+            className="text-center mt-12 mb-8"
+          >
             <div className="bg-card border border-border rounded-xl p-6 md:p-8 max-w-3xl mx-auto">
               <h3 className="text-xl md:text-2xl font-semibold text-card-foreground mb-3 md:mb-4">
                 More Projects Coming Soon

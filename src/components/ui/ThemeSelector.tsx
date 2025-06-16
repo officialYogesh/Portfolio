@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import { themeDescriptions } from "../../../config/themes";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -9,9 +9,10 @@ import { useTheme } from "../../contexts/ThemeContext";
 export const ThemeSelector: React.FC = () => {
   const { currentTheme, setTheme, themes, isLoading } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Handle escape key to close dropdown
-  React.useEffect(() => {
+  useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
         setIsOpen(false);
@@ -20,6 +21,33 @@ export const ThemeSelector: React.FC = () => {
 
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen]);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        isOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      // Add a small delay to prevent immediate closing when opening
+      const timer = setTimeout(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("touchstart", handleClickOutside);
+      }, 0);
+
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("touchstart", handleClickOutside);
+      };
+    }
   }, [isOpen]);
 
   const handleThemeChange = (themeId: string) => {
@@ -41,7 +69,7 @@ export const ThemeSelector: React.FC = () => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-foreground hover:text-primary bg-card border border-border rounded-lg hover:bg-muted/20 transition-all duration-200 min-w-[140px]"
@@ -67,7 +95,7 @@ export const ThemeSelector: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-lg shadow-lg z-50 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-lg shadow-lg z-[9999] animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200">
           <div className="p-2">
             <div className="text-xs font-semibold text-muted uppercase tracking-wide px-2 py-1 mb-2">
               Choose Theme
@@ -99,15 +127,6 @@ export const ThemeSelector: React.FC = () => {
             ))}
           </div>
         </div>
-      )}
-
-      {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-transparent cursor-default"
-          onClick={() => setIsOpen(false)}
-          onTouchStart={() => setIsOpen(false)}
-        />
       )}
     </div>
   );

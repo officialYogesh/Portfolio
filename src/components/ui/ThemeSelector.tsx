@@ -10,6 +10,18 @@ export const ThemeSelector: React.FC = () => {
   const { currentTheme, setTheme, themes, isLoading } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Handle escape key to close dropdown
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen]);
+
   const handleThemeChange = (themeId: string) => {
     if (themeId in themes) {
       setTheme(themeId as keyof typeof themes);
@@ -91,7 +103,11 @@ export const ThemeSelector: React.FC = () => {
 
       {/* Backdrop */}
       {isOpen && (
-        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+        <div
+          className="fixed inset-0 z-30 bg-transparent cursor-default"
+          onClick={() => setIsOpen(false)}
+          onTouchStart={() => setIsOpen(false)}
+        />
       )}
     </div>
   );

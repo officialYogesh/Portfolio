@@ -3,6 +3,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { motion, Variants, Transition } from "framer-motion";
 
+import { useLoading } from "@/contexts/LoadingContext";
 import {
   useScrollAnimation,
   useReducedMotion,
@@ -37,18 +38,21 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
 }) => {
   const { ref, controls } = useScrollAnimation(threshold, triggerOnce);
   const { prefersReducedMotion, getDuration } = useReducedMotion();
-  const [isHydrated, setIsHydrated] = useState(false);
+  const { isLoading, isHydrated } = useLoading();
+  const [componentReady, setComponentReady] = useState(false);
 
-  // Wait for hydration before starting animations
+  // Wait for both hydration and loading to complete before starting animations
   useEffect(() => {
-    const timer = setTimeout(() => setIsHydrated(true), 50);
-    return () => clearTimeout(timer);
-  }, []);
+    if (isHydrated && !isLoading) {
+      const timer = setTimeout(() => setComponentReady(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isHydrated, isLoading]);
 
   // Memoize animation variants to prevent unnecessary recalculations
   const animationVariants = useMemo((): Variants => {
-    if (!isHydrated || prefersReducedMotion) {
-      // Return static variants during hydration or for reduced motion
+    if (!componentReady || prefersReducedMotion) {
+      // Return static variants during loading or for reduced motion
       return {
         hidden: { opacity: 1, y: 0, x: 0, scale: 1 },
         visible: { opacity: 1, y: 0, x: 0, scale: 1 },
@@ -120,7 +124,7 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
     duration,
     getDuration,
     prefersReducedMotion,
-    isHydrated,
+    componentReady,
   ]);
 
   // Early return for reduced motion

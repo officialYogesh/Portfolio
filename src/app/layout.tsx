@@ -4,6 +4,7 @@ import "./globals.css";
 import Layout from "@/components/layout/Layout";
 import RoutePrefetcher from "@/components/layout/RoutePrefetcher";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
+import { LoadingProvider } from "@/contexts/LoadingContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { inter, jetbrainsMono } from "@/lib/fonts";
 
@@ -90,10 +91,12 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ErrorBoundary>
-          <ThemeProvider>
-            <Layout>{children}</Layout>
-            <RoutePrefetcher />
-          </ThemeProvider>
+          <LoadingProvider>
+            <ThemeProvider>
+              <Layout>{children}</Layout>
+              <RoutePrefetcher />
+            </ThemeProvider>
+          </LoadingProvider>
         </ErrorBoundary>
       </body>
     </html>

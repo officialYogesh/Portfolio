@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, { useMemo, useCallback } from "react";
 
 // Components
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
@@ -29,6 +29,7 @@ import {
   StorySection,
   SectionDivider,
 } from "@/components/ui/ScrollytellComponents";
+import { useLoading } from "@/contexts/LoadingContext";
 
 // Data
 import {
@@ -103,20 +104,9 @@ const AboutPage: React.FC = () => {
   const scrollProgress = useScrollProgress();
   const { theme, getThemeAnimations } = useThemeAwareAnimations();
   const { scrollToSection } = useSmoothScroll();
+  const { isHydrated, isLoading } = useLoading();
 
-  const [hasMounted, setHasMounted] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    // Delay mounting to avoid hydration mismatches
-    const timer = setTimeout(() => {
-      setHasMounted(true);
-      // Additional delay for full hydration
-      setTimeout(() => setIsHydrated(true), 200);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const isReady = isHydrated && !isLoading;
 
   // Reduced section IDs for better performance
   const sectionIds = useMemo(
@@ -218,7 +208,7 @@ const AboutPage: React.FC = () => {
       };
     }
 
-    if (hasMounted && theme) {
+    if (isReady && theme) {
       return getThemeAnimations();
     }
     return {
@@ -226,7 +216,7 @@ const AboutPage: React.FC = () => {
       animate: { opacity: 1, y: 0 },
       transition: { type: "tween", duration: 0.2, ease: "easeOut" }, // Faster
     };
-  }, [getThemeAnimations, hasMounted, theme, isHydrated]);
+  }, [getThemeAnimations, isReady, theme, isHydrated]);
 
   const heroImageVariants = useMemo(() => {
     if (!isHydrated) {

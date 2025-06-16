@@ -13,6 +13,7 @@ import { Container } from "@/components/layout";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { Badge } from "@/components/ui/Badge";
 import { PrimaryCTA, SecondaryCTA } from "@/components/ui/CTAButton";
+import { useLoading } from "@/contexts/LoadingContext";
 
 import {
   getCTA,
@@ -92,17 +93,11 @@ const useTypingAnimation = (texts: string[], speed = 80, delay = 4000) => {
 };
 
 export default function Home() {
-  const [isMounted, setIsMounted] = useState(false);
+  const { isHydrated, isLoading } = useLoading();
   const featuredProjects = getFeaturedProjects();
   const recruiterHooks = getRecruiterHooks();
   const typingConfig = getTypingAnimationConfig();
-
-  // Wait for component to mount before starting animations
-  useEffect(() => {
-    // Add a small delay to ensure full hydration
-    const timer = setTimeout(() => setIsMounted(true), 150);
-    return () => clearTimeout(timer);
-  }, []);
+  const isReady = isHydrated && !isLoading;
 
   const currentHook = useTypingAnimation(
     recruiterHooks,
@@ -130,8 +125,8 @@ export default function Home() {
                 className="mb-6"
               >
                 <p className="text-lg md:text-xl text-foreground/80 font-medium">
-                  {isMounted ? currentHook : recruiterHooks[0]}
-                  {isMounted && (
+                  {isReady ? currentHook : recruiterHooks[0]}
+                  {isReady && (
                     <motion.span
                       animate={{ opacity: [1, 0] }}
                       transition={{

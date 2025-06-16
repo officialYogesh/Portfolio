@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Search, X, ChevronDown } from "lucide-react";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import { Container } from "@/components/layout/Container";
 import { ProjectFilter } from "@/components/projects/ProjectFilter";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
+import { useLoading } from "@/contexts/LoadingContext";
 import { useProjectFilter } from "@/hooks/useProjectFilter";
 
 import { projects } from "../../../config/projects";
@@ -32,12 +33,8 @@ const ProjectsPage: React.FC = () => {
   } = useProjectFilter(projects);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [isLoading] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const { isHydrated, isLoading: appIsLoading } = useLoading();
+  const isReady = isHydrated && !appIsLoading;
 
   const projectStats = {
     total: projects.length,
@@ -78,7 +75,7 @@ const ProjectsPage: React.FC = () => {
     [setSearchQuery]
   );
 
-  if (!isMounted) return null;
+  if (!isReady) return null;
 
   return (
     <div className="min-h-screen py-16 lg:py-20">
@@ -228,7 +225,7 @@ const ProjectsPage: React.FC = () => {
         </AnimatedContainer>
 
         {/* Results Summary */}
-        {!isLoading && (
+        {!appIsLoading && (
           <AnimatedContainer delay={0.6} className="mb-6">
             <div className="text-sm text-muted-foreground">
               {hasActiveFilters ? (
@@ -257,15 +254,13 @@ const ProjectsPage: React.FC = () => {
         {/* Project Grid */}
         <ProjectGrid
           projects={filteredProjects}
-          loading={isLoading}
+          loading={appIsLoading}
           className="mb-12"
         />
 
         {/* Additional Information with Enhanced CTAs */}
-        {!isLoading && filteredProjects.length > 0 && (
-          <AnimatedContainer
-            className="text-center mt-12 mb-8"
-          >
+        {!appIsLoading && filteredProjects.length > 0 && (
+          <AnimatedContainer className="text-center mt-12 mb-8">
             <div className="bg-card border border-border rounded-xl p-6 md:p-8 max-w-3xl mx-auto">
               <h3 className="text-xl md:text-2xl font-semibold text-card-foreground mb-3 md:mb-4">
                 More Projects Coming Soon
@@ -280,7 +275,7 @@ const ProjectsPage: React.FC = () => {
         )}
 
         {/* Enhanced Empty State for No Results */}
-        {!isLoading && filteredProjects.length === 0 && (
+        {!appIsLoading && filteredProjects.length === 0 && (
           <AnimatedContainer delay={0.6} className="text-center py-12 md:py-16">
             <div className="max-w-md mx-auto">
               <div className="w-20 h-20 md:w-24 md:h-24 bg-muted rounded-full flex items-center justify-center mx-auto mb-5 md:mb-6">

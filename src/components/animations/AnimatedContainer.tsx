@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
 import { motion, Variants, Transition } from "framer-motion";
+import React, { useMemo, useState, useEffect } from "react";
 
 import { useLoading } from "@/contexts/LoadingContext";
+
 import {
   useScrollAnimation,
   useReducedMotion,

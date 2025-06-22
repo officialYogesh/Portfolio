@@ -23,6 +23,9 @@ import {
   Zap,
   Film,
   Smartphone,
+  Moon,
+  Map,
+  Table,
 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -53,27 +56,38 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
       project.thumbnail.endsWith(".webm") ||
       project.thumbnail.endsWith(".mov"));
 
+  // Check if gallery contains duplicate content (same as thumbnail)
+  const hasDuplicateGalleryContent = project.screenshots?.some(
+    (screenshot) => screenshot === project.thumbnail
+  );
+
   // Gallery functionality
   const currentImageIndex = selectedImage ?? 0;
 
   const getFeatureIcon = (iconName?: string) => {
     switch (iconName) {
       case "target":
-        return <Target className="w-6 h-6 text-primary" />;
+        return <Target className="w-6 h-6 text-blue-500" />;
       case "file-text":
-        return <FileText className="w-6 h-6 text-primary" />;
+        return <FileText className="w-6 h-6 text-green-500" />;
       case "trending-up":
-        return <TrendingUp className="w-6 h-6 text-primary" />;
+        return <TrendingUp className="w-6 h-6 text-purple-500" />;
       case "bar-chart":
-        return <BarChart className="w-6 h-6 text-primary" />;
+        return <BarChart className="w-6 h-6 text-orange-500" />;
       case "layers":
-        return <Layers className="w-6 h-6 text-primary" />;
+        return <Layers className="w-6 h-6 text-indigo-500" />;
       case "zap":
-        return <Zap className="w-6 h-6 text-primary" />;
+        return <Zap className="w-6 h-6 text-yellow-500" />;
       case "film":
-        return <Film className="w-6 h-6 text-primary" />;
+        return <Film className="w-6 h-6 text-pink-500" />;
       case "smartphone":
-        return <Smartphone className="w-6 h-6 text-primary" />;
+        return <Smartphone className="w-6 h-6 text-cyan-500" />;
+      case "map":
+        return <Map className="w-6 h-6 text-emerald-500" />;
+      case "moon":
+        return <Moon className="w-6 h-6 text-slate-500" />;
+      case "table":
+        return <Table className="w-6 h-6 text-violet-500" />;
       default:
         return <Target className="w-6 h-6 text-primary" />;
     }
@@ -158,12 +172,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="mb-8 rounded-2xl overflow-hidden bg-muted/20 relative group cursor-pointer flex items-center justify-center min-h-[300px] max-h-[600px]"
-                onClick={() =>
-                  project.screenshots && project.screenshots.length > 0
-                    ? openGallery(0)
-                    : undefined
-                }
+                className="mb-8 rounded-2xl overflow-hidden bg-muted/20 relative flex items-center justify-center min-h-[300px] max-h-[600px]"
               >
                 {isVideo ? (
                   <video
@@ -198,11 +207,6 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 rounded-2xl" />
-                {project.screenshots && project.screenshots.length > 0 && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <PlayCircle className="w-16 h-16 text-white/80 group-hover:scale-110 transition-transform" />
-                  </div>
-                )}
                 <div className="absolute top-6 left-6 z-10">
                   <Badge
                     variant="default"
@@ -413,61 +417,63 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
         </Container>
       </section>
 
-      {/* Screenshot Gallery - Conditionally rendered */}
-      {project.screenshots && project.screenshots.length > 0 && (
-        <section className="py-16 lg:py-20 bg-card/30">
-          <Container>
-            <AnimatedContainer variant="fade">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                  Project Gallery
-                </h2>
-                <p className="text-lg text-muted">
-                  Screenshots and visuals from the project
-                </p>
-              </div>
+      {/* Screenshot Gallery - Conditionally rendered only if no duplicate content */}
+      {project.screenshots &&
+        project.screenshots.length > 0 &&
+        !hasDuplicateGalleryContent && (
+          <section className="py-16 lg:py-20 bg-card/30">
+            <Container>
+              <AnimatedContainer variant="fade">
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+                    Project Gallery
+                  </h2>
+                  <p className="text-lg text-muted">
+                    Screenshots and visuals from the project
+                  </p>
+                </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {project.screenshots.map((screenshot, index) => {
-                  const isScreenshotVideo =
-                    screenshot.endsWith(".mp4") ||
-                    screenshot.endsWith(".webm") ||
-                    screenshot.endsWith(".mov");
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {project.screenshots.map((screenshot, index) => {
+                    const isScreenshotVideo =
+                      screenshot.endsWith(".mp4") ||
+                      screenshot.endsWith(".webm") ||
+                      screenshot.endsWith(".mov");
 
-                  return (
-                    <motion.div
-                      key={index}
-                      variants={galleryItemVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                      className="aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 cursor-pointer group"
-                      onClick={() => openGallery(index)}
-                    >
-                      {isScreenshotVideo ? (
-                        <video
-                          src={screenshot}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        >
-                          Your browser does not support the video tag.
-                        </video>
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                          <PlayCircle className="w-12 h-12 text-primary/60" />
-                        </div>
-                      )}
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </AnimatedContainer>
-          </Container>
-        </section>
-      )}
+                    return (
+                      <motion.div
+                        key={index}
+                        variants={galleryItemVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        className="aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 cursor-pointer group"
+                        onClick={() => openGallery(index)}
+                      >
+                        {isScreenshotVideo ? (
+                          <video
+                            src={screenshot}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          >
+                            Your browser does not support the video tag.
+                          </video>
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                            <PlayCircle className="w-12 h-12 text-primary/60" />
+                          </div>
+                        )}
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </AnimatedContainer>
+            </Container>
+          </section>
+        )}
 
       {/* Challenges and Solutions */}
       <section className="py-16 lg:py-20">

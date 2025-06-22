@@ -37,23 +37,29 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
   triggerOnce = true,
   as: InnerComponent = "div",
 }) => {
-  const { ref, controls } = useScrollAnimation(threshold, triggerOnce);
+  const { ref, isInView } = useScrollAnimation(threshold, triggerOnce);
   const { prefersReducedMotion, getDuration } = useReducedMotion();
   const { isLoading, isHydrated } = useLoading();
   const [componentReady, setComponentReady] = useState(false);
+
+  // Determine if animation should be active
+  const shouldAnimate = componentReady && isInView;
 
   // Wait for both hydration and loading to complete before starting animations
   useEffect(() => {
     if (isHydrated && !isLoading) {
       const timer = setTimeout(() => setComponentReady(true), 100);
       return () => clearTimeout(timer);
+    } else {
+      // Reset componentReady when loading starts or hydration is not complete
+      setComponentReady(false);
     }
   }, [isHydrated, isLoading]);
 
   // Memoize animation variants to prevent unnecessary recalculations
   const animationVariants = useMemo((): Variants => {
-    if (!componentReady || prefersReducedMotion) {
-      // Return static variants during loading or for reduced motion
+    if (prefersReducedMotion) {
+      // Return static variants for reduced motion
       return {
         hidden: { opacity: 1, y: 0, x: 0, scale: 1 },
         visible: { opacity: 1, y: 0, x: 0, scale: 1 },
@@ -118,15 +124,7 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
           },
         };
     }
-  }, [
-    variant,
-    direction,
-    delay,
-    duration,
-    getDuration,
-    prefersReducedMotion,
-    componentReady,
-  ]);
+  }, [variant, direction, delay, duration, getDuration, prefersReducedMotion]);
 
   // Early return for reduced motion
   if (prefersReducedMotion) {
@@ -142,7 +140,7 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
       ref={ref}
       className={className}
       initial="hidden"
-      animate={controls}
+      animate={shouldAnimate ? "visible" : "hidden"}
       variants={animationVariants}
       // Performance optimizations
       style={{ willChange: "transform, opacity" }}

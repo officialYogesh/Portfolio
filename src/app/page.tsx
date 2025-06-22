@@ -120,7 +120,7 @@ export default function Home() {
             <AnimatedContainer variant="slide" direction="up" delay={0.1}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6 }}
                 className="mb-6"
               >
@@ -152,8 +152,8 @@ export default function Home() {
             >
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                transition={{ duration: 0.6, delay: isReady ? 0.3 : 0 }}
                 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-8 leading-tight"
               >
                 <span className="text-primary font-extrabold">
@@ -170,8 +170,8 @@ export default function Home() {
             <AnimatedContainer variant="slide" direction="up" delay={0.5}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+                animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: isReady ? 0.5 : 0 }}
                 className="mb-8"
               >
                 <div className="flex flex-wrap items-center gap-4 md:gap-6 text-sm md:text-base text-foreground/70">
@@ -195,13 +195,20 @@ export default function Home() {
                   >
                     <motion.div
                       className="w-3 h-3 bg-green-500 rounded-full"
-                      animate={{
-                        scale: [1, 1.3, 1],
-                        opacity: [1, 0.7, 1],
-                      }}
+                      animate={
+                        isReady
+                          ? {
+                              scale: [1, 1.3, 1],
+                              opacity: [1, 0.7, 1],
+                            }
+                          : {
+                              scale: 1,
+                              opacity: 1,
+                            }
+                      }
                       transition={{
                         duration: 2,
-                        repeat: Infinity,
+                        repeat: isReady ? Infinity : 0,
                         ease: "easeInOut",
                       }}
                     />
@@ -318,13 +325,20 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <motion.div
                     className="w-3 h-3 bg-green-500 rounded-full"
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [1, 0.8, 1],
-                    }}
+                    animate={
+                      isReady
+                        ? {
+                            scale: [1, 1.2, 1],
+                            opacity: [1, 0.8, 1],
+                          }
+                        : {
+                            scale: 1,
+                            opacity: 1,
+                          }
+                    }
                     transition={{
                       duration: 1.5,
-                      repeat: Infinity,
+                      repeat: isReady ? Infinity : 0,
                       ease: "easeInOut",
                     }}
                   />

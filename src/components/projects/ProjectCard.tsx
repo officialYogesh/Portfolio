@@ -16,6 +16,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useCallback, useEffect } from "react";
 
+import { useLoading } from "@/contexts/LoadingContext";
+
 import { Project, ProjectTechnology } from "../../../config/projects";
 
 interface ProjectCardProps {
@@ -122,9 +124,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   index,
   delay = 0,
 }) => {
+  const { isHydrated, isLoading } = useLoading();
   const [isClient, setIsClient] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
+  const isReady = isHydrated && !isLoading;
 
   useEffect(() => {
     setIsClient(true);
@@ -146,22 +150,28 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const demoLink = project.links.find((link) => link.type === "demo");
   const githubLink = project.links.find((link) => link.type === "github");
 
-  const cardMotionProps = isClient
-    ? {
-        initial: { opacity: 0, y: 20, scale: 0.95 },
-        animate: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          transition: {
-            duration: 0.4,
-            delay: delay + index * 0.1,
-            ease: [0.4, 0, 0.2, 1],
+  const cardMotionProps =
+    isClient && isReady
+      ? {
+          initial: { opacity: 0, y: 20, scale: 0.95 },
+          animate: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+              duration: 0.4,
+              delay: delay + index * 0.1,
+              ease: [0.4, 0, 0.2, 1],
+            },
           },
-        },
-        whileHover: { y: -5, scale: 1.02, transition: { duration: 0.2 } },
-      }
-    : {};
+          whileHover: { y: -5, scale: 1.02, transition: { duration: 0.2 } },
+        }
+      : isClient && !isReady
+      ? {
+          initial: { opacity: 0, y: 20, scale: 0.95 },
+          animate: { opacity: 0, y: 20, scale: 0.95 },
+        }
+      : {};
 
   if (!isClient) {
     return (
@@ -245,8 +255,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={isReady ? { scale: 1.05 } : {}}
+                  whileTap={isReady ? { scale: 0.95 } : {}}
                   aria-label={`View live demo of ${project.title}`}
                   title="View Live Demo"
                 >
@@ -259,8 +269,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-gray-800 text-white p-2 rounded-lg hover:bg-gray-900 transition-colors shadow-sm"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={isReady ? { scale: 1.05 } : {}}
+                  whileTap={isReady ? { scale: 0.95 } : {}}
                   aria-label={`View source code of ${project.title}`}
                   title="View Source Code"
                 >

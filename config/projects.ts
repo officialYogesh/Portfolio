@@ -121,7 +121,7 @@ export const projects: Project[] = [
     status: "completed",
     category: "mobile-app",
     featured: false,
-    thumbnail: "/images/projects/Upside Down.png",
+    thumbnail: "/images/projects/upside-down/thumbnail.png",
     screenshots: [],
     technologies: [
       { name: "Unity", category: "tools", proficiency: 8 },
@@ -201,7 +201,7 @@ export const projects: Project[] = [
     status: "in-progress",
     category: "web-app",
     featured: true,
-    thumbnail: "/images/projects/JobFitAI.png",
+    thumbnail: "/images/projects/jobfit-ai/thumbnail.png",
     screenshots: [],
     technologies: [
       { name: "Next.js", category: "frontend", proficiency: 8 },
@@ -289,10 +289,10 @@ export const projects: Project[] = [
     status: "completed",
     category: "web-app",
     featured: true,
-    thumbnail: "/images/projects/covid19tracker/c4.mp4",
+    thumbnail: "/images/projects/covid19-india-tracker/c4.mp4",
     screenshots: [
-      "/images/projects/covid19tracker/c4.mp4",
-      "/images/projects/covid19tracker/public_project_covid-19_c4.webm",
+      "/images/projects/covid19-india-tracker/c4.mp4",
+      "/images/projects/covid19-india-tracker/public_project_covid-19_c4.webm",
     ],
     technologies: [
       { name: "React", category: "frontend", proficiency: 8 },

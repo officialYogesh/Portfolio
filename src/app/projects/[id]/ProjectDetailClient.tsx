@@ -46,6 +46,13 @@ interface ProjectDetailClientProps {
 export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
+  // Check if thumbnail is a video file
+  const isVideo =
+    project.thumbnail &&
+    (project.thumbnail.endsWith(".mp4") ||
+      project.thumbnail.endsWith(".webm") ||
+      project.thumbnail.endsWith(".mov"));
+
   // Gallery functionality
   const currentImageIndex = selectedImage ?? 0;
 
@@ -158,22 +165,38 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                     : undefined
                 }
               >
-                <Image
-                  src={project.thumbnail}
-                  alt={`${project.title} thumbnail`}
-                  width={0}
-                  height={0}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                  className="w-full h-auto object-contain max-h-[600px] rounded-2xl"
-                  onError={(e) => {
-                    // Hide the image on error and show a placeholder instead
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = "none";
-                  }}
-                  style={{
-                    filter: "contrast(1.1) saturate(1.05) brightness(0.95)",
-                  }}
-                />
+                {isVideo ? (
+                  <video
+                    src={project.thumbnail}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-auto object-contain max-h-[600px] rounded-2xl"
+                    style={{
+                      filter: "contrast(1.1) saturate(1.05) brightness(0.95)",
+                    }}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <Image
+                    src={project.thumbnail}
+                    alt={`${project.title} thumbnail`}
+                    width={0}
+                    height={0}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                    className="w-full h-auto object-contain max-h-[600px] rounded-2xl"
+                    onError={(e) => {
+                      // Hide the image on error and show a placeholder instead
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = "none";
+                    }}
+                    style={{
+                      filter: "contrast(1.1) saturate(1.05) brightness(0.95)",
+                    }}
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 rounded-2xl" />
                 {project.screenshots && project.screenshots.length > 0 && (
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -405,21 +428,41 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {project.screenshots.map((screenshot, index) => (
-                  <motion.div
-                    key={index}
-                    variants={galleryItemVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 cursor-pointer group"
-                    onClick={() => openGallery(index)}
-                  >
-                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                      <PlayCircle className="w-12 h-12 text-primary/60" />
-                    </div>
-                  </motion.div>
-                ))}
+                {project.screenshots.map((screenshot, index) => {
+                  const isScreenshotVideo =
+                    screenshot.endsWith(".mp4") ||
+                    screenshot.endsWith(".webm") ||
+                    screenshot.endsWith(".mov");
+
+                  return (
+                    <motion.div
+                      key={index}
+                      variants={galleryItemVariants}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      className="aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 cursor-pointer group"
+                      onClick={() => openGallery(index)}
+                    >
+                      {isScreenshotVideo ? (
+                        <video
+                          src={screenshot}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                          <PlayCircle className="w-12 h-12 text-primary/60" />
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })}
               </div>
             </AnimatedContainer>
           </Container>
@@ -532,7 +575,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
               <ChevronRight className="w-5 h-5" />
             </button>
 
-            {/* Image */}
+            {/* Media Display */}
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -540,13 +583,40 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
               className="max-w-7xl max-h-full w-full h-full flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg p-8 text-center text-white/60">
-                <PlayCircle className="w-24 h-24 mx-auto mb-4" />
-                <p className="text-lg">Screenshot Preview</p>
-                <p className="text-sm opacity-60 mt-2">
-                  {currentImageIndex + 1} of {project.screenshots.length}
-                </p>
-              </div>
+              {(() => {
+                const currentScreenshot =
+                  project.screenshots[currentImageIndex];
+                const isModalVideo =
+                  currentScreenshot.endsWith(".mp4") ||
+                  currentScreenshot.endsWith(".webm") ||
+                  currentScreenshot.endsWith(".mov");
+
+                if (isModalVideo) {
+                  return (
+                    <video
+                      src={currentScreenshot}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      controls
+                      className="max-w-full max-h-full rounded-lg"
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  );
+                } else {
+                  return (
+                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg p-8 text-center text-white/60">
+                      <PlayCircle className="w-24 h-24 mx-auto mb-4" />
+                      <p className="text-lg">Screenshot Preview</p>
+                      <p className="text-sm opacity-60 mt-2">
+                        {currentImageIndex + 1} of {project.screenshots.length}
+                      </p>
+                    </div>
+                  );
+                }
+              })()}
             </motion.div>
           </motion.div>
         )}

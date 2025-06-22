@@ -194,7 +194,8 @@ export const projects: Project[] = [
   {
     id: "jobfit-ai",
     title: "JobFitAI",
-    shortDescription: "Demonstrating AI-powered resume analysis. Experience instant, evidence-grounded feedback on resume-job fit with actionable insights, keyword gap analysis, and rewrite suggestions.",
+    shortDescription:
+      "Demonstrating AI-powered resume analysis. Experience instant, evidence-grounded feedback on resume-job fit with actionable insights, keyword gap analysis, and rewrite suggestions.",
     fullDescription:
       "JobFitAI is a hobby project demonstrating a privacy-first web tool designed to help job seekers optimize their resumes. Built with cutting-edge AI technology, it showcases instant, evidence-grounded feedback powered by Retrieval-Augmented Generation (RAG). This project demonstrates the use of advanced language models to analyze compatibility between resumes and job descriptions, showcasing modern web development skills and AI integration capabilities.",
     status: "in-progress",
@@ -247,14 +248,13 @@ export const projects: Project[] = [
       "Balancing AI model accuracy with response time for real-time analysis",
       "Creating interpretable AI recommendations that users can understand and act upon",
       "Maintaining data privacy while providing personalized recommendations",
-      "Integrating multiple AI services (DeepInfra, Whisper) into a cohesive pipeline"
+      "Integrating multiple AI services (DeepInfra, Whisper) into a cohesive pipeline",
     ],
     solutions: [
       "Implemented semantic search using vector embeddings and cosine similarity for nuanced matching",
       "Built efficient data pipeline with Redis caching and background job processing",
       "Developed explainable AI features that show reasoning behind recommendations",
       "Implemented privacy-first architecture with data anonymization and user consent management",
-
     ],
     links: [
       {
@@ -277,6 +277,95 @@ export const projects: Project[] = [
       { label: "Analysis Speed", value: "<8s" },
       { label: "Supported Formats", value: "PDF + Audio" },
       { label: "AI Model", value: "Gemini 2.0 Flash" },
+    ],
+  },
+  {
+    id: "covid19-india-tracker",
+    title: "Covid-19 India tracker",
+    shortDescription:
+      "A comprehensive React-based dashboard to track current and historical COVID-19 data for India and its states and union territories with interactive visualizations.",
+    fullDescription:
+      "Covid-19 India tracker is a comprehensive web application that provides real-time and historical COVID-19 statistics for India. Built with React and featuring an interactive map, the application allows users to hover over any state or union territory to view detailed statistics. The platform includes dark mode support, sortable data tables, and rich data visualizations using Chart.js. With customizable time spans and state-wise data filtering, it became an essential tool for tracking the pandemic's progress across India.",
+    status: "completed",
+    category: "web-app",
+    featured: true,
+    thumbnail: "/images/projects/covid19tracker/c4.mp4",
+    screenshots: [
+      "/images/projects/covid19tracker/c4.mp4",
+      "/images/projects/covid19tracker/public_project_covid-19_c4.webm",
+    ],
+    technologies: [
+      { name: "React", category: "frontend", proficiency: 8 },
+      { name: "JavaScript", category: "frontend", proficiency: 8 },
+      { name: "Material-UI", category: "frontend", proficiency: 8 },
+      { name: "Chart.js", category: "frontend", proficiency: 7 },
+      { name: "D3.js", category: "frontend", proficiency: 6 },
+      { name: "React Simple Maps", category: "frontend", proficiency: 7 },
+      { name: "Axios", category: "backend", proficiency: 8 },
+      { name: "Node.js", category: "backend", proficiency: 8 },
+      { name: "Vercel", category: "cloud", proficiency: 8 },
+    ],
+    features: [
+      {
+        title: "Interactive Map Visualization",
+        description:
+          "Hover over any state or union territory to view real-time COVID-19 statistics with visual representation across Indian states",
+        icon: "map",
+      },
+      {
+        title: "Dark Mode Support",
+        description:
+          "Toggle between light and dark themes for better user experience and reduced eye strain",
+        icon: "moon",
+      },
+      {
+        title: "Historical Data Visualization",
+        description:
+          "Interactive charts displaying daily or cumulative data with customizable time spans (1 month, 3 months, or all data)",
+        icon: "bar-chart",
+      },
+      {
+        title: "Sortable Data Table",
+        description:
+          "Comprehensive table view with sortable columns for easy comparison between different states and union territories",
+        icon: "table",
+      },
+    ],
+    challenges: [
+      "Handling large datasets efficiently while maintaining smooth user interactions",
+      "Creating responsive visualizations that work across different screen sizes and devices",
+      "Implementing real-time data updates without overwhelming the COVID-19 India API",
+      "Designing intuitive map interactions for both desktop and mobile users",
+      "Optimizing chart rendering performance for historical data visualization",
+    ],
+    solutions: [
+      "Implemented data caching and pagination strategies to manage large datasets efficiently",
+      "Used responsive design principles with Material-UI components and CSS Grid for optimal mobile experience",
+      "Built intelligent API polling system with rate limiting and error handling for reliable data updates",
+      "Created touch-friendly map interactions with hover states and click handlers for mobile devices",
+      "Optimized Chart.js configuration with lazy loading and data sampling for smooth chart animations",
+    ],
+    links: [
+      {
+        type: "demo",
+        url: "https://covid19tracker.iamyogesh.com/",
+        label: "Live Demo",
+      },
+      {
+        type: "github",
+        url: "https://github.com/officialYogesh/India-covid19-tracker",
+        label: "Source Code",
+      },
+    ],
+    startDate: "2020-04-01",
+    endDate: "2020-06-15",
+    teamSize: 1,
+    role: "Full-Stack Developer",
+    metrics: [
+      { label: "Data Sources", value: "COVID19 India API" },
+      { label: "States Covered", value: "28 + 8 UTs" },
+      { label: "Chart Types", value: "Multiple" },
+      { label: "Theme Support", value: "Light/Dark" },
     ],
   },
 ];

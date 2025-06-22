@@ -147,6 +147,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     }
   }, [isClient]);
 
+  // Check if thumbnail is a video file
+  const isVideo =
+    project.thumbnail &&
+    (project.thumbnail.endsWith(".mp4") ||
+      project.thumbnail.endsWith(".webm") ||
+      project.thumbnail.endsWith(".mov"));
+
   const demoLink = project.links.find((link) => link.type === "demo");
   const githubLink = project.links.find((link) => link.type === "github");
 
@@ -204,6 +211,29 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <div className="w-full h-full flex items-center justify-center">
             {imageError || !project.thumbnail ? (
               <ImagePlaceholder title={project.title} />
+            ) : isVideo ? (
+              <>
+                {imageLoading && (
+                  <div className="absolute inset-0 bg-muted animate-pulse" />
+                )}
+                <video
+                  src={project.thumbnail}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className={`w-full h-auto object-contain max-h-[300px] transition-opacity duration-300 ${
+                    imageLoading ? "opacity-0" : "opacity-100"
+                  }`}
+                  onError={handleImageError}
+                  onLoadedData={handleImageLoad}
+                  style={{
+                    filter: "contrast(1.1) saturate(1.05) brightness(0.95)",
+                  }}
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </>
             ) : (
               <>
                 {imageLoading && (

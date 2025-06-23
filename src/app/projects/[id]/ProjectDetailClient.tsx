@@ -338,7 +338,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
         </Container>
       </section>
 
-      {/* Technology Stack - Simplified without Bubble UI */}
+      {/* Technology Stack - Enhanced with proper categorization and icons */}
       <section className="py-16 lg:py-20 bg-card/30">
         <Container>
           <AnimatedContainer variant="fade">
@@ -351,32 +351,201 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {project.technologies.map((tech, index) => (
-                  <Card
-                    key={index}
-                    className="p-4 text-center hover:shadow-lg transition-shadow"
-                  >
-                    <div className="font-semibold text-foreground mb-1">
-                      {tech.name}
-                    </div>
-                    <div className="text-xs text-muted capitalize">
-                      {tech.category.replace("-", " ")}
-                    </div>
-                    {tech.proficiency && (
-                      <div className="mt-2">
-                        <div className="w-full bg-muted/30 rounded-full h-2">
-                          <div
-                            className="bg-primary h-2 rounded-full transition-all duration-300"
-                            style={{ width: `${tech.proficiency * 10}%` }}
-                          />
-                        </div>
+            <div className="max-w-6xl mx-auto">
+              {/* Group technologies by category */}
+              {(() => {
+                const categorizedTechs = project.technologies.reduce(
+                  (acc, tech) => {
+                    if (!acc[tech.category]) {
+                      acc[tech.category] = [];
+                    }
+                    acc[tech.category].push(tech);
+                    return acc;
+                  },
+                  {} as Record<string, typeof project.technologies>
+                );
+
+                const categoryOrder = [
+                  "frontend",
+                  "backend",
+                  "database",
+                  "cloud",
+                  "tools",
+                  "mobile",
+                  "testing",
+                ];
+                const orderedCategories = categoryOrder.filter(
+                  (cat) => categorizedTechs[cat]
+                );
+
+                return orderedCategories.map((category) => {
+                  const categoryConfig = {
+                    frontend: {
+                      name: "Frontend",
+                      icon: "🎨",
+                      color: "text-blue-600 dark:text-blue-400",
+                    },
+                    backend: {
+                      name: "Backend",
+                      icon: "⚙️",
+                      color: "text-green-600 dark:text-green-400",
+                    },
+                    database: {
+                      name: "Database",
+                      icon: "🗄️",
+                      color: "text-purple-600 dark:text-purple-400",
+                    },
+                    cloud: {
+                      name: "Cloud & Hosting",
+                      icon: "☁️",
+                      color: "text-cyan-600 dark:text-cyan-400",
+                    },
+                    tools: {
+                      name: "Tools & Utilities",
+                      icon: "🔧",
+                      color: "text-orange-600 dark:text-orange-400",
+                    },
+                    mobile: {
+                      name: "Mobile",
+                      icon: "📱",
+                      color: "text-indigo-600 dark:text-indigo-400",
+                    },
+                    testing: {
+                      name: "Testing",
+                      icon: "🧪",
+                      color: "text-pink-600 dark:text-pink-400",
+                    },
+                  };
+
+                  const config =
+                    categoryConfig[category as keyof typeof categoryConfig];
+                  if (!config) return null;
+
+                  // Function to get technology icon - Actual SVG logos without containers
+                  const getTechIcon = (
+                    techName: string
+                  ): React.ReactElement => {
+                    // Define mapping of technology names to logo file names
+                    const logoMap: Record<string, string> = {
+                      React: "react.svg",
+                      "Next.js": "nextjs.svg",
+                      TypeScript: "typescript.svg",
+                      JavaScript: "javascript.svg",
+                      "Node.js": "nodejs.svg",
+                      MongoDB: "mongodb.svg",
+                      PostgreSQL: "postgresql.svg",
+                      Docker: "docker.svg",
+                      "Tailwind CSS": "tailwindcss.svg",
+                      Python: "python.svg",
+                      HTML5: "html5.svg",
+                      CSS3: "css3.svg",
+                      Git: "git.svg",
+                      Unity: "unity.svg",
+                      "C#": "csharp.svg",
+                      Android: "android.svg",
+                      iOS: "apple.svg",
+                      Firebase: "firebase.svg",
+                      Supabase: "supabase.svg",
+                      OpenAI: "openai.svg",
+                      Claude: "claude.svg",
+                      "Material-UI": "materialui.svg",
+                      "Chart.js": "chartjs.svg", // Using React as fallback
+                      "D3.js": "d3js.svg",
+                      Axios: "axios.svg",
+                      Vercel: "vercel.svg",
+                      LangChain: "langchain-color.svg", // Using Python as fallback since LangChain is Python-based
+                      "Gemini 2.0 Flash": "gemini.svg", // Using Gemini logo
+                      Gemini: "gemini.svg", // Using Gemini logo
+                      "React Simple Maps": "react.svg", // Using React as fallback
+                      "Game Design": "unity.svg", // Using Unity as fallback for game design
+                    };
+
+                    // Get the logo file name, fallback to a default if not found
+                    const logoFile = logoMap[techName];
+
+                    if (logoFile) {
+                      return (
+                        <Image
+                          src={`/images/logos/${logoFile}`}
+                          alt={`${techName} logo`}
+                          width={64}
+                          height={64}
+                          className="w-16 h-16 object-contain"
+                        />
+                      );
+                    }
+
+                    // Fallback to a simple icon for unmapped technologies
+                    return (
+                      <div className="w-16 h-16 bg-[#718096] rounded-lg flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                        🔹
                       </div>
-                    )}
-                  </Card>
-                ))}
-              </div>
+                    );
+                  };
+
+                  return (
+                    <div key={category} className="mb-16">
+                      <div className="flex items-center gap-3 mb-8">
+                        <span className="text-2xl">{config.icon}</span>
+                        <h3 className={`text-xl font-semibold ${config.color}`}>
+                          {config.name}
+                        </h3>
+                      </div>
+
+                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 md:gap-8">
+                        {categorizedTechs[category].map((tech, index) => (
+                          <motion.div
+                            key={index}
+                            className="flex flex-col items-center text-center group cursor-default"
+                            whileHover={{
+                              scale: 1.1,
+                              y: -8,
+                              transition: {
+                                type: "spring",
+                                stiffness: 400,
+                                damping: 17,
+                              },
+                            }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                              delay: index * 0.05,
+                              duration: 0.3,
+                              ease: "easeOut",
+                            }}
+                          >
+                            <motion.h4
+                              className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-300 mb-3"
+                              whileHover={{
+                                scale: 1.05,
+                                transition: {
+                                  type: "spring",
+                                  stiffness: 400,
+                                  damping: 17,
+                                },
+                              }}
+                            >
+                              {tech.name}
+                            </motion.h4>
+                            <motion.div
+                              className="group-hover:shadow-xl transition-shadow duration-300"
+                              whileHover={{
+                                rotate: [0, -10, 10, 0],
+                                transition: {
+                                  duration: 0.5,
+                                  ease: "easeInOut",
+                                },
+                              }}
+                            >
+                              {getTechIcon(tech.name)}
+                            </motion.div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
             </div>
           </AnimatedContainer>
         </Container>
